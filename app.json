@@ -1,9 +1,17 @@
 {
-  "name": "PAYFORT Request Inspector",
+  "name": "PAYFORT-Inspector",
   "description": "Inspect HTTP requests. Debug webhooks.",
   "website": "http://payfort.com/",
   "repository": "https://github.com/ahmeddaooud/inspect",
-  "logo": "http://www.payfort.com/static/img/logo-2x.png",
+  "logo": "http://requestb.in/static/img/logo-2x.png",
   "keywords": ["python"],
+    "env": {
+    "REALM": {
+      "description": "The number of processes to run.",
+      "value": "prod"
+    }
   },
+  "addons": [
+    "heroku-redis"
+  ]
 }
