@@ -1,8 +1,3 @@
-License
--------
-MIT
-
-
 Looking to self-host?
 =====================
 
@@ -48,8 +43,3 @@ $ sudo docker-compose up -d
 
 Your own private inspector will be running on this server.
 
-
-Contributors
-------------
- * Barry Carlyon <barry@barrycarlyon.co.uk>
- * Jeff Lindsay <progrium@gmail.com>
