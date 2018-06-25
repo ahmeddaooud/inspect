@@ -5,10 +5,5 @@
   "repository": "https://github.com/ahmeddaooud/inspect",
   "logo": "http://www.payfort.com/static/img/logo-2x.png",
   "keywords": ["python"],
-  "env": {
-    "REALM": {
-      "description": "The number of processes to run.",
-      "value": "prod"
-    }
   },
 }
