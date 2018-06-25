@@ -11,7 +11,4 @@
       "value": "prod"
     }
   },
-  "addons": [
-    "heroku-redis"
-  ]
 }
