@@ -7,7 +7,7 @@ import redis
 
 from ..models import Bin
 
-from inspector import config
+from requestbin import config
 
 class RedisStorage():
     prefix = config.REDIS_PREFIX
@@ -22,9 +22,9 @@ class RedisStorage():
     def _request_count_key(self):
         return '{}-requests'.format(self.prefix)
 
-    def create_bin(self, private=False, name="NONAME"):
+    def create_bin(self, private=False):
         bin = Bin(private)
-        key = self._key(name)
+        key = self._key(bin.name)
         self.redis.set(key, bin.dump())
         self.redis.expireat(key, int(bin.created+self.bin_ttl))
         return bin
