@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block head %}
+    <script type="text/javascript">
+      function createBin() {
+        $.ajax({'url': '/api/v1/bins', 'type': 'POST',
+          'data': { 'name': $('#name').val() , 'private': $('#private').prop("checked")},
+          'success': function(data) {
+            window.location.href = "/"+data['name']+"?inspect";
+          }
+        });
+      }
+    </script>
+    <script type="text/javascript">
+      function deleteBin() {
+        $.ajax({'url': '/api/v1/delete', 'type': 'POST',
+          'data': {'name': $('#name').val()},
+          'success': function(data) {
+           window.location.href = "/";
+          }
+        });
+      }
+    </script>
+    <script type="text/javascript">
+      function deleteBinNew() {
+        $.ajax({'url': '/api/v1/deletebin', 'type': 'POST',
+          'data': {'name': $('#deleteButton').attr("id")},
+          'success': function(data) {
+           window.location.href = "/";
+          }
+        });
+      }
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="row-fluid">
+        <div class="banner-hero">
+            <h2 class="banner-header"><span class="accent-bg">Start New Inspection</span></h2>
+
+
+            <form action="/" method="POST">
+                <input class="xlarge input-xlarge" id="name" onkeydown = "if (event.keyCode == 13) document.getElementById('createButton').click()"  name="name" type="text" placeholder="Optional: Fill inspector name" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 2px;">
+
+                <p class="button">
+                <a class="btn btn-large btn-success" id="createButton" onclick="createBin()"><i class="icon-plus-sign" ></i> Create an Inspector </a>
+              </p>
+
+                <div class="alert-message block-message info">
+        {% if errors %}
+          <p class=errors><strong>Error: {{ errors }}</strong>
+        {% endif %}
+                </div>
+<!--<p class="banner-button">-->
+                <!--<a class="btn btn-large btn-danger" id="deleteButton" onclick="deleteBin()" ><i class="icon-minus-sign" ></i> Delete This Inspector </a>-->
+              <!--</p>-->
+
+
+            </form>
+
+            <form class="form-inline">
+
+              <p class="banner-option">
+                <label class="checkbox" title="Private inspectors can only be viewed by you using a browser cookie">
+                  <input id="private" type="checkbox" /> &nbsp;Private <small>(only viewable from this browser)</small>
+                </label>
+              </p>
+            </form>
+            <h3 class="banner-subheader">
+              PAYFORT Inspector gives you a URL that allows you to easily test webhooks and other types of HTTP requests.<br>
+              Use PAYFORT Inspector to see what your HTTP client is sending or to inspect and debug notifications.</h3>
+        </div>
+    </div>
+{% endblock %}

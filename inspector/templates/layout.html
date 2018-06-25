@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}PAYFORT Inspector &mdash; Collect, inspect HTTP notifications{% endblock %}</title>
+    {% block icon %}<link href="/static/img/logo.png" rel="shortcut icon" />{% endblock %}
+    <link href="/static/css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="/static/css/responsive.css" rel="stylesheet" media="screen">
+    <link href="/static/css/styles.css" rel="stylesheet" media="screen">
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" media="screen">
+    <link type="text/css" href="/static/css/prettify.css" rel="stylesheet" />
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/prettify.js"></script>
+    {% block head %}{% endblock %}
+  </head>
+  <body onload="prettyPrint()">
+
+    <div class="payfort-wrap">
+        <div class="row-fluid">
+            <p class="tagline"> <a href="https://www.payfort.com" title="Payfort Testing Tools"><strong> </strong></a>  <a href="mailto:adaoud@payfort.com">Contact us!</a></p>
+        </div>
+    </div>
+    <div class="header-wrap">
+        <header class="row-fluid">
+            <div class="span12">
+              <h1 class="logo">
+                <a href="/"><img src="/static/img/logo-2x.png" height="80" width="130" /></a>
+                <a href="/"><span class="logo-accent"><br>Inspector<br /></span></a>
+              </h1>
+                <nav>
+                    <ul class="nav-menu">
+                        <li>{% block binurl %}{% endblock %}</li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+    </div>
+
+    <div id="content" class="row-fluid">
+      {% set width = 12 %}
+      {% if recent %} {% set width = 10 %} {% endif %}
+      <div class="span{{width}} content-wrap">
+
+          {% block content %}
+          {% endblock %}
+      </div>
+
+      {% if recent %}
+        <div class="span2">
+          {% block sidebar %}
+          <h5><i class="icon-user"></i> Created Inspectors</h5>
+          <ul id="recent">
+            {% for bin in recent %}
+            <li>
+              <a href="/{{bin.name}}?inspect"><i class="icon-circle" style="color: rgb{{bin.color}}"></i></a>
+              <a href="/{{bin.name}}?inspect">{{bin.name}}</a> {% if bin.private %}<i class="icon-lock"></i>{% endif %}
+              ({{bin.request_count}})
+            </li>
+            {% else %}
+            <p style="margin-left: -24px; color: gray;">
+              No recent bins.
+            </p>
+            {% endfor %}
+          </ul>
+          {% endblock %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="footer-wrap">
+        <footer class="row-fluid">
+            <div class="span12">
+                <div class="footer-logo">
+                     <a href="https://www.payfort.com" title="Learn More"><img src="/static/img/payfort.png"></a>
+                </div>
+                <h3 class="footer-slogan">
+                  <font color="white">PAYFORT Inspector is brought to you by PAYFORT Quality Team.<font>
+                    <br>
+                  <!--<a href="https://www.payfort.com">Learn more <i class="icon-long-arrow-right"></i></a>-->
+                </h3>
+
+                <!--<p class="footer-hero">-->
+                    <!--&lt;!&ndash;<a href="https://www.payfort.com" title="Learn More"><img src="/static/img/payfort.png"></a>&ndash;&gt;-->
+                <!--</p>-->
+
+                <ul class="footer-menu">
+                    <!--<li class="footer-link footer-title">PAYFORT</li>-->
+                    <!--<li class="footer-link"><a href="https://www.payfort.com/blog/" title="PAYFORT Blog">Blog</a></li>-->
+                    <!--<li class="footer-link"><a href="https://twitter.com/Runscope" title="Follow PAYFORT on Twitter">Twitter</a></li>-->
+                    <!--<li class="footer-link"><a href="https://plus.google.com/110044295418761600228" rel="publisher">Google+</a></li>-->
+                </ul>
+                <!--<p class="copyright">PAYFORT Inspector originally created by <a href="http://www.payfort.com">Ahmed Daoud</a>.</p>-->
+                <p class="copyright"> <font color="white" >&copy; 2018 PAYFORT an amazon Company - </font><a href="https://www.payfort.com/privacy-policy/">Privacy Policy</a> </p>
+            </div>
+        </footer>
+    </div>
+
+    {% block script %}
+    {% endblock %}
+  </body>
+</html>
