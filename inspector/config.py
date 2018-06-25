@@ -12,8 +12,8 @@ CORS_ORIGINS = "*"
 FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", "N1BKhJLnBqLpexOZdklsfDKFJDKFadsfs9a3r324YB7B73AglRmrHMDQ9RhXz35")
 
 BIN_TTL = 48*3600
-STORAGE_BACKEND = "inspector.storage.memory.MemoryStorage"
-MAX_RAW_SIZE = int(os.environ.get('MAX_RAW_SIZE', 1024*100))
+STORAGE_BACKEND = "requestbin.storage.memory.MemoryStorage"
+MAX_RAW_SIZE = int(os.environ.get('MAX_RAW_SIZE', 1024*10))
 IGNORE_HEADERS = ["X-Forwarded-For", "Content-Length", "Accept-Encoding", "Connection", "Accept", "Cache-Control", "Postman-Token", "User-Agent", "Accept-Language", "Upgrade-Insecure-Requests", "Cookie", "Host", "Origin"]
 MAX_REQUESTS = 50
 CLEANUP_INTERVAL = 3600
