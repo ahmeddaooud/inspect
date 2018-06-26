@@ -1,11 +1,8 @@
 import json
 import operator
 
-from flask import session, make_response, request, render_template, redirect, url_for
-
+from flask import session, make_response, request, render_template
 from inspector import app, db
-# from inspector.views import expand_recent_bins
-
 
 def _response(object, code=200):
     jsonp = request.args.get('jsonp')
@@ -27,34 +24,6 @@ def bins():
         session[bin.name] = bin.secret_key
     return _response(bin.to_dict())
 
-
-@app.endpoint('api.delete')
-def delete():
-    name = request.form['name']
-    if 'recent' not in session:
-        session['recent'] = []
-    if name in session['recent']:
-        session['recent'].remove(name)
-    session.modified = True
-    return render_template('home.html')
-
-
-@app.endpoint('api.deletebin')
-def deletebin():
-    req = request.referrer
-    req_edit = req.replace(request.url_root, "")
-    if "?inspect" in req_edit:
-        name = req_edit.replace("?inspect", "")
-    if 'recent' not in session:
-        session['recent'] = []
-    if name in session['recent']:
-        session['recent'].remove(name)
-    session.modified = True
-    return render_template('home.html', recent=expand_recent_bins())
-
-@app.route('/home',methods=['GET','POST'])
-def home():
-    return render_template('home.html', recent=expand_recent_bins())
 
 @app.endpoint('api.bin')
 def bin(name):
