@@ -7,7 +7,7 @@ import redis
 
 from ..models import Bin
 
-from requestbin import config
+from inspector import config
 
 class RedisStorage():
     prefix = config.REDIS_PREFIX
