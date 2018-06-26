@@ -1,7 +1,5 @@
 import time
 import random
-import base64
-# import re
 from flask import request, render_template, session, redirect
 
 
@@ -28,16 +26,4 @@ def tinyid(size=6):
         baseN(abs(hash(time.time())), 36))
     return id[0:size]
 
-
-def merchant():
-
-        # get merchant name that user has entered
-            name = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
-            if name in session['recent']:
-                errors = "$error"
-                return errors
-            if name == '':
-                name = tinyid(6)
-
-            return name
 
