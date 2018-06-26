@@ -13,18 +13,24 @@ from .util import solid16x16gif_datauri
 from inspector import config
 
 
-def merchantid(size=6):
+def merchantid(size=20):
     merchant_name= re.sub('[^A-Za-z0-9]+', '', request.form['name'])
-    if merchant_name == '':
-        return tinyid(6)
-    else:
-         try:
-             id = merchant_name
-         except:
-             return tinyid(6)
-         else:
-             return id[0:size]
+    if name in session['recent']:
+                errors = "$error"
+                return errors
+            else:
+                if merchant_name == '':
+                    return tinyid(6)
+                else:
+                      try:
+                           id = merchant_name
+                      except:
+                            return tinyid(6)
+                      else:
+                            return id[0:size]
 
+                
+    
 
 class Bin(object):
     max_requests = config.MAX_REQUESTS
@@ -33,7 +39,7 @@ class Bin(object):
         self.created = time.time()
         self.private = private
         self.color = random_color()
-        self.name = merchantid(8)
+        self.name = merchantid()
         self.favicon_uri = solid16x16gif_datauri(*self.color)
         self.requests = []
         self.secret_key = os.urandom(24) if self.private else None
