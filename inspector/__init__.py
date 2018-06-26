@@ -1,6 +1,7 @@
 import config
 import os
 from cStringIO import StringIO
+
 from flask import Flask
 from flask_cors import CORS
 
@@ -16,10 +17,6 @@ class WSGIRawBody(object):
 
         body = environ['wsgi.input'].read(length)
         environ['raw'] = body
-        # try:
-        #     environ['wsgi.input'] = StringIO(body)
-        #     print (json.dumps(body, sort_keys=True, indent=4, separators=(',', ': ')))
-        # except:
         environ['wsgi.input'] = StringIO(body)
 
         # Call the wrapped application
@@ -76,13 +73,11 @@ app.add_url_rule('/<path:name>', 'views.bin', methods=['GET', 'POST', 'DELETE', 
 
 app.add_url_rule('/docs/<name>', 'views.docs')
 app.add_url_rule('/api/v1/bins', 'api.bins', methods=['POST'])
-app.add_url_rule('/api/v1/delete', 'api.delete', methods=['GET', 'POST'])
-app.add_url_rule('/api/v1/deletebin', 'api.deletebin', methods=['GET', 'POST'])
 app.add_url_rule('/api/v1/bins/<name>', 'api.bin', methods=['GET'])
 app.add_url_rule('/api/v1/bins/<bin>/requests', 'api.requests', methods=['GET'])
 app.add_url_rule('/api/v1/bins/<bin>/requests/<name>', 'api.request', methods=['GET'])
-app.add_url_rule('/api/v1/stats', 'api.stats')
 
+app.add_url_rule('/api/v1/stats', 'api.stats')
 
 # app.add_url_rule('/robots.txt', redirect_to=url_for('static', filename='robots.txt'))
 
