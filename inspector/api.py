@@ -28,7 +28,7 @@ def bins():
 @app.endpoint('api.deletebin')
 def deletebin():
     req = request.referrer
-    req_edit = req.replace(request.url_root, "")
+    req_edit = req.replace(request.host_url, "")
     if "?inspect" in req_edit:
         name = req_edit.replace("?inspect", "")
     if 'recent' not in session:
