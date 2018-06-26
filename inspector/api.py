@@ -4,7 +4,7 @@ import operator
 from flask import session, make_response, request, render_template, redirect, url_for
 
 from inspector import app, db
-from inspector.views import expand_recent_bins
+# from inspector.views import expand_recent_bins
 
 
 def _response(object, code=200):
