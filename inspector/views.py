@@ -33,7 +33,7 @@ def expand_recent_bins():
 
 @app.endpoint('views.home')
 def home():
-    return render_template('home.html', errors="test", recent=expand_recent_bins())
+    return render_template('home.html', recent=expand_recent_bins())
 
 
 @app.endpoint('views.bin')
