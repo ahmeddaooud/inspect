@@ -1,35 +1,16 @@
 {% extends "layout.html" %}
-{% block title %}PAYFORT Inspector - {{bin.name}}{% endblock %}
-<!-- {% block icon %}<link rel="shortcut icon" href="{{bin.favicon_uri}}" />{% endblock %} -->
+{% block title %}RequestBin - {{bin.name}}{% endblock %}
+{% block icon %}<link rel="shortcut icon" href="{{bin.favicon_uri}}" />{% endblock %}
 
 {% block sidebar %}{% endblock %}
+
 {% block binurl %}
-<!--<form action="/" method="POST">-->
-  <!--<div align="center">-->
-<!--<p class="button">-->
-                <!--<a class="btn btn-small btn-danger" name="deleteButton" id="deleteButton" onclick="deleteBinNew()" ><i class="icon-remove-sign" ></i> Delete {{bin.name}} inspector </a>-->
-              <!--</p>-->
-<!--&lt;!&ndash;<a href="/delete_bin" id="delete">Delete inspector</a>&ndash;&gt;-->
-<!--</div>-->
-<!--</form>-->
-  <a class="btn btn-success" href="/{{bin.name}}?inspect"><i class="icon-refresh icon-x"></i> Refresh</a>
-  <!--<a href="/{{bin.name}}?inspect"><i class="icon-repeat icon-2x" style="color: rgb{{bin.color}}"></i></a>-->
+  <a href="/{{bin.name}}?inspect"><i class="icon-circle icon-2x" style="color: rgb{{bin.color}}"></i></a>
   <input type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()" />
   {% if bin.private %}<i class="icon-lock"></i>{% endif %}
-  <a class="btn btn-danger" href="/" onclick="if (confirm('Are you sure you want to delete this inspector?')){deleteBinNew()}else{event.stopPropagation(); event.preventDefault();};"><i class="icon-remove-sign"></i> Delete</a>
 {% endblock %}
 
 {% block head %}
-    <script type="text/javascript">
-      function deleteBinNew() {
-        $.ajax({'url': '/api/v1/deletebin', 'type': 'POST',
-          'data': {'name': $('#deleteButton').attr("id")},
-          'success': function(data) {
-           window.location.href = "/";
-          }
-        });
-      }
-    </script>
 {% endblock %}
 
 {% block content %}
@@ -48,7 +29,7 @@
             </div>
             <div class="span2" class="timestamp">
               <span title="{{request.time|exact_time}}">{{request.time|approximate_time}} ago
-                <a href="#{{request.id}}"><i class="icon-time"></i></a>
+                <a href="#{{request.id}}"><i class="icon-link"></i></a>
               </span><br>
               From {{request.remote_addr}}
             </div>
@@ -61,7 +42,7 @@
       </div>
     {% else %}
 
-      <h4 class="text-center">Inspector URL</h4>
+      <h4 class="text-center">Bin URL</h4>
       <h2 class="text-center">
         <input class="xxlarge input-xxlarge" type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()" style="border-color: rgb{{bin.color}}; border-width: 3px;" /></h2>
       <p class="text-center">{% if bin.private %}This is a private bin. Requests are only viewable from this computer.{% endif %}
@@ -70,6 +51,87 @@
       <div class="row-fluid">
         <div class="span6 offset3">
 
+      <h4>Make a request to get started.</h4>
+
+      <h5>cURL</h5>
+      <pre>curl -X POST -d "fizz=buzz" {{base_url}}/{{bin.name}}</pre>
+
+      <h5>Python (with Requests)</h5>
+      <pre class="prettyprint">import requests, time
+r = requests.post('{{base_url}}/{{bin.name}}', data={"ts":time.time()})
+print r.status_code
+print r.content</pre>
+
+      <h5>Node.js (with request)</h5>
+      <pre class="prettyprint">var request = require('request');
+var url ='{{base_url}}/{{bin.name}}'
+request(url, function (error, response, body) {
+  if (!error) {
+    console.log(body);
+  }
+});</pre>
+
+      <h5>Ruby</h5>
+      <pre class="prettyprint">require 'open-uri'
+result = open('{{base_url}}/{{bin.name}}')
+result.lines { |f| f.each_line {|line| p line} }</pre>
+
+      <h5>C# / .NET</h5>
+      <pre class="prettyprint">using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+
+namespace RequestBinExample
+{
+  class Program
+  {
+    static void Main(string[] args)
+    {
+      MakeRequest();
+    }
+
+    private static async Task MakeRequest()
+    {
+      var httpClient = new HttpClient();
+      var response = await httpClient.GetAsync(new Uri("{{base_url}}/{{bin.name}}"));
+      var body = await response.Content.ReadAsStringAsync();
+      Console.WriteLine(body);
+    }
+  }
+}</pre>
+
+      <h5>Java</h5>
+      <pre class="prettyprint">import org.apache.commons.httpclient.*;
+import org.apache.commons.httpclient.methods.*;
+import org.apache.commons.httpclient.params.HttpMethodParams;
+
+import java.io.*;
+
+public class RequestBinTutorial {
+  public static void main(String[] args) {
+    HttpClient client = new HttpClient();
+    GetMethod method = new GetMethod("{{base_url}}/{{bin.name}}");
+    try {
+      int statusCode = client.executeMethod(method);
+      byte[] responseBody = method.getResponseBody();
+      System.out.println(new String(responseBody));
+    } catch (Exception e) {
+      System.err.println("Fatal error: " + e.getMessage());
+      e.printStackTrace();
+    } finally {
+      method.releaseConnection();
+    }
+  }
+}</pre>
+
+      <h5>PHP</h5>
+      <pre class="prettyprint">&lt;?php
+    $result = file_get_contents('{{base_url}}/{{bin.name}}');
+    echo $result;
+?&gt;</pre>
+
+        </div>
+      </div>
 
     {% endfor %}
 
@@ -78,10 +140,11 @@
       <div class="alert-message block-message info">
         <h4>Limits</h4>
         <p>This {% if bin.private %}<strong>private</strong>{% endif %}
-        inspector will keep the last 50 requests made to it and remain available for 48 hours after it was created.
-        However, data might be cleared at any time, so <strong>treat inspector as highly ephemeral</strong>.</p>
-        <!--<h4>Need more?</h4>-->
-        <!--<p><a href="https://www.payfort.com">Visit PAYFORT</a>.</p>-->
+        bin will keep the last 20 requests made to it and remain available for 48 hours after it was created.
+        However, data might be cleared at any time, so <strong>treat bins as highly ephemeral</strong>.</p>
+
+        <h4>Need more?</h4>
+        <p><a href="https://www.runscope.com/?utm_source=partner&amp;utm_medium=link&amp;utm_campaign=requestbin">Sign up for a free Runscope account</a>. Runscope request captures give you live updates, permanent URLs, file handling and much more.</p>
       </div>
 {% endblock %}
 
