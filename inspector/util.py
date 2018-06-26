@@ -1,7 +1,7 @@
 import time
 import random
 import base64
-import re
+# import re
 from flask import request, render_template, session, redirect
 
 
@@ -29,7 +29,7 @@ def tinyid(size=6):
     return id[0:size]
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['POST'])
 def merchant():
     if request.method == "POST":
         # get merchant name that user has entered
