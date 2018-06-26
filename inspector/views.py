@@ -1,8 +1,7 @@
 import urllib
 from flask import session, redirect, url_for, escape, request, render_template, make_response
 
-from inspector import app, db, util
-
+from inspector import app, db
 
 def update_recent_bins(name):
     if 'recent' not in session:
@@ -14,9 +13,6 @@ def update_recent_bins(name):
         session['recent'] = session['recent'][:10]
     session.modified = True
 
-# def remove_from_recent(name):
-#     if name in session['recent']:
-#         session['recent'].remove(name)
 
 def expand_recent_bins():
     if 'recent' not in session:
@@ -29,7 +25,6 @@ def expand_recent_bins():
             session['recent'].remove(name)
             session.modified = True
     return recent
-
 
 @app.endpoint('views.home')
 def home():
@@ -49,32 +44,11 @@ def bin(name):
         return render_template('bin.html',
             bin=bin,
             base_url=request.scheme+'://'+request.host)
-    # if request.url == request.base_url:
-    #     return redirect(request.base_url + '?inspect')
     else:
         db.create_request(bin, request)
-        if request.headers['Content-Type'] in ['application/json']:
-            resp = make_response("ok\n")
-            resp.headers['Sponsored-By'] = "https://www.payfort.com"
-            return resp
-        elif 'application/json' in request.headers['Content-Type']:
-            resp = make_response("ok\n")
-            resp.headers['Sponsored-By'] = "https://www.payfort.com"
-            return resp
-        elif 'application/x-www-form' in request.headers['Content-Type']:
-            return redirect(request.base_url + '?inspect')
-        elif 'form' in request.headers['Content-Type']:
-            resp = make_response("ok\n")
-            resp.headers['Sponsored-By'] = "https://www.payfort.com"
-            return resp
-        else:
-            return redirect(request.base_url + '?inspect')
-            # return render_template('bin.html',
-            #                        bin=bin,
-            #                        base_url=request.scheme + '://' + request.host)
-        # if request.headers['Content-Type'] == 'application/json':
-        #     return resp
-        # else:
+        resp = make_response("ok\n")
+        resp.headers['Sponsored-By'] = "https://www.runscope.com"
+        return resp
 
 
 @app.endpoint('views.docs')
