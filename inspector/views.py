@@ -49,32 +49,52 @@ def bin(name):
         return render_template('bin.html',
             bin=bin,
             base_url=request.scheme+'://'+request.host)
-    # if request.url == request.base_url:
-    #     return redirect(request.base_url + '?inspect')
     else:
         db.create_request(bin, request)
-        if request.headers['Content-Type'] in ['application/json']:
-            resp = make_response("ok\n")
-            resp.headers['Sponsored-By'] = "https://www.payfort.com"
-            return resp
-        elif 'application/json' in request.headers['Content-Type']:
-            resp = make_response("ok\n")
-            resp.headers['Sponsored-By'] = "https://www.payfort.com"
-            return resp
-        elif 'application/x-www-form' in request.headers['Content-Type']:
-            return redirect(request.base_url + '?inspect')
-        elif 'form' in request.headers['Content-Type']:
-            resp = make_response("ok\n")
-            resp.headers['Sponsored-By'] = "https://www.payfort.com"
-            return resp
-        else:
-            return redirect(request.base_url + '?inspect')
-            # return render_template('bin.html',
-            #                        bin=bin,
-            #                        base_url=request.scheme + '://' + request.host)
-        # if request.headers['Content-Type'] == 'application/json':
-        #     return resp
-        # else:
+        resp = make_response("ok\n")
+        resp.headers['Sponsored-By'] = "https://www.runscope.com"
+        return resp
+
+
+# @app.endpoint('views.bin')
+# def bin(name):
+#     try:
+#         bin = db.lookup_bin(name)
+#     except KeyError:
+#         return "Not found\n", 404
+#     if request.query_string == 'inspect':
+#         if bin.private and session.get(bin.name) != bin.secret_key:
+#             return "Private bin\n", 403
+#         update_recent_bins(name)
+#         return render_template('bin.html',
+#             bin=bin,
+#             base_url=request.scheme+'://'+request.host)
+#     if request.url == request.base_url:
+#         return redirect(request.base_url + '?inspect')
+#     else:
+#         db.create_request(bin, request)
+#         if request.headers['Content-Type'] in ['application/json']:
+#             resp = make_response("ok\n")
+#             resp.headers['Sponsored-By'] = "https://www.payfort.com"
+#             return resp
+#         elif 'application/json' in request.headers['Content-Type']:
+#             resp = make_response("ok\n")
+#             resp.headers['Sponsored-By'] = "https://www.payfort.com"
+#             return resp
+#         elif 'application/x-www-form' in request.headers['Content-Type']:
+#             return redirect(request.base_url + '?inspect')
+#         elif 'form' in request.headers['Content-Type']:
+#             resp = make_response("ok\n")
+#             resp.headers['Sponsored-By'] = "https://www.payfort.com"
+#             return resp
+#         else:
+#             return redirect(request.base_url + '?inspect')
+#             # return render_template('bin.html',
+#             #                        bin=bin,
+#             #                        base_url=request.scheme + '://' + request.host)
+#         # if request.headers['Content-Type'] == 'application/json':
+#         #     return resp
+#         # else:
 
 
 @app.endpoint('views.docs')
