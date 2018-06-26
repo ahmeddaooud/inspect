@@ -16,7 +16,7 @@ class Bin(object):
     max_requests = config.MAX_REQUESTS
 
     def __init__(self, private=False):
-            self.name = merchant()
+            self.name = tinyid()
             self.created = time.time()
             self.private = private
             self.color = random_color()
