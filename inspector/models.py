@@ -6,25 +6,25 @@ import os
 import msgpack
 import re
 
+from flask import request, session
 from .util import random_color
 from .util import tinyid
 from .util import solid16x16gif_datauri
-from flask import session, request
 from inspector import config
+
+
+def merchant():
+    name = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
+    if name in session['recent']:
+        return tinyid(6)
+    if name == '':
+        name = tinyid(6)
+    return name
+
 
 class Bin(object):
     max_requests = config.MAX_REQUESTS
 
-    def merchant(self):
-
-        # get merchant name that user has entered
-            name = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
-            if name in session['recent']:
-                errors = "$error"
-                return tinyid(6)
-            if name == '':
-              name = tinyid(6)
-            return name
 
     def __init__(self, private=False):
             self.name = merchant()
@@ -41,7 +41,7 @@ class Bin(object):
     def to_dict(self):
         return dict(
             private=self.private, 
-            color=self.color, 
+            color=self.color,
             name=self.name,
             request_count=self.request_count)
 
