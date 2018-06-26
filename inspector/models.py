@@ -4,19 +4,31 @@ import time
 import datetime
 import os
 import msgpack
+import re
 
 from .util import random_color
 from .util import merchant
 from .util import tinyid
 from .util import solid16x16gif_datauri
-from flask import render_template
+from flask import session, request
 from inspector import config
 
 class Bin(object):
     max_requests = config.MAX_REQUESTS
 
+    def merchant(self):
+
+        # get merchant name that user has entered
+            name = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
+            if name in session['recent']:
+                errors = "$error"
+                return tinyid(6)
+            if name == '':
+              name = tinyid(6)
+            return name
+
     def __init__(self, private=False):
-            self.name = tinyid()
+            self.name = merchant()
             self.created = time.time()
             self.private = private
             self.color = random_color()
