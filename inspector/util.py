@@ -1,9 +1,8 @@
 import time
 import random
-from flask import request, render_template, session, redirect
+from flask import request, session
 
 
-from inspector import app
 
 def random_byte(gradient=None, floor=0):
     factor = gradient or 1
