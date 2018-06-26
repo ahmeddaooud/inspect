@@ -29,19 +29,15 @@ def tinyid(size=6):
     return id[0:size]
 
 
-@app.route('/', methods=['POST'])
 def merchant():
-    if request.method == "POST":
+
         # get merchant name that user has entered
-        try:
             name = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
             if name in session['recent']:
                 errors = "$error"
                 return errors
             if name == '':
                 name = tinyid(6)
-        except:
-            errors = "$error"
-            return errors
-    return name
+
+            return name
 
