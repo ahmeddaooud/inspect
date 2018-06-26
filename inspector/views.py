@@ -60,7 +60,7 @@ def bin(name):
         resp.headers['Sponsored-By'] = "https://www.payfort.com"
         return resp
     else:
-        return redirect(request.base_url + '?inspect')
+        return redirect(request.url + '?inspect')
 
 
 
