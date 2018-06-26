@@ -34,7 +34,7 @@ if REALM == 'prod':
 
     FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", FLASK_SESSION_SECRET_KEY)
 
-    STORAGE_BACKEND = "requestbin.storage.redis.RedisStorage"
+    STORAGE_BACKEND = "inspector.storage.redis.RedisStorage"
 
     REDIS_URL = os.environ.get("REDIS_URL")
     url_parts = urlparse.urlparse(REDIS_URL)
