@@ -8,7 +8,7 @@
     "env": {
     "REALM": {
       "description": "The number of processes to run.",
-      "value": "prod"
+      "value": "local"
     }
   },
   "addons": [
