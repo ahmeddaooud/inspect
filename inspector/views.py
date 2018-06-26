@@ -1,4 +1,3 @@
-import re
 import urllib
 from flask import session, redirect, url_for, escape, request, render_template, make_response
 
@@ -39,91 +38,52 @@ def home():
 
 @app.endpoint('views.bin')
 def bin(name):
-    merchantid = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
-    if merchantid == '':
-            try:
-                bin = db.lookup_bin(name)
-            except KeyError:
-                return "Not found from Merchant 1\n", 404
-            if request.query_string == 'inspect':
-                if bin.private and session.get(bin.name) != bin.secret_key:
-                    return "Private bin\n", 403
-                update_recent_bins(name)
-                return render_template('bin.html',
-                    bin=bin,
-                    base_url=request.scheme+'://'+request.host)
-            # if request.url == request.base_url:
-            #     return redirect(request.base_url + '?inspect')
-            else:
-                db.create_request(bin, request)
-                if request.headers['Content-Type'] in ['application/json']:
-                    resp = make_response("ok\n")
-                    resp.headers['Sponsored-By'] = "https://www.payfort.com"
-                    return resp
-                elif 'application/json' in request.headers['Content-Type']:
-                    resp = make_response("ok\n")
-                    resp.headers['Sponsored-By'] = "https://www.payfort.com"
-                    return resp
-                elif 'application/x-www-form' in request.headers['Content-Type']:
-                    return redirect(request.base_url + '?inspect')
-                elif 'form' in request.headers['Content-Type']:
-                    resp = make_response("ok\n")
-                    resp.headers['Sponsored-By'] = "https://www.payfort.com"
-                    return resp
-                else:
-                    return redirect(request.base_url + '?inspect')
-    #             from her to check Ahmed
+    try:
+        bin = db.lookup_bin(name)
+    except KeyError:
+        return "Not found\n", 404
+    if request.query_string == 'inspect':
+        if bin.private and session.get(bin.name) != bin.secret_key:
+            return "Private bin\n", 403
+        update_recent_bins(name)
+        return render_template('bin.html',
+            bin=bin,
+            base_url=request.scheme+'://'+request.host)
+    # if request.url == request.base_url:
+    #     return redirect(request.base_url + '?inspect')
     else:
-        try:
-            bin = db.lookup_bin(merchantid)
-        except KeyError:
-            return "Not found from Merchant 2\n", 404
-        if request.query_string == 'inspect':
-            if bin.private and session.get(bin.name) != bin.secret_key:
-                return "Private bin\n", 403
-            update_recent_bins(merchantid)
-            return render_template('bin.html',
-                                   bin=merchantid,
-                                   base_url=request.scheme + '://' + request.host)
-        # if request.url == request.base_url:
-        #     return redirect(request.base_url + '?inspect')
+        db.create_request(bin, request)
+        if request.headers['Content-Type'] in ['application/json']:
+            resp = make_response("ok\n")
+            resp.headers['Sponsored-By'] = "https://www.payfort.com"
+            return resp
+        elif 'application/json' in request.headers['Content-Type']:
+            resp = make_response("ok\n")
+            resp.headers['Sponsored-By'] = "https://www.payfort.com"
+            return resp
+        elif 'application/x-www-form' in request.headers['Content-Type']:
+            return redirect(request.base_url + '?inspect')
+        elif 'form' in request.headers['Content-Type']:
+            resp = make_response("ok\n")
+            resp.headers['Sponsored-By'] = "https://www.payfort.com"
+            return resp
         else:
-            db.create_request(bin, request)
-            if request.headers['Content-Type'] in ['application/json']:
-                resp = make_response("ok\n")
-                resp.headers['Sponsored-By'] = "https://www.payfort.com"
-                return resp
-            elif 'application/json' in request.headers['Content-Type']:
-                resp = make_response("ok\n")
-                resp.headers['Sponsored-By'] = "https://www.payfort.com"
-                return resp
-            elif 'application/x-www-form' in request.headers['Content-Type']:
-                return redirect(request.base_url + '?inspect')
-            elif 'form' in request.headers['Content-Type']:
-                resp = make_response("ok\n")
-                resp.headers['Sponsored-By'] = "https://www.payfort.com"
-                return resp
-            else:
-                return redirect(request.base_url + '?inspect')
-
+            return redirect(request.base_url + '?inspect')
+            # return render_template('bin.html',
+            #                        bin=bin,
+            #                        base_url=request.scheme + '://' + request.host)
+        # if request.headers['Content-Type'] == 'application/json':
+        #     return resp
+        # else:
 
 
 @app.endpoint('views.docs')
 def docs(name):
-    try:
-        doc = db.lookup_doc(name)
-        if doc:
-            return render_template('doc.html',
-                    content=doc['content'],
-                    title=doc['title'],
-                    recent=expand_recent_bins())
-    except:
-        name = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
-        doc = db.lookup_doc(name)
-        if doc:
-            return render_template('doc.html',
-                                   content=doc['content'],
-                                   title=doc['title'],
-                                   recent=expand_recent_bins())
+    doc = db.lookup_doc(name)
+    if doc:
+        return render_template('doc.html',
+                content=doc['content'],
+                title=doc['title'],
+                recent=expand_recent_bins())
     else:
-        return "Ops, Not found", 404
+        return "Not found", 404
