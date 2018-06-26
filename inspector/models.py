@@ -33,7 +33,7 @@ class Bin(object):
         self.created = time.time()
         self.private = private
         self.color = random_color()
-        self.name = merchantid(15)
+        self.name = tinyid(8)
         self.favicon_uri = solid16x16gif_datauri(*self.color)
         self.requests = []
         self.secret_key = os.urandom(24) if self.private else None
