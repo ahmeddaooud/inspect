@@ -110,7 +110,7 @@
       </div>
       <div class="span8">
         {% if request.headers %}
-          <h5>HEADERS</h5>
+          <h5>SUBSTANTIAL HEADERS</h5>
             {% for header in request.headers.items() %}
               <p class="keypair"><strong>{{header.0}}:</strong> {{header.1|escape}}</p>
             {% endfor %}
