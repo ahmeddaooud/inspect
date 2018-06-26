@@ -1,5 +1,5 @@
 import os, urlparse
-DEBUG = True
+DEBUG = False
 REALM = os.environ.get('REALM', 'local')
 
 ROOT_URL = "http://localhost:4000"
@@ -14,9 +14,9 @@ FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", "N1BKhJLnBqLpexO
 BIN_TTL = 48*3600
 STORAGE_BACKEND = "inspector.storage.memory.MemoryStorage"
 MAX_RAW_SIZE = int(os.environ.get('MAX_RAW_SIZE', 1024*10))
-IGNORE_HEADERS = ["X-Forwarded-For", "Content-Length", "Accept-Encoding", "Connection", "Accept", "Cache-Control", "Postman-Token", "User-Agent", "Accept-Language", "Upgrade-Insecure-Requests", "Cookie", "Host", "Origin"]
+IGNORE_HEADERS = ["X-Via", "X-Varnish", "X-Heroku-Dynos-In-Use", "X-Heroku-Queue-Depth", "X-Request-Start", "X-Forwarded-Port", "X-Request-Id", "X-Forwarded-Proto", "X-Forwarded-For", "Content-Length", "Accept-Encoding", "Connection", "Accept", "Cache-Control", "Postman-Token", "User-Agent", "Accept-Language", "Upgrade-Insecure-Requests", "Cookie", "Host", "Origin"]
 MAX_REQUESTS = 50
-CLEANUP_INTERVAL = 3600
+CLEANUP_INTERVAL = 8*3600
 
 REDIS_URL = ""
 REDIS_HOST = "localhost"
