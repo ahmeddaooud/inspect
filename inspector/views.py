@@ -69,7 +69,10 @@ def bin(name):
             resp.headers['Sponsored-By'] = "https://www.payfort.com"
             return resp
         else:
-            return redirect(request.url + '?inspect')
+#             return redirect(request.url + '?inspect')
+            resp = make_response("ok\n")
+            resp.headers['Sponsored-By'] = "https://www.payfort.com"
+            return resp
             # return render_template('bin.html',
             #                        bin=bin,
             #                        base_url=request.scheme + '://' + request.host)
