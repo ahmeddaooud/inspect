@@ -47,10 +47,11 @@ def bin(name):
         if bin.private and session.get(bin.name) != bin.secret_key:
             return "Private bin\n", 403
         update_recent_bins(name)
-        return redirect(request.base_url + '?inspect')
-        # return render_template('bin.html',
-        #     bin=bin,
-        #     base_url=request.scheme+'://'+request.host)
+        return render_template('bin.html',
+            bin=bin,
+            base_url=request.scheme+'://'+request.host+"?inspect")
+    # if request.url == request.base_url:
+    #     return redirect(request.base_url + '?inspect')
     else:
         db.create_request(bin, request)
         if request.headers['Content-Type'] in ['application/json']:
@@ -71,7 +72,6 @@ def bin(name):
             resp = make_response("ok\n")
             resp.headers['Sponsored-By'] = "https://www.payfort.com"
             return resp
-
 
 
 
