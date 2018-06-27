@@ -6,7 +6,7 @@ import os
 import msgpack
 import re
 
-from flask import request
+from flask import request, session
 from .util import random_color
 from .util import tinyid
 from .util import solid16x16gif_datauri
