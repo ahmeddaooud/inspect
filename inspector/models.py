@@ -13,20 +13,39 @@ from .util import solid16x16gif_datauri
 from inspector import config
 
 
-def merchantid(size=20):
-    merchant_name= re.sub('[^A-Za-z0-9]+', '', request.form['name'])
-    if merchant_name in session['recent']:
-        errors = "$error"
-        return render_template('home.html', errors=errors, recent=expand_recent_bins())
-    elif merchant_name == '':
-        return tinyid(6)
-    elif merchant_name != '':
-         id = merchant_name
-         return id[0:size]
+# def merchantid(self, size=20):
+#     merchant_name= re.sub('[^A-Za-z0-9]+', '', request.form['name'])
+#     if merchant_name in session['recent']:
+#         errors = "$error"
+#         return render_template('home.html', errors=errors, recent=expand_recent_bins())
+#     elif merchant_name == '':
+#         name = tinyid(6)
+#         self.name = name
+#         return name
+#     elif merchant_name != '':
+#          name = merchant_name[0:size]
+#          self.name = name
+#          return name
+
                 
     
 
 class Bin(object):
+
+    def merchantid(self, size=20):
+        merchant_name = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
+        if merchant_name in session['recent']:
+            errors = "$error"
+            return render_template('home.html', errors=errors, recent=expand_recent_bins())
+        elif merchant_name == '':
+            name = tinyid(6)
+            self.name = name
+            return name
+        elif merchant_name != '':
+            name = merchant_name[0:size]
+            self.name = name
+            return name
+        
     max_requests = config.MAX_REQUESTS
 
     def __init__(self, private=False):
@@ -45,7 +64,7 @@ class Bin(object):
         return dict(
             private=self.private, 
             color=self.color, 
-            name=merchantid(),
+            name=self.name,
             request_count=self.request_count)
 
     def dump(self):
