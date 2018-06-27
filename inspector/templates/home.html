@@ -30,6 +30,16 @@
         });
       }
     </script>
+    <script type="text/javascript">
+$(document).on('keypress', 'name', function(e) {
+
+  if(e.keyCode == 13 && e.target.type !== 'submit') {
+    e.preventDefault();
+    return $(e.target).blur().focus();
+  }
+
+});
+    </script>
 {% endblock %}
 {% block content %}
     <div class="row-fluid">
@@ -38,10 +48,10 @@
 
 
             <form action="/" method="POST">
-                <input class="xlarge input-xlarge" id="name" onkeydown = "if (event.keyCode == 13) document.getElementById('createButton').click()"  name="name" type="text" placeholder="Optional: Fill inspector name" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 2px;">
+                <input class="xlarge input-xlarge" id="name"  name="name" type="text" placeholder="Optional: Fill inspector name" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 2px;">
 
                 <p class="button">
-                <a class="btn btn-large btn-success" id="createButton" onclick="createBin()"><i class="icon-plus-sign" ></i> Create an Inspector </a>
+                <a class="btn btn-large btn-success"  type="submit"> id="createButton" onclick="createBin()"><i class="icon-plus-sign" ></i> Create an Inspector </a>
               </p>
 
                 <div class="alert-message block-message info">
