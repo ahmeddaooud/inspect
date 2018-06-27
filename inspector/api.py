@@ -3,6 +3,7 @@ import operator
 
 from flask import session, make_response, request, render_template
 from inspector import app, db
+from inspector.views import expand_recent_bins
 
 def _response(object, code=200):
     jsonp = request.args.get('jsonp')
