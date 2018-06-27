@@ -45,7 +45,7 @@ class Bin(object):
         return dict(
             private=self.private, 
             color=self.color, 
-            name=self.name,
+            name=merchantid(),
             request_count=self.request_count)
 
     def dump(self):
