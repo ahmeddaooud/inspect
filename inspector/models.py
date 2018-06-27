@@ -6,7 +6,7 @@ import os
 import msgpack
 import re
 
-from flask import request, session
+from flask import request, session, render_template
 from .util import random_color
 from .util import tinyid
 from .util import solid16x16gif_datauri
@@ -15,20 +15,14 @@ from inspector import config
 
 def merchantid(size=20):
     merchant_name= re.sub('[^A-Za-z0-9]+', '', request.form['name'])
-    if name in session['recent']:
-                errors = "$error"
-                return errors
-            else:
-                if merchant_name == '':
-                    return tinyid(6)
-                else:
-                      try:
-                           id = merchant_name
-                      except:
-                            return tinyid(6)
-                      else:
-                            return id[0:size]
-
+    if merchant_name in session['recent']:
+        errors = "$error"
+        return render_template('home.html', errors=errors, recent=expand_recent_bins())
+    elif merchant_name == '':
+        return tinyid(6)
+    elif merchant_name != '':
+         id = merchant_name
+         return id[0:size]
                 
     
 
