@@ -38,7 +38,7 @@ class Bin(object):
             errors = "$error"
             return render_template('home.html', errors=errors, recent=expand_recent_bins())
         elif merchant_name == '':
-            name = tinyid(6)
+            name = tinyid(8)
             self.name = name
             return name
         elif merchant_name != '':
