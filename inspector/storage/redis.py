@@ -16,22 +16,22 @@ class RedisStorage():
         self.bin_ttl = bin_ttl
         self.redis = redis.StrictRedis(host=config.REDIS_HOST, port=config.REDIS_PORT, db=config.REDIS_DB, password=config.REDIS_PASSWORD)
 
-    def _key(self, name):
-        return '{}_{}'.format(self.prefix, name)
+    def _key(self, color):
+        return '{}_{}'.format(self.prefix, color)
 
     def _request_count_key(self):
         return '{}-requests'.format(self.prefix)
 
     def create_bin(self, private=False):
         bin = Bin(private)
-        key = self._key(bin.name)
+        key = self._key(bin.color)
         self.redis.set(key, bin.dump())
         self.redis.expireat(key, int(bin.created+self.bin_ttl))
         return bin
 
     def create_request(self, bin, request):
         bin.add(request)
-        key = self._key(bin.name)
+        key = self._key(bin.color)
         self.redis.set(key, bin.dump())
         self.redis.expireat(key, int(bin.created+self.bin_ttl))
 
@@ -49,8 +49,8 @@ class RedisStorage():
         info = self.redis.info()
         return info['used_memory'] / info['db0']['keys'] / 1024
 
-    def lookup_bin(self, name):
-        key = self._key(name)
+    def lookup_bin(self, color):
+        key = self._key(color)
         serialized_bin = self.redis.get(key)
         try:
             bin = Bin.load(serialized_bin)
