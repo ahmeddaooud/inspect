@@ -47,14 +47,10 @@ def bin(name):
         if bin.private and session.get(bin.name) != bin.secret_key:
             return "Private bin\n", 403
         update_recent_bins(name)
-        return render_template('bin.html',
-            bin=bin,
-            base_url=request.scheme+'://'+request.host)
-    
-    elif request.type == "GET":
-        return render_template('bin.html',
-                               bin=bin,
-                               base_url=request.scheme + '://' + request.host)
+        return redirect(request.base_url + '?inspect')
+        # return render_template('bin.html',
+        #     bin=bin,
+        #     base_url=request.scheme+'://'+request.host)
     else:
         db.create_request(bin, request)
         if request.headers['Content-Type'] in ['application/json']:
@@ -66,9 +62,7 @@ def bin(name):
             resp.headers['Sponsored-By'] = "https://www.payfort.com"
             return resp
         elif 'application/x-www-form' in request.headers['Content-Type']:
-            return render_template('bin.html',
-                                   bin=bin,
-                                   base_url=request.scheme + '://' + request.host)
+            return redirect(request.base_url + '?inspect')
         elif 'form' in request.headers['Content-Type']:
             resp = make_response("ok\n")
             resp.headers['Sponsored-By'] = "https://www.payfort.com"
