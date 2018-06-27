@@ -32,7 +32,7 @@ from inspector import config
 
 class Bin(object):
 
-    def merchantid(self, size=20):
+    def merchantid(self):
         merchant_name = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
         if merchant_name in session['recent']:
             errors = "$error"
