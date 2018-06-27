@@ -13,7 +13,7 @@ FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", "N1BKhJLnBqLpexO
 
 BIN_TTL = 48*3600
 STORAGE_BACKEND = "inspector.storage.memory.MemoryStorage"
-MAX_RAW_SIZE = int(os.environ.get('MAX_RAW_SIZE', 1024*10))
+MAX_RAW_SIZE = int(os.environ.get('MAX_RAW_SIZE', 1024*200))
 IGNORE_HEADERS = ["X-Via", "X-Varnish", "X-Heroku-Dynos-In-Use", "X-Heroku-Queue-Depth", "X-Request-Start", "X-Forwarded-Port", "X-Request-Id", "X-Forwarded-Proto", "X-Forwarded-For", "Content-Length", "Accept-Encoding", "Connection", "Accept", "Cache-Control", "Postman-Token", "User-Agent", "Accept-Language", "Upgrade-Insecure-Requests", "Cookie", "Host", "Origin"]
 MAX_REQUESTS = 50
 CLEANUP_INTERVAL = 8*3600
