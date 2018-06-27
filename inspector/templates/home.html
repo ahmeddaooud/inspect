@@ -30,16 +30,6 @@
         });
       }
     </script>
-    <script type="text/javascript">
-$(document).on('keypress', 'name', function(e) {
-
-  if(e.keyCode == 13 && e.target.type !== 'submit') {
-    e.preventDefault();
-    return $(e.target).blur().focus();
-  }
-
-});
-    </script>
 {% endblock %}
 {% block content %}
     <div class="row-fluid">
@@ -48,10 +38,10 @@ $(document).on('keypress', 'name', function(e) {
 
 
             <form action="/" method="POST">
-                <input class="xlarge input-xlarge" id="name"  name="name" type="text" placeholder="Optional: Fill inspector name" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 2px;">
+                <input class="xlarge input-xlarge" id="name" onkeydown = "if (event.keyCode == 13) document.getElementById('createButton').click()"  name="name" type="text" placeholder="Optional: Fill inspector name" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 2px;">
 
                 <p class="button">
-                <a class="btn btn-large btn-success"  type="submit" id="createButton" onclick="createBin()"><i class="icon-plus-sign" ></i> Create an Inspector </a>
+                <a class="btn btn-large btn-success" id="createButton" onclick="createBin()"><i class="icon-plus-sign" ></i> Create an Inspector </a>
               </p>
 
                 <div class="alert-message block-message info">
@@ -77,6 +67,28 @@ $(document).on('keypress', 'name', function(e) {
             <h3 class="banner-subheader">
               PAYFORT Inspector gives you a URL that allows you to easily test webhooks and other types of HTTP requests.<br>
               Use PAYFORT Inspector to see what your HTTP client is sending or to inspect and debug notifications.</h3>
+
+
+                       </form>
+
+            <form class="form-inline">
+
+              <h2 class="banner-subheader">
+              <STRONG>Notes: </STRONG><br>
+            <li>
+             <i> You can leave the Inspector name empty to be auto generate. </i>
+                </li><li>
+              <i>
+              Inspector name will be shorten to have 20 alphanumeric characters at maximum. </i>
+                  </li><li>
+              <i>
+              Inspector name can not be duplicated.</i>
+                  </li><li>
+             <i>
+              Inspector is under development, so don't be shy to report an issue.</i>
+            </li>
+              </h2>
+            </form>
         </div>
     </div>
 {% endblock %}
