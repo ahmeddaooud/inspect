@@ -38,21 +38,32 @@ class Bin(object):
             errors = "$error"
             return render_template('home.html', errors=errors, recent=expand_recent_bins())
         elif merchant_name == '':
-            name = tinyid(8)
+            name = tinyid(6)
             self.name = name
             return name
         elif merchant_name != '':
             name = merchant_name[0:size]
             self.name = name
             return name
-        
+
     max_requests = config.MAX_REQUESTS
 
     def __init__(self, private=False):
+        merchant_name = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
+        if merchant_name in session['recent']:
+            errors = "$error"
+            return render_template('home.html', errors=errors, recent=expand_recent_bins())
+        elif merchant_name == '':
+            name = tinyid(6)
+            self.name = name
+        elif merchant_name != '':
+            name = merchant_name[0:20]
+            self.name = name
+
+
         self.created = time.time()
         self.private = private
         self.color = random_color()
-        self.name = merchantid()
         self.favicon_uri = solid16x16gif_datauri(*self.color)
         self.requests = []
         self.secret_key = os.urandom(24) if self.private else None
