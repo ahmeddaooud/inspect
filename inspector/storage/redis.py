@@ -31,7 +31,7 @@ class RedisStorage():
 
     def delete_bin(self, name):
            key = self._key(name)
-           return self.redis.delete(key)
+           self.redis.delete(key)
 
     def create_request(self, bin, request):
         bin.add(request)
