@@ -25,7 +25,7 @@ def create_request(bin, request):
     return db.create_request(bin, request)
 
 def lookup_bin(name):
-    name=re.split(r"[/.]", name)[0]
+    # name=re.split(r"[/.]", name)[0]
     return db.lookup_bin(name)
 
 def count_bins():
