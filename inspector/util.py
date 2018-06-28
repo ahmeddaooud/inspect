@@ -28,7 +28,8 @@ def tinyid(size=6):
         id = '%s%s' % (
             baseN(abs(hash(time.time())), 36),
             baseN(abs(hash(time.time())), 36))
-        return id[0:8]
+        return id[0:6]
     else:
-        id = merchantid
-        return id[0:20]
+        id = base64.b64encode(merchantid)
+        # print(int("merchantid"))
+        return id[0:6]
