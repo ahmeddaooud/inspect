@@ -17,7 +17,7 @@ class RedisStorage():
         self.redis = redis.StrictRedis(host=config.REDIS_HOST, port=config.REDIS_PORT, db=config.REDIS_DB, password=config.REDIS_PASSWORD)
 
     def _key(self, name):
-        return '{}_{}'.format(self.prefix, name)
+        return '{}{}'.format(self.prefix, name)
 
     def _request_count_key(self):
         return '{}-requests'.format(self.prefix)
@@ -43,7 +43,7 @@ class RedisStorage():
         self.redis.incr(self._request_count_key())
 
     def count_bins(self):
-        keys = self.redis.keys("{}_*".format(self.prefix))
+        keys = self.redis.keys("{}*".format(self.prefix))
         return len(keys)
 
     def count_requests(self):
