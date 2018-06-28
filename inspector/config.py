@@ -16,7 +16,7 @@ STORAGE_BACKEND = "inspector.storage.memory.MemoryStorage"
 MAX_RAW_SIZE = int(os.environ.get('MAX_RAW_SIZE', 1024*10))
 IGNORE_HEADERS = ["X-Via", "Via", "X-Varnish", "X-Heroku-Dynos-In-Use", "X-Heroku-Queue-Depth", "X-Request-Start", "X-Forwarded-Port", "X-Request-Id", "X-Forwarded-Proto", "X-Forwarded-For", "Content-Length", "Accept-Encoding", "Connection", "Accept", "Cache-Control", "Postman-Token", "User-Agent", "Accept-Language", "Upgrade-Insecure-Requests", "Cookie", "Host", "Origin"]
 MAX_REQUESTS = 50
-CLEANUP_INTERVAL = 8*3600
+CLEANUP_INTERVAL = 3*3600
 
 REDIS_URL = ""
 REDIS_HOST = "localhost"
@@ -24,7 +24,7 @@ REDIS_PORT = 6379
 REDIS_PASSWORD = None
 REDIS_DB = 9
 
-REDIS_PREFIX = "inspector"
+REDIS_PREFIX = ""
 
 BUGSNAG_KEY = ""
 
