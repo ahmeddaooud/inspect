@@ -1,6 +1,12 @@
+import re
 import time
 import random
 import base64
+
+from flask import session, request, render_template
+
+from inspector.views import expand_recent_bins
+
 
 def random_byte(gradient=None, floor=0):
     factor = gradient or 1
@@ -18,7 +24,17 @@ def baseN(num,b,numerals="0123456789abcdefghijklmnopqrstuvwxyz"):
     return ((num == 0) and  "0" ) or (baseN(num // b, b).lstrip("0") + numerals[num % b])
 
 def tinyid(size=6):
-    id = '%s%s' % (
-        baseN(abs(hash(time.time())), 36), 
-        baseN(abs(hash(time.time())), 36))
-    return id[0:size]
+        merchantid = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
+        if merchantid in session['recent']:
+             errors = "$error"
+             render_template('home.html', errors=errors, recent=expand_recent_bins())
+             return
+        elif merchantid == '':
+            id = '%s%s' % (
+            baseN(abs(hash(time.time())), 36),
+            baseN(abs(hash(time.time())), 36))
+            return id [0:8]
+        else:
+             id = merchantid
+             return id [0:20]
+

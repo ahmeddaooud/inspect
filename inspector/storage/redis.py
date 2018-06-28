@@ -29,6 +29,10 @@ class RedisStorage():
         self.redis.expireat(key, int(bin.created+self.bin_ttl))
         return bin
 
+    def delete_bin(self, name):
+           key = self._key(name)
+           return self.redis.delete(key)
+
     def create_request(self, bin, request):
         bin.add(request)
         key = self._key(bin.name)

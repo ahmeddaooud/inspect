@@ -32,6 +32,9 @@ class MemoryStorage():
         self.bins[bin.name] = bin
         return self.bins[bin.name]
 
+    def delete_bin(self, name):
+           self.bins.pop(name)
+
     def create_request(self, bin, request):
         bin.add(request)
         self.request_count += 1

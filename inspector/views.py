@@ -1,7 +1,7 @@
 import urllib
-from flask import session, redirect, url_for, escape, request, render_template, make_response
+from flask import session, redirect, request, render_template, make_response
 
-from inspector import app, db, util
+from inspector import app, db
 
 
 def update_recent_bins(name):
@@ -11,12 +11,10 @@ def update_recent_bins(name):
         session['recent'].remove(name)
     session['recent'].insert(0, name)
     if len(session['recent']) > 10:
-        session['recent'] = session['recent'][:10]
+        session['recent'] = session['recent'][:20]
     session.modified = True
 
-# def remove_from_recent(name):
-#     if name in session['recent']:
-#         session['recent'].remove(name)
+
 
 def expand_recent_bins():
     if 'recent' not in session:

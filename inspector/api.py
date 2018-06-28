@@ -36,9 +36,13 @@ def deletebin():
         session['recent'] = []
     if name in session['recent']:
         session['recent'].remove(name)
+    db.delete_bin(name)
     session.modified = True
     return render_template('home.html', recent=expand_recent_bins())
 
+# @app.endpoint('api.deletebin')
+# def deletebin():
+#     db.delete_bin(bin.name)
 
 @app.endpoint('api.bin')
 def bin(name):
