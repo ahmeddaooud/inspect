@@ -4,29 +4,25 @@ import time
 import datetime
 import os
 import msgpack
+import re
 
-
+from flask import request, session, render_template
 from .util import random_color
 from .util import tinyid
 from .util import solid16x16gif_datauri
 from inspector import config
 
 
-# def merchantid():
-#     merchantid = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
-#     if merchantid in session['recent']:
-#          errors = "$error"
-#          render_template('home.html', errors=errors, recent=expand_recent_bins())
-#          return
-#     elif merchantid == '':
-#          id = tinyid(6)
-#          return id
-#     else:
-#          id = merchantid[0:20]
-#          return id
-
-                
-    
+def merchantid(size=20):
+    merchant_name= re.sub('[^A-Za-z0-9]+', '', request.form['name'])
+    if merchant_name in session['recent']:
+        errors = "$error"
+        return render_template('home.html', errors=errors, recent=expand_recent_bins())
+    elif merchant_name == '':
+        return tinyid(6)
+    elif merchant_name != '':
+         id = merchant_name
+         return id[0:size]
 
 class Bin(object):
     max_requests = config.MAX_REQUESTS
@@ -35,7 +31,7 @@ class Bin(object):
         self.created = time.time()
         self.private = private
         self.color = random_color()
-        self.name = tinyid(20)
+        self.name = merchantid()
         self.favicon_uri = solid16x16gif_datauri(*self.color)
         self.requests = []
         self.secret_key = os.urandom(24) if self.private else None
