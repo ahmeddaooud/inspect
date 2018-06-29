@@ -67,16 +67,13 @@ def bin(name):
             resp.headers['Sponsored-By'] = "https://www.payfort.com"
             return resp
         else:
-#             return redirect(request.url + '?inspect')
+            print("request.url:  "+request.url)
+            print("request.base_url:  " + request.base_url)
+            if request.url == request.base_url:
+                 return redirect(request.base_url + '?inspect')
             resp = make_response("ok\n")
             resp.headers['Sponsored-By'] = "https://www.payfort.com"
             return resp
-            # return render_template('bin.html',
-            #                        bin=bin,
-            #                        base_url=request.scheme + '://' + request.host)
-        # if request.headers['Content-Type'] == 'application/json':
-        #     return resp
-        # else:
 
 
 
