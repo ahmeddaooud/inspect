@@ -14,8 +14,7 @@ class MemoryStorage():
         self.request_count = 0
 
     def do_start(self):
-        self.spawn()
-        # self.spawn(self._cleanup_loop)
+        self.spawn(self._cleanup_loop)
 
     def _cleanup_loop(self):
         while True:
