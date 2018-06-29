@@ -67,10 +67,8 @@ def bin(name):
             resp.headers['Sponsored-By'] = "https://www.payfort.com"
             return resp
         else:
-            print("request.url:  "+request.url)
-            print("request.base_url:  " + request.base_url)
-            if "?inspect" not in request.url:
-                 return redirect(request.base_url + '?inspect')
+            if "?inspect" not in request.full_path:
+                 return redirect(request.url + '?inspect')
             resp = make_response("ok\n")
             resp.headers['Sponsored-By'] = "https://www.payfort.com"
             return resp
