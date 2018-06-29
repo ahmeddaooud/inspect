@@ -68,7 +68,9 @@ def bin(name):
             return resp
         else:
             if "?inspect" not in request.full_path:
-                 return redirect(request.url + '?inspect')
+                return render_template('bin.html',
+                                       bin=bin,
+                                       base_url=request.scheme + '://' + request.host + "?inspect")
             resp = make_response("ok\n")
             resp.headers['Sponsored-By'] = "https://www.payfort.com"
             return resp
