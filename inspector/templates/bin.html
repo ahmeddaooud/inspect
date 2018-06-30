@@ -16,7 +16,7 @@
   <!--<a href="/{{bin.name}}?inspect"><i class="icon-repeat icon-2x" style="color: rgb{{bin.color}}"></i></a>-->
   <input type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()" />
   {% if bin.private %}<i class="icon-lock"></i>{% endif %}
-  <a class="btn btn-danger" href="/" onclick="if (confirm('Are you sure you want to delete this inspector?')){deleteBin()}else{event.stopPropagation(); event.preventDefault();};" title="Destroy this inspector"><i class="icon-trash"></i> </a>
+  <a class="btn btn-danger" href="/" onclick="if (confirm('Are you sure you want to destroy this inspector?')){deleteBin()}else{event.stopPropagation(); event.preventDefault();};" title="Destroy this inspector"><i class="icon-trash"></i> </a>
 {% endblock %}
 
 {% block head %}
