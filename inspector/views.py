@@ -41,6 +41,12 @@ def bin(name):
         bin = db.lookup_bin(name)
     except KeyError:
         return "Not found\n", 404
+    if request.method == "GET":
+        if 'application/xhtml' in request.headers['Accept']:
+            update_recent_bins(name)
+            return render_template('bin.html',
+                                   bin=bin,
+                                   base_url=request.scheme + '://' + request.host + "?inspect")
     if request.query_string == 'inspect':
         if bin.private and session.get(bin.name) != bin.secret_key:
             return "Private bin\n", 403
