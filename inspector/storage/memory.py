@@ -50,3 +50,10 @@ class MemoryStorage():
 
     def lookup_bin(self, name):
         return self.bins[name]
+
+    def bin_exist(self, name):
+        try:
+            exist= self.bins[name]
+            return True
+        except:
+            return False

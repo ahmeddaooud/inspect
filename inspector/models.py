@@ -15,9 +15,10 @@ from inspector import config
 
 def merchantid(size=20):
     merchant_name= re.sub('[^A-Za-z0-9]+', '', request.form['name'])
-    if merchant_name in session['recent']:
+    from inspector import db
+    if db.bin_exist(merchant_name):
         errors = "$error"
-        return render_template('home.html', errors=errors, recent=expand_recent_bins())
+        return render_template('home.html', errors=errors)
     elif merchant_name == '':
         return tinyid(6)
     elif merchant_name != '':

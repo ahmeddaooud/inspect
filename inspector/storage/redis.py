@@ -62,3 +62,7 @@ class RedisStorage():
         except TypeError:
             self.redis.delete(key) # clear bad data
             raise KeyError("Bin not found")
+
+    def bin_exist(self, name):
+            # to be handeled
+            return False
