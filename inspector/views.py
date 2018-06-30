@@ -41,8 +41,7 @@ def bin(name):
         bin = db.lookup_bin(name)
     except KeyError:
         return "Not found\n", 404
-    if request.method == "GET":
-        if 'application/xhtml' in request.headers['Accept']:
+    if 'application/xhtml' in request.headers['Accept']:
             update_recent_bins(name)
             return render_template('bin.html',
                                    bin=bin,
