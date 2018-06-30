@@ -49,10 +49,11 @@ def bin(name):
             bin=bin,
             base_url=request.scheme+'://'+request.host)
     elif 'application/xhtml' in request.headers['Accept']:
-         update_recent_bins(name)
-         db.create_request(bin, request)
-         resp = make_response("ok\n")
-         resp.headers['Sponsored-By'] = "https://www.payfort.com"
+        if request.method == 'POST':
+             update_recent_bins(name)
+             db.create_request(bin, request)
+             resp = make_response("ok\n")
+             resp.headers['Sponsored-By'] = "https://www.payfort.com"
          return render_template('bin.html',
                                    bin=bin,
                                    base_url=request.scheme + '://' + request.host)
