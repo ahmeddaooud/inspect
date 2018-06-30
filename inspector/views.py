@@ -54,7 +54,7 @@ def bin(name):
              db.create_request(bin, request)
              resp = make_response("ok\n")
              resp.headers['Sponsored-By'] = "https://www.payfort.com"
-         return render_template('bin.html',
+        return render_template('bin.html',
                                    bin=bin,
                                    base_url=request.scheme + '://' + request.host)
     else:
