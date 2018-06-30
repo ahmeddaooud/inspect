@@ -61,7 +61,11 @@ def bin(name):
             resp.headers['Sponsored-By'] = "https://www.payfort.com"
             return resp
         elif 'application/x-www-form' in request.headers['Content-Type']:
-            return redirect(request.base_url + '?inspect')
+            request.referrer = request.base_url
+            update_recent_bins(name)
+            return render_template('bin.html',
+                                   bin=bin,
+                                   base_url=request.scheme + '://' + request.host)
         elif 'form' in request.headers['Content-Type']:
             resp = make_response("ok\n")
             resp.headers['Sponsored-By'] = "https://www.payfort.com"
