@@ -46,7 +46,7 @@ def bin(name):
             update_recent_bins(name)
             return render_template('bin.html',
                                    bin=bin,
-                                   base_url=request.scheme + '://' + request.host + "?inspect")
+                                   base_url=request.scheme + '://' + request.host)
     if request.query_string == 'inspect':
         if bin.private and session.get(bin.name) != bin.secret_key:
             return "Private bin\n", 403
