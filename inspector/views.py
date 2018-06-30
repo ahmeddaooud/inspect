@@ -43,9 +43,13 @@ def bin(name):
         return "Not found\n", 404
     if 'application/xhtml' in request.headers['Accept']:
             update_recent_bins(name)
-            return render_template('bin.html',
+            b.create_request(bin, request)
+            resp = make_response("ok\n")
+            resp.headers['Sponsored-By'] = "https://www.payfort.com"
+            render_template('bin.html',
                                    bin=bin,
                                    base_url=request.scheme + '://' + request.host)
+            return resp
     if request.query_string == 'inspect':
         if bin.private and session.get(bin.name) != bin.secret_key:
             return "Private bin\n", 403
