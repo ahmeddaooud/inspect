@@ -108,9 +108,9 @@
           {% endfor %} 
         {% endif %}
       </div>
-      <div class="span8">
+      <div class="span6">
         {% if request.headers %}
-          <h5>IMPORTANT HEADERS</h5>
+          <h5>PRIMARY HEADERS</h5>
             {% for header in request.headers.items() %}
               <p class="keypair"><strong>{{header.0}}:</strong> {{header.1|escape}}</p>
             {% endfor %}
