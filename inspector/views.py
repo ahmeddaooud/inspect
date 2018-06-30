@@ -41,13 +41,6 @@ def bin(name):
         bin = db.lookup_bin(name)
     except KeyError:
         return "Not found\n", 404
-    if request.type == "GET":
-        if 'application/x-www-form' in request.headers['Content-Type']:
-            request.referrer = request.base_url
-            update_recent_bins(name)
-            return render_template('bin.html',
-                                   bin=bin,
-                                   base_url=request.scheme + '://' + request.host)
     if request.query_string == 'inspect':
         if bin.private and session.get(bin.name) != bin.secret_key:
             return "Private bin\n", 403
@@ -56,10 +49,10 @@ def bin(name):
             bin=bin,
             base_url=request.scheme+'://'+request.host)
     else:
-            resp = make_response("ok\n")
-            resp.headers['Sponsored-By'] = "https://www.payfort.com"
-            return resp
-
+        db.create_request(bin, request)
+        resp = make_response("ok\n")
+        resp.headers['Sponsored-By'] = "https://www.payfort.com"
+        return resp
 
 
 
