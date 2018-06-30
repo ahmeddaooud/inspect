@@ -39,15 +39,25 @@
       {% set width = 12 %}
       {% if recent %} {% set width = 10 %} {% endif %}
       <div class="span{{width}} content-wrap">
-
           {% block content %}
           {% endblock %}
       </div>
 
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+{% block body %}{% endblock %}
+
       {% if recent %}
         <div class="span2">
           {% block sidebar %}
-          <h5><i class="icon-user"></i> Recent Viewed Inspectors</h5>
+          <h5><i class="icon-time"></i> Recent viewed</h5>
           <ul id="recent">
             {% for bin in recent %}
             <li>

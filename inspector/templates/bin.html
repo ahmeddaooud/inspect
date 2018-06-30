@@ -12,11 +12,11 @@
 <!--&lt;!&ndash;<a href="/delete_bin" id="delete">Delete inspector</a>&ndash;&gt;-->
 <!--</div>-->
 <!--</form>-->
-  <a class="btn btn-success" href="/{{bin.name}}?inspect"><i class="icon-refresh icon-x"></i> Refresh</a>
+  <a class="btn btn-success" href="/{{bin.name}}?inspect" title="Refresh"><i class="icon-refresh icon-x"></i> </a>
   <!--<a href="/{{bin.name}}?inspect"><i class="icon-repeat icon-2x" style="color: rgb{{bin.color}}"></i></a>-->
   <input type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()" />
   {% if bin.private %}<i class="icon-lock"></i>{% endif %}
-  <a class="btn btn-danger" href="/" onclick="if (confirm('Are you sure you want to delete this inspector?')){deleteBin()}else{event.stopPropagation(); event.preventDefault();};"><i class="icon-remove-sign"></i> Delete</a>
+  <a class="btn btn-danger" href="/" onclick="if (confirm('Are you sure you want to delete this inspector?')){deleteBin()}else{event.stopPropagation(); event.preventDefault();};" title="Destroy this inspector"><i class="icon-trash"></i> </a>
 {% endblock %}
 
 {% block head %}
