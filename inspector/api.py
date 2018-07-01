@@ -114,17 +114,3 @@ def inspectors():
     resp.headers['Content-Type'] = 'application/json'
     return resp
 
-
-@app.endpoint('api.login')
-def login():
-    if request.form['password'] == 'password' and request.form['username'] == 'admin':
-        session['logged_in'] = True
-    else:
-        flash('wrong password!')
-    return home()
-
-
-@app.endpoint('api.logout')
-def logout():
-        session['logged_in'] = False
-        return home()

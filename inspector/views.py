@@ -1,6 +1,6 @@
 import time
 import urllib
-from flask import session, redirect, request, render_template, make_response
+from flask import session, redirect, request, render_template, make_response, flash
 
 from inspector import app, db
 
@@ -119,3 +119,18 @@ def docs(name):
                 recent=expand_recent_bins())
     else:
         return "Not found", 404
+
+
+@app.endpoint('views.login')
+def login():
+    if request.form['password'] == 'password' and request.form['username'] == 'admin':
+        session['logged_in'] = True
+    else:
+        flash('wrong password!')
+    return home()
+
+
+@app.endpoint('views.logout')
+def logout():
+        session['logged_in'] = False
+        return home()
