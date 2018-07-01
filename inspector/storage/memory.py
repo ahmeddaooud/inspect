@@ -42,6 +42,9 @@ class MemoryStorage():
     def count_bins(self):
         return len(self.bins)
 
+    def get_bins(self):
+        return sorted(self.bins)
+
     def count_requests(self):
         return self.request_count
 
@@ -53,7 +56,7 @@ class MemoryStorage():
 
     def bin_exist(self, name):
         try:
-            exist= self.bins[name]
+            self.bins[name]
             return True
         except:
             return False

@@ -46,6 +46,9 @@ class RedisStorage():
         keys = self.redis.keys("{}_*".format(self.prefix))
         return len(keys)
 
+    def get_bins(self):
+        return sorted(self.bins)
+
     def count_requests(self):
         return int(self.redis.get(self._request_count_key()) or 0)
 

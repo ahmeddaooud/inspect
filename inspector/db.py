@@ -35,6 +35,9 @@ def bin_exist(name):
 def count_bins():
     return db.count_bins()
 
+def get_bins():
+    return db.get_bins()
+
 def count_requests():
     return db.count_requests()
 
