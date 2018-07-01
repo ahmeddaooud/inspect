@@ -1,3 +1,4 @@
+import time
 import urllib
 from flask import session, redirect, request, render_template, make_response
 
@@ -17,6 +18,7 @@ def update_recent_bins(name):
 
 
 def expand_recent_bins():
+    time.sleep(.2)
     if 'recent' not in session:
         session['recent'] = []
     recent = []

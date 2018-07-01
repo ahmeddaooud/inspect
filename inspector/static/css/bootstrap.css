@@ -857,7 +857,8 @@ pre code {
   overflow-y: scroll;
 }
 form {
-  margin: 0 0 20px;
+  line-height: 22px;
+  margin: 0 0 0px;
 }
 fieldset {
   padding: 0;
@@ -2688,11 +2689,11 @@ button.close {
 
   *zoom: 1;
   padding: 4px 12px;
-  margin-bottom: 0;
+  margin-bottom: 20;
   font-size: 14px;
-  line-height: 20px;
+  line-height: 22px;
   text-align: center;
-  vertical-align: middle;
+  vertical-align: top;
   cursor: pointer;
   color: #333333;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);

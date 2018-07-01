@@ -2,9 +2,10 @@ import json
 import operator
 import re
 
-from flask import session, make_response, request, render_template, redirect
+from flask import session, make_response, request, render_template, redirect, flash
 from inspector import app, db
-from inspector.views import expand_recent_bins
+from inspector.views import expand_recent_bins, home
+
 
 def _response(object, code=200):
     jsonp = request.args.get('jsonp')
@@ -112,3 +113,18 @@ def inspectors():
     resp = make_response(json.dumps(inspectors), 200)
     resp.headers['Content-Type'] = 'application/json'
     return resp
+
+
+@app.endpoint('api.login')
+def login():
+    if request.form['password'] == 'password' and request.form['username'] == 'admin':
+        session['logged_in'] = True
+    else:
+        flash('wrong password!')
+    return home()
+
+
+@app.endpoint('api.logout')
+def logout():
+        session['logged_in'] = False
+        return home()

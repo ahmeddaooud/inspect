@@ -94,9 +94,18 @@ header {
   list-style: none;
   color: #999999;
   font-size: 16px;
-  margin-top: 20px;
+  margin-top: 8px;
   float: right;
 }
+
+.nav-menu {
+  list-style: none;
+  color: #999999;
+  font-size: 16px;
+  margin-top: 8px;
+  float: right;
+}
+
 .nav-menu li {
   display: inline;
   margin-right: 20px;

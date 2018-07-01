@@ -11,12 +11,67 @@
     <script type="text/javascript" src="/static/js/jquery.min.js"></script>
     <script type="text/javascript" src="/static/js/prettify.js"></script>
     {% block head %}{% endblock %}
+<script type="text/javascript">
+      function logout() {
+        $.ajax({'url': '/api/v1/logout', 'type': 'POST',
+          'data': { },
+          'success': function(data) {
+            window.location.reload()
+          }
+        });
+      }
+</script>
+<script type="text/javascript">
+      function fillAdminPass() {
+        $.ajax({'url': '/api/v1/login', 'type': 'POST',
+          'data': { 'username': $('#username').val() , 'password': $('#password').val()},
+          'success': function(data) {
+            window.location.reload()
+          }
+        });
+      }
+</script>
   </head>
   <body onload="prettyPrint()">
 
     <div class="payfort-wrap">
         <div class="row-fluid">
-            <p class="tagline"> <a href="https://www.payfort.com" title="Payfort Testing Tools"><strong> </strong></a>  <a href="mailto:adaoud@payfort.com">Contact us!</a></p>
+
+<div class="row-fluid">
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+{% if session['logged_in'] %}
+   <ul class="nav-menu">
+       <li>You're logged in!</li>
+       <li> <a onclick="fillAdminPass()" href="/">Administrator</a> </li>
+       <li> <a onclick="fillAdminPass()" href="/">Configurations</a></li>
+       <li> <a href="https://www.payfort.com" title="Payfort Testing Tools"><strong> </strong></a>  <a href="mailto:adaoud@payfort.com">Contact us!</a></li>
+       <li> <a onclick="logout()" href="/">Logout</a></li>
+  </ul>
+
+{% else %}
+<form class="nav-menu-left" action="/login" method="POST">
+  <input class="large input-large" href="/api/v1/bins" id="username" onkeydown = "if (event.keyCode == 13){document.getElementById('createButton').click();; event.preventDefault();};"  name="name" type="text" placeholder="User name" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 1px;">
+  <input class="large input-large" href="/api/v1/bins" type="password" id="password" onkeydown = "if (event.keyCode == 13){document.getElementById('createButton').click();; event.preventDefault();};"  name="name" type="text" placeholder="Password" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 1px;">
+  <input class="btn" name="Login" id="Login" onclick="fillAdminPass(); event.preventDefault();" type="submit">
+
+    <ul class="nav-menu">
+          <li> <a href="https://www.payfort.com" title="Payfort Testing Tools"><strong> </strong></a>  <a href="mailto:adaoud@payfort.com">Contact us!</a></li>
+    </ul>
+
+</form>
+{% endif %}
+
+</div>
+                </nav>
         </div>
     </div>
     <div class="header-wrap">
@@ -27,7 +82,10 @@
                 <a href="/"><span class="logo-accent"><br>Inspector<br /></span></a>
               </h1>
                 <nav>
+
                     <ul class="nav-menu">
+                         <!--<li> <a data-hotkey="g p" data-ga-click="Header, click, Nav menu - item:pulls context:user" aria-label="Pull requests you created" data-selected-links="" href="/pulls">Administrator</a> </li>-->
+                        <!--<li> <a data-hotkey="g i" data-ga-click="Header, click, Nav menu - item:issues context:user" aria-label="Issues you created" data-selected-links="" href="/issues">Configurations</a></li>-->
                         <li>{% block binurl %}{% endblock %}</li>
                     </ul>
                 </nav>
@@ -43,15 +101,7 @@
           {% endblock %}
       </div>
 
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+
 {% block body %}{% endblock %}
 
       {% if recent %}
