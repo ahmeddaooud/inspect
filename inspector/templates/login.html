@@ -36,13 +36,14 @@
 
     {% for message in messages %}
 
-<h1 style="color:red;" class="login-field-icon fui-lock" >{{ message }} </h1>
+<h4 style="color:red;" class="login-field-icon fui-lock" >{{ message }} </h4>
 
     {% endfor %}
 
+{% else %}
+<h4 style="color:white;" class="login-field-icon fui-lock" >_</h4>
   {% endif %}
 {% endwith %}
-			    <br>
 			</div>
 		</div>
 	</div>

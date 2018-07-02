@@ -105,6 +105,7 @@ def bin(name):
                                    base_url=request.scheme + '://' + request.host)
     else:
         db.create_request(bin, request)
+        # handel config here
         resp = make_response("ok\n")
         resp.headers['Sponsored-By'] = "https://www.payfort.com"
         return resp
