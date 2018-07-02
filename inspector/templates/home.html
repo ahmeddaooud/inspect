@@ -32,7 +32,19 @@
 
             <form name="createbin" method="POST">
 
-                <input class="xlarge input-xlarge" href="/api/v1/bins" id="name" onkeydown = "if (event.keyCode == 13){document.getElementById('createButton').click();; event.preventDefault();};"  name="name" type="text" placeholder="Optional: Fill inspector name" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 2px;">
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+
+    {% for message in messages %}
+
+<h1 style="color:red;" class="login-field-icon fui-lock" >{{ message }} </h1>
+
+    {% endfor %}
+
+  {% endif %}
+{% endwith %}
+
+                <input class="input-xlarge" id="name" onkeydown = "if (event.keyCode == 13){document.getElementById('createButton').click();; event.preventDefault();};"  name="name" type="text" placeholder="Optional: Fill inspector name" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 2px;">
     {% if session['error'] %}
           <ul id="error">
 

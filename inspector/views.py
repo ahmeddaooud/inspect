@@ -5,6 +5,7 @@ from flask import session, redirect, request, render_template, make_response, fl
 
 from inspector import app, db
 all_names = []
+allcount = 0
 
 def update_recent_bins(name):
     if 'recent' not in session:
@@ -41,6 +42,7 @@ def home():
 def userlogin():
     return render_template('login.html')
 
+
 def update_all_bins(name):
     if name not in all_names:
         all_names.insert(0, name)
@@ -53,14 +55,19 @@ def expand_all_bins():
             all.append(db.lookup_bin(name))
         except KeyError:
             all_names.remove(name)
+
     return all
 
+
+def count_all_bins():
+    count = len(all_names)
+    return count
 
 
 @app.endpoint('views.admin')
 def admin():
     if session['logged_in'] == True:
-        return render_template('admin.html', all=expand_all_bins())
+        return render_template('admin.html', all=expand_all_bins(), count=count_all_bins())
     else:
         return render_template('home.html')
 
@@ -97,46 +104,6 @@ def bin(name):
 
 
 
-
-# @app.endpoint('views.bin')
-# def bin(name):
-#     try:
-#         bin = db.lookup_bin(name)
-#     except KeyError:
-#         return "Not found\n", 404
-#     if request.query_string == 'inspect':
-#         if bin.private and session.get(bin.name) != bin.secret_key:
-#             return "Private bin\n", 403
-#         update_recent_bins(name)
-#         return render_template('bin.html',
-#             bin=bin,
-#             base_url=request.scheme+'://'+request.host)
-#     if request.url == request.base_url:
-#         return redirect(request.base_url + '?inspect')
-#     else:
-#         db.create_request(bin, request)
-#         if request.headers['Content-Type'] in ['application/json']:
-#             resp = make_response("ok\n")
-#             resp.headers['Sponsored-By'] = "https://www.payfort.com"
-#             return resp
-#         elif 'application/json' in request.headers['Content-Type']:
-#             resp = make_response("ok\n")
-#             resp.headers['Sponsored-By'] = "https://www.payfort.com"
-#             return resp
-#         elif 'application/x-www-form' in request.headers['Content-Type']:
-#             return redirect(request.base_url + '?inspect')
-#         elif 'form' in request.headers['Content-Type']:
-#             resp = make_response("ok\n")
-#             resp.headers['Sponsored-By'] = "https://www.payfort.com"
-#             return resp
-#         else:
-#             return redirect(request.base_url + '?inspect')
-#             # return render_template('bin.html',
-#             #                        bin=bin,
-#             #                        base_url=request.scheme + '://' + request.host)
-#         # if request.headers['Content-Type'] == 'application/json':
-#         #     return resp
-#         # else:
 
 
 @app.endpoint('views.docs')

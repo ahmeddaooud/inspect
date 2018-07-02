@@ -70,12 +70,11 @@ app.jinja_env.filters['exact_time'] = exact_time
 app.jinja_env.filters['short_date'] = short_date
 
 app.add_url_rule('/', 'views.home')
-app.add_url_rule('/admin', 'views.admin')
-# app.add_url_rule('/', 'views.home_error')
+
 app.add_url_rule('/<path:name>', 'views.bin', methods=['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS', 'HEAD', 'PATCH', 'TRACE'])
 
 app.add_url_rule('/docs/<name>', 'views.docs')
-app.add_url_rule('/api/v1/bins', 'api.bins', methods=['POST'])
+app.add_url_rule('/api/v1/bins', 'api.bins')
 app.add_url_rule('/api/v1/bins/<name>', 'api.bin', methods=['GET'])
 app.add_url_rule('/api/v1/deletebin', 'api.deletebin', methods=['GET', 'POST'])
 app.add_url_rule('/api/v1/bins/<bin>/requests', 'api.requests', methods=['GET'])
@@ -84,9 +83,13 @@ app.add_url_rule('/api/v1/bins/<bin>/requests/<name>', 'api.request', methods=['
 app.add_url_rule('/api/v1/stats', 'api.stats')
 app.add_url_rule('/api/v1/inspectors', 'api.inspectors')
 
-app.add_url_rule('/user_login', 'views.user_login')
-app.add_url_rule('/login', 'views.login', methods=['POST'])
-app.add_url_rule('/logout', 'views.logout', methods=['GET'])
+# app.add_url_rule('/bin', 'api.bins')
+
+app.add_url_rule('/_admin', 'views.admin')
+# app.add_url_rule('/_config', 'views.config')
+app.add_url_rule('/_user_login', 'views.user_login')
+app.add_url_rule('/_login', 'views.login', methods=['POST'])
+app.add_url_rule('/_logout', 'views.logout', methods=['GET'])
 
 # app.add_url_rule('/robots.txt', redirect_to=url_for('static', filename='robots.txt'))
 
