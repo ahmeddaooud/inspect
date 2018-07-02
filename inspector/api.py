@@ -25,7 +25,7 @@ def bins():
     merchant_name = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
     if db.bin_exist(merchant_name):
         flash("Error")
-        return render_template('home.html')
+        raise ("Duplicate name")
     else:
         session['error'] = False
         bin = db.create_bin(private)
