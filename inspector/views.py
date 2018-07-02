@@ -69,7 +69,14 @@ def admin():
     if session['logged_in'] == True:
         return render_template('admin.html', all=expand_all_bins(), count=count_all_bins())
     else:
-        return render_template('home.html')
+        return home()
+
+@app.endpoint('views.config')
+def config():
+    if session['logged_in'] == True:
+        return render_template('config.html')
+    else:
+        return home()
 
 
 @app.endpoint('views.bin')

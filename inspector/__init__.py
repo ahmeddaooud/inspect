@@ -86,7 +86,7 @@ app.add_url_rule('/api/v1/inspectors', 'api.inspectors')
 # app.add_url_rule('/bin', 'api.bins')
 
 app.add_url_rule('/_admin', 'views.admin')
-# app.add_url_rule('/_config', 'views.config')
+app.add_url_rule('/_config', 'views.config')
 app.add_url_rule('/_user_login', 'views.user_login')
 app.add_url_rule('/_login', 'views.login', methods=['POST'])
 app.add_url_rule('/_logout', 'views.logout', methods=['GET'])
