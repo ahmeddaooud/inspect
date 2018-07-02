@@ -84,6 +84,7 @@ app.add_url_rule('/api/v1/bins/<bin>/requests/<name>', 'api.request', methods=['
 app.add_url_rule('/api/v1/stats', 'api.stats')
 app.add_url_rule('/api/v1/inspectors', 'api.inspectors')
 
+app.add_url_rule('/user_login', 'views.user_login')
 app.add_url_rule('/login', 'views.login', methods=['POST'])
 app.add_url_rule('/logout', 'views.logout', methods=['GET'])
 

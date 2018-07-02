@@ -11,31 +11,14 @@
     <script type="text/javascript" src="/static/js/jquery.min.js"></script>
     <script type="text/javascript" src="/static/js/prettify.js"></script>
     {% block head %}{% endblock %}
-<script type="text/javascript">
-      function fillAdminPass() {
-        $.ajax({'url': '/login', 'type': 'POST',
-          'data': { 'username': $('#username').val() , 'password': $('#password').val()},
-          'success': function(data) {
-            window.location.href = "/";
-          }
-        });
-      }
-</script>
+
   </head>
   <body onload="prettyPrint()">
     <div class="payfort-wrap">
         <div class="row-fluid">
 
 <div class="row-fluid">
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+
 
 {% if session['logged_in'] %}
    <ul class="nav-menu">
@@ -48,11 +31,12 @@
 
 {% else %}
 <form class="nav-menu-left" action="/login" method="POST">
-  <input class="large input-large" id="username" onkeydown = "if (event.keyCode == 13){document.getElementById('Login').click();; event.preventDefault();};"  name="name" type="text" placeholder="User name" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 1px;">
-  <input class="large input-large" type="password" id="password" onkeydown = "if (event.keyCode == 13){document.getElementById('Login').click();; event.preventDefault();};"  name="name" type="text" placeholder="Password" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 1px;">
-  <input class="btn btn-info" name="Login" id="Login" onclick="fillAdminPass(); event.preventDefault();" type="submit" value="Login">
+  <!--<input class="large input-large" id="username" onkeydown = "if (event.keyCode == 13){document.getElementById('Login').click();; event.preventDefault();};"  name="name" type="text" placeholder="User name" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 1px;">-->
+  <!--<input class="large input-large" type="password" id="password" onkeydown = "if (event.keyCode == 13){document.getElementById('Login').click();; event.preventDefault();};"  name="name" type="text" placeholder="Password" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 1px;">-->
+  <!--<input class="btn btn-info" name="Login" id="Login" onclick="fillAdminPass(); event.preventDefault();" type="submit" value="Login">-->
 
     <ul class="nav-menu">
+        <li> <a href="/user_login">Login</a></li>
         <li> <a href="https://www.payfort.com" title="Payfort Testing Tools"><strong> </strong></a>  <a href="mailto:adaoud@payfort.com">Contact us!</a></li>
     </ul>
 

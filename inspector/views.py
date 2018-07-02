@@ -37,6 +37,10 @@ def home():
     return render_template('home.html', recent=expand_recent_bins())
 
 
+@app.endpoint('views.user_login')
+def userlogin():
+    return render_template('login.html')
+
 def update_all_bins(name):
     if name not in all_names:
         all_names.insert(0, name)
@@ -151,9 +155,11 @@ def docs(name):
 def login():
     if request.form['password'] == 'password' and request.form['username'] == 'admin':
         session['logged_in'] = True
+        return home()
     else:
-        flash('wrong password!')
-    return home()
+        flash('Invalid login credentials!')
+        return userlogin()
+
 
 
 @app.endpoint('views.logout')
