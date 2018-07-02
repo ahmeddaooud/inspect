@@ -55,7 +55,10 @@ def expand_all_bins():
 
 @app.endpoint('views.admin')
 def admin():
-    return render_template('admin.html', all=expand_all_bins())
+    if session['logged_in'] == True:
+        return render_template('admin.html', all=expand_all_bins())
+    else:
+        return render_template('home.html')
 
 
 @app.endpoint('views.bin')

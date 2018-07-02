@@ -11,20 +11,18 @@
     <script type="text/javascript" src="/static/js/jquery.min.js"></script>
     <script type="text/javascript" src="/static/js/prettify.js"></script>
     {% block head %}{% endblock %}
-
 <script type="text/javascript">
       function fillAdminPass() {
-        $.ajax({'url': '/api/v1/login', 'type': 'POST',
+        $.ajax({'url': '/login', 'type': 'POST',
           'data': { 'username': $('#username').val() , 'password': $('#password').val()},
           'success': function(data) {
-            window.location.reload()
+            window.location.href = "/";
           }
         });
       }
 </script>
   </head>
   <body onload="prettyPrint()">
-
     <div class="payfort-wrap">
         <div class="row-fluid">
 
