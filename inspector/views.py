@@ -128,7 +128,7 @@ def docs(name):
 
 @app.endpoint('views.login')
 def login():
-    if request.form['password'] == 'password' and request.form['username'] == 'admin':
+    if request.form['password'] == 'daoud' and request.form['username'] == 'admin':
         session['logged_in'] = True
         return home()
     else:
