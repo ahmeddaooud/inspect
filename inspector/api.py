@@ -3,7 +3,7 @@ import operator
 import re
 
 from flask import session, make_response, request, render_template, redirect, flash
-from inspector import app, db
+from inspector import app, db, views
 from inspector.views import expand_recent_bins, expand_all_bins
 
 
@@ -46,6 +46,7 @@ def deletebin():
         session['recent'].remove(name)
     db.delete_bin(name)
     session.modified = True
+    views.all_names.remove(name)
     return render_template('home.html', recent=expand_recent_bins())
 
 # @app.endpoint('api.deletebin')
