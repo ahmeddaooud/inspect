@@ -1,5 +1,5 @@
 import os, urlparse
-DEBUG = True
+DEBUG = False
 REALM = os.environ.get('REALM', 'local')
 
 ROOT_URL = "http://localhost:4000"
@@ -9,7 +9,7 @@ PORT_NUMBER = 4000
 ENABLE_CORS = False
 CORS_ORIGINS = "*"
 
-FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", "N1CKIkLnBqLpexOZdklsfDKFJDKFadsfs8a3r324YB7B73AglRmrHMDQ9RhXz35")
+FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", "N1CKImLnBqLpexOZdklsfDKFJDKFadsfs8a3r324YB7B73AglRmrHMDQ9RhXz35")
 SESSION_COOKIE_SAMESITE = "Strict"
 BIN_TTL = 48*3600
 STORAGE_BACKEND = "inspector.storage.memory.MemoryStorage"
@@ -29,7 +29,7 @@ REDIS_PREFIX = ""
 BUGSNAG_KEY = ""
 
 if REALM == 'prod':
-    DEBUG = True
+    DEBUG = False
     ROOT_URL = "https://payfort-inspector.herokuapp.com"
 
     FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", FLASK_SESSION_SECRET_KEY)

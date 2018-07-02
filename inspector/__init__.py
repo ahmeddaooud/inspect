@@ -23,6 +23,7 @@ class WSGIRawBody(object):
         app_iter = self.application(environ, self._sr_callback(start_response))
 
         # Return modified response
+        # if not in app_iter
         return app_iter
 
     def _sr_callback(self, start_response):
@@ -69,6 +70,7 @@ app.jinja_env.filters['exact_time'] = exact_time
 app.jinja_env.filters['short_date'] = short_date
 
 app.add_url_rule('/', 'views.home')
+app.add_url_rule('/admin', 'views.admin')
 # app.add_url_rule('/', 'views.home_error')
 app.add_url_rule('/<path:name>', 'views.bin', methods=['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS', 'HEAD', 'PATCH', 'TRACE'])
 
@@ -83,7 +85,7 @@ app.add_url_rule('/api/v1/stats', 'api.stats')
 app.add_url_rule('/api/v1/inspectors', 'api.inspectors')
 
 app.add_url_rule('/api/v1/login', 'views.login', methods=['POST'])
-app.add_url_rule('/api/v1/logout', 'views.logout', methods=['POST'])
+app.add_url_rule('/logout', 'views.logout', methods=['GET'])
 
 # app.add_url_rule('/robots.txt', redirect_to=url_for('static', filename='robots.txt'))
 

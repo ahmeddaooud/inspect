@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block head %}
+
+{% endblock %}
+{% block content %}
+
+{% if all %}
+        <div id="cols">
+          {% block sidebar %}
+          <h5><i class="icon-time"></i> All Inspectors</h5>
+          <ul id="all">
+            {% for bin in all %}
+            <li>
+              <a href="/{{bin.name}}?inspect"><i class="icon-circle" style="color: rgb{{bin.color}}"></i></a>
+              <a href="/{{bin.name}}?inspect">{{bin.name}}</a> {% if bin.private %}<i class="icon-lock"></i>{% endif %}
+              ({{bin.request_count}})
+            </li>
+            {% else %}
+            <p style="margin-left: -24px; color: gray;">
+              No inspectors.
+            </p>
+            {% endfor %}
+          </ul>
+          {% endblock %}
+        </div>
+        {% endif %}
+    </div>
+
+
+
+{% endblock %}

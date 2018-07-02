@@ -4,7 +4,7 @@ import re
 
 from flask import session, make_response, request, render_template, redirect, flash
 from inspector import app, db
-from inspector.views import expand_recent_bins, home
+from inspector.views import expand_recent_bins, expand_all_bins
 
 
 def _response(object, code=200):
@@ -21,25 +21,25 @@ def _response(object, code=200):
 
 @app.endpoint('api.bins')
 def bins():
-        private = request.form.get('private') in ['true', 'on']
+        # private = request.form.get('private') in ['true', 'on']
+        # bin = db.create_bin(private)
+        # if bin.private:
+        #     session[bin.name] = bin.secret_key
+        # return _response(bin.to_dict())
+    private = request.form.get('private') in ['true', 'on']
+
+    merchant_name = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
+
+    if db.bin_exist(merchant_name):
+        session['error'] = True
+        render_template('home.html')
+        raise Exception("Duplicate name")
+    else:
+        session['error'] = False
         bin = db.create_bin(private)
         if bin.private:
             session[bin.name] = bin.secret_key
         return _response(bin.to_dict())
-    # private = request.form.get('private') in ['true', 'on']
-    #
-    # merchant_name = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
-    #
-    # if db.bin_exist(merchant_name):
-    #     error = "errrrrrror"
-    #     session.modified = True
-    #     render_template('home.html', error=error)
-    #     redirect("/")
-    #     raise Exception("Duplicate name")
-    # bin = db.create_bin(private)
-    # if bin.private:
-    #     session[bin.name] = bin.secret_key
-    # return _response(bin.to_dict())
 
 
 @app.endpoint('api.deletebin')

@@ -1,3 +1,12 @@
+#cols {
+    -moz-column-count: 4;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 4;
+    -webkit-column-gap: 20px;
+    column-count: 4;
+    column-gap: 20px;
+}
+
 #recent {
   list-style-type: none;
   margin: 0;
@@ -37,6 +46,8 @@ hr {
 .accent-red {
   color: #e74c3c;
 }
+
+
 .accent-bg-green {
   background: #2ecc71;
   padding: 4px 8px;

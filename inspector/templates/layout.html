@@ -11,16 +11,7 @@
     <script type="text/javascript" src="/static/js/jquery.min.js"></script>
     <script type="text/javascript" src="/static/js/prettify.js"></script>
     {% block head %}{% endblock %}
-<script type="text/javascript">
-      function logout() {
-        $.ajax({'url': '/api/v1/logout', 'type': 'POST',
-          'data': { },
-          'success': function(data) {
-            window.location.reload()
-          }
-        });
-      }
-</script>
+
 <script type="text/javascript">
       function fillAdminPass() {
         $.ajax({'url': '/api/v1/login', 'type': 'POST',
@@ -51,20 +42,20 @@
 {% if session['logged_in'] %}
    <ul class="nav-menu">
        <li>You're logged in!</li>
-       <li> <a onclick="fillAdminPass()" href="/">Administrator</a> </li>
-       <li> <a onclick="fillAdminPass()" href="/">Configurations</a></li>
+       <li> <a href="/admin">Administrator</a> </li>
+       <li> <a href="/config">Configurations</a></li>
        <li> <a href="https://www.payfort.com" title="Payfort Testing Tools"><strong> </strong></a>  <a href="mailto:adaoud@payfort.com">Contact us!</a></li>
-       <li> <a onclick="logout()" href="/">Logout</a></li>
+       <li> <a href="/logout">Logout</a></li>
   </ul>
 
 {% else %}
 <form class="nav-menu-left" action="/login" method="POST">
-  <input class="large input-large" href="/api/v1/bins" id="username" onkeydown = "if (event.keyCode == 13){document.getElementById('Login').click();; event.preventDefault();};"  name="name" type="text" placeholder="User name" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 1px;">
-  <input class="large input-large" href="/api/v1/bins" type="password" id="password" onkeydown = "if (event.keyCode == 13){document.getElementById('Login').click();; event.preventDefault();};"  name="name" type="text" placeholder="Password" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 1px;">
-  <input class="btn btn-info" name="Login" id="Login" onclick="fillAdminPass(); event.preventDefault();" type="submit">
+  <input class="large input-large" id="username" onkeydown = "if (event.keyCode == 13){document.getElementById('Login').click();; event.preventDefault();};"  name="name" type="text" placeholder="User name" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 1px;">
+  <input class="large input-large" type="password" id="password" onkeydown = "if (event.keyCode == 13){document.getElementById('Login').click();; event.preventDefault();};"  name="name" type="text" placeholder="Password" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 1px;">
+  <input class="btn btn-info" name="Login" id="Login" onclick="fillAdminPass(); event.preventDefault();" type="submit" value="Login">
 
     <ul class="nav-menu">
-          <li> <a href="https://www.payfort.com" title="Payfort Testing Tools"><strong> </strong></a>  <a href="mailto:adaoud@payfort.com">Contact us!</a></li>
+        <li> <a href="https://www.payfort.com" title="Payfort Testing Tools"><strong> </strong></a>  <a href="mailto:adaoud@payfort.com">Contact us!</a></li>
     </ul>
 
 </form>
@@ -84,8 +75,6 @@
                 <nav>
 
                     <ul class="nav-menu">
-                         <!--<li> <a data-hotkey="g p" data-ga-click="Header, click, Nav menu - item:pulls context:user" aria-label="Pull requests you created" data-selected-links="" href="/pulls">Administrator</a> </li>-->
-                        <!--<li> <a data-hotkey="g i" data-ga-click="Header, click, Nav menu - item:issues context:user" aria-label="Issues you created" data-selected-links="" href="/issues">Configurations</a></li>-->
                         <li>{% block binurl %}{% endblock %}</li>
                     </ul>
                 </nav>
@@ -126,6 +115,9 @@
         {% endif %}
     </div>
 
+
+
+
     <div class="footer-wrap">
         <footer class="row-fluid">
             <div class="span12">
@@ -133,22 +125,13 @@
                      <a href="https://www.payfort.com" title="Learn More"><img src="/static/img/payfort.png"></a>
                 </div>
                 <h3 class="footer-slogan">
-                  <font color="white">PAYFORT Inspector is brought to you by PAYFORT Quality Team.<font>
-                    <br>
-                  <!--<a href="https://www.payfort.com">Learn more <i class="icon-long-arrow-right"></i></a>-->
+                 <br> <font color="white">PAYFORT Inspector is brought to you by PAYFORT Quality Team.<font> <br>
                 </h3>
-
-                <!--<p class="footer-hero">-->
-                    <!--&lt;!&ndash;<a href="https://www.payfort.com" title="Learn More"><img src="/static/img/payfort.png"></a>&ndash;&gt;-->
-                <!--</p>-->
 
                 <ul class="footer-menu">
                     <!--<li class="footer-link footer-title">PAYFORT</li>-->
                     <!--<li class="footer-link"><a href="https://www.payfort.com/blog/" title="PAYFORT Blog">Blog</a></li>-->
-                    <!--<li class="footer-link"><a href="https://twitter.com/Runscope" title="Follow PAYFORT on Twitter">Twitter</a></li>-->
-                    <!--<li class="footer-link"><a href="https://plus.google.com/110044295418761600228" rel="publisher">Google+</a></li>-->
                 </ul>
-                <!--<p class="copyright">PAYFORT Inspector originally created by <a href="http://www.payfort.com">Ahmed Daoud</a>.</p>-->
                 <p class="copyright"> <font color="white" >&copy; 2018 PAYFORT an amazon Company - </font><a href="https://www.payfort.com/privacy-policy/">Privacy Policy</a> </p>
             </div>
         </footer>
