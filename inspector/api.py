@@ -4,8 +4,9 @@ import re
 
 from flask import session, make_response, request, render_template, redirect, flash
 from inspector import app, db, views
+from inspector.util import tinyid
 from inspector.views import expand_recent_bins, expand_all_bins
-
+merchant_name=''
 
 def _response(object, code=200):
     jsonp = request.args.get('jsonp')
@@ -22,13 +23,19 @@ def _response(object, code=200):
 @app.endpoint('api.bins')
 def bins():
     private = request.form.get('private') in ['true', 'on']
-    merchant_name = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
+    name = re.sub('[^A-Za-z0-9]+', '', request.form.get('name'))
+
+    if name == '':
+        name = tinyid()
+    else:
+        name = name[0:20]
+
     if db.bin_exist(merchant_name):
         flash("Error")
         raise ("Duplicate name")
     else:
         session['error'] = False
-        bin = db.create_bin(private)
+        bin = db.create_bin(private, name)
         if bin.private:
             session[bin.name] = bin.secret_key
         return _response(bin.to_dict())

@@ -3,32 +3,25 @@ import json
 import time
 import datetime
 import os
-import msgpack
 import re
 
-from flask import request, session, render_template
+import msgpack
+
 from .util import random_color
 from .util import tinyid
 from .util import solid16x16gif_datauri
+
 from inspector import config
 
-
-def merchantid(size=20):
-    merchant_name= re.sub('[^A-Za-z0-9]+', '', request.form['name'])
-    if merchant_name == '':
-        return tinyid(6)
-    else:
-         id = merchant_name
-         return id[0:size]
 
 class Bin(object):
     max_requests = config.MAX_REQUESTS
 
-    def __init__(self, private=False, response_msg='ok\n', response_code=200, response_delay=0):
+    def __init__(self, private=False, name=None, response_msg='ok\n', response_code=200, response_delay=0):
         self.created = time.time()
         self.private = private
         self.color = random_color()
-        self.name = merchantid()
+        self.name = name
         self.response_msg = response_msg
         self.response_code = response_code
         self.response_delay = response_delay
@@ -38,10 +31,10 @@ class Bin(object):
 
     def json(self):
         return json.dumps(self.to_dict())
-    
+
     def to_dict(self):
         return dict(
-            private=self.private, 
+            private=self.private,
             color=self.color,
             response_msg=self.response_msg,
             response_code=self.response_code,
@@ -75,7 +68,7 @@ class Bin(object):
 
 class Request(object):
     ignore_headers = config.IGNORE_HEADERS
-    max_raw_size = config.MAX_RAW_SIZE 
+    max_raw_size = config.MAX_RAW_SIZE
 
     def __init__(self, input=None):
         if input:
@@ -102,11 +95,10 @@ class Request(object):
             self.content_length = len(self.raw)
 
             # for header in self.ignore_headers:
-            #     self.raw = re.sub(r'{}: [^\n]+\n'.format(header), 
+            #     self.raw = re.sub(r'{}: [^\n]+\n'.format(header),
             #                         '', self.raw, flags=re.IGNORECASE)
             if self.raw and len(self.raw) > self.max_raw_size:
                 self.raw = self.raw[0:self.max_raw_size]
-
 
     def to_dict(self):
         return dict(
@@ -169,3 +161,4 @@ class Request(object):
     #         else:
     #             fields.append((k,v))
     #     return iter(sorted(fields) + sorted(files))
+

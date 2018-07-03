@@ -23,12 +23,8 @@ def baseN(num,b,numerals="0123456789abcdefghijklmnopqrstuvwxyz"):
 
 
 def tinyid(size=6):
-    # merchantid = re.sub('[^A-Za-z0-9]+', '', request.form['name'])
-    # if merchantid == '':
         id = '%s%s' % (
             baseN(abs(hash(time.time())), 36),
             baseN(abs(hash(time.time())), 36))
         return id[0:8]
-    # else:
-    #     id = merchantid
-    #     return id[0:20]
+

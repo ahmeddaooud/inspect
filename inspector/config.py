@@ -11,12 +11,12 @@ CORS_ORIGINS = "*"
 
 FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", "N1CKImLnBqLpexOZdklsfDKFJDKFadsfs8a3r324YB7B73AglRmrHMDQ9RhXz35")
 SESSION_COOKIE_SAMESITE = "Strict"
-BIN_TTL = 48*3600
+BIN_TTL = 168*3600
 STORAGE_BACKEND = "inspector.storage.memory.MemoryStorage"
 MAX_RAW_SIZE = int(os.environ.get('MAX_RAW_SIZE', 1024*10))
 IGNORE_HEADERS = ["X-Via", "Via", "X-Varnish", "X-Heroku-Dynos-In-Use", "X-Heroku-Queue-Depth", "X-Request-Start", "X-Forwarded-Port", "X-Request-Id", "X-Forwarded-Proto", "X-Forwarded-For", "Content-Length", "Accept-Encoding", "Connection", "Accept", "Cache-Control", "Postman-Token", "User-Agent", "Accept-Language", "Upgrade-Insecure-Requests", "Cookie", "Host", "Origin"]
 MAX_REQUESTS = 50
-CLEANUP_INTERVAL = 3*3600
+CLEANUP_INTERVAL = 12*3600
 
 REDIS_URL = ""
 REDIS_HOST = "localhost"
@@ -45,15 +45,7 @@ if REALM == 'prod':
 
     BUGSNAG_KEY = os.environ.get("BUGSNAG_KEY", BUGSNAG_KEY)
 
-    IGNORE_HEADERS = """
-X-Varnish
-X-Forwarded-For
-X-Heroku-Dynos-In-Use
-X-Request-Start
-X-Heroku-Queue-Wait-Time
-X-Heroku-Queue-Depth
-X-Real-Ip
-X-Forwarded-Proto
-X-Via
-X-Forwarded-Port
-""".split("\n")[1:-1]
+    IGNORE_HEADERS = ["X-Via", "Via", "X-Varnish", "X-Heroku-Dynos-In-Use", "X-Heroku-Queue-Depth", "X-Request-Start",
+                      "X-Forwarded-Port", "X-Request-Id", "X-Forwarded-Proto", "X-Forwarded-For", "Content-Length",
+                      "Accept-Encoding", "Connection", "Accept", "Cache-Control", "Postman-Token", "User-Agent",
+                      "Accept-Language", "Upgrade-Insecure-Requests", "Cookie", "Host", "Origin"]

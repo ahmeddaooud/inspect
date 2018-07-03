@@ -15,8 +15,8 @@ except ImportError, e:
 
 db = klass(bin_ttl)
 
-def create_bin(private=False):
-    return db.create_bin(private)
+def create_bin(private=False, name=None):
+    return db.create_bin(private, name)
 
 def delete_bin(name):
     return db.delete_bin(name)

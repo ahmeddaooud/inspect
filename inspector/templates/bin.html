@@ -30,7 +30,7 @@
 
              <label class="login-field-icon fui-user" for="response_delay">Response delay</label>
    <select name="response_delay" style="padding-right: 104px;">
-    <option selected="{{ bin.response_delay }}">Current value ( {{ bin.response_delay }} )</option>
+    <option selected="{{ bin.response_delay }}">{{ bin.response_delay }}</option>
     <option value="0">0 Second</option>
     <option value="1">1 Second</option>
     <option value="3">3 Seconds</option>
@@ -46,7 +46,7 @@
 
               <label class="login-field-icon fui-user" for="response_code">Response Code</label>
    <select name="response_code">
-    <option selected="{{ bin.response_code }}">Current value ( {{ bin.response_code }} )</option>
+    <option selected="{{ bin.response_code }}">{{ bin.response_code }}</option>
     <option value="100">100 - Continue</option>
      <option value="200">200 - OK</option>
      <option value="201">201 - Created</option>
