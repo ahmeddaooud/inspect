@@ -25,7 +25,7 @@
 
     <div class="row-fluid">
         <div class="banner-hero">
-            <h2 class="banner-header"><span class="accent-bg">Start New Inspection</span></h2>
+            <h2 class="banner-header"><span class="accent-bg"><strong>Start New Inspection</strong></strong></span></h2>
 
 
     <!--<p class=error><strong>Error:</strong> {{ error }}-->
@@ -43,8 +43,8 @@
 
   {% endif %}
 {% endwith %}
-
-                <input class="input-xlarge" id="name" onkeydown = "if (event.keyCode == 13){document.getElementById('createButton').click();; event.preventDefault();};"  name="name" type="text" placeholder="Optional: Fill inspector name" onclick="this.select()" style="border-color: rgb(40, 170, 60); border-width: 2px;">
+<div>
+                <input class="input-xlarge" id="name" onkeydown = "if (event.keyCode == 13){document.getElementById('createButton').click();; event.preventDefault();};"  name="name" type="text" placeholder="Optional: Inspector name" onclick="this.select()"  style="margin-bottom: 13px;" autofocus>
     {% if session['error'] %}
           <ul id="error">
 
@@ -54,7 +54,8 @@
 
           </ul>
         {% endif %}
-
+    <b></b>
+</div>
                 <p class="button">
                 <a class="btn btn-large btn-success" id="createButton" onclick="createBin()"><i class="icon-plus-sign" ></i> Create an Inspector </a>
               </p>

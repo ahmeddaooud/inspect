@@ -3,7 +3,12 @@
   <head>
     <title>{% block title %}PAYFORT Inspector &mdash; Collect, inspect HTTP notifications{% endblock %}</title>
     {% block icon %}<link href="/static/img/logo.png" rel="shortcut icon" />{% endblock %}
-    <link href="/static/css/bootstrap.css" rel="stylesheet" media="screen">
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--<link href="/static/css/bootstrap.css" rel="stylesheet" media="screen">-->
     <link href="/static/css/responsive.css" rel="stylesheet" media="screen">
     <link href="/static/css/styles.css" rel="stylesheet" media="screen">
     <link href="/static/css/font-awesome.min.css" rel="stylesheet" media="screen">
@@ -14,7 +19,7 @@
 
   </head>
   <body onload="prettyPrint()">
-    <div class="payfort-wrap" style="height: 30px">
+    <div class="payfort-wrap" style="height: 40px">
         <div class="row-fluid">
 
 <div class="row-fluid">
@@ -48,7 +53,7 @@
             <div class="span12">
 
                 <h1 class="logo" style="line-height: 20px">
-                <a href="/"><img src="/static/img/logo-2x.png" height="60" width="100" /></a>
+                <a href="/"><img src="/static/img/logo-2x.png" height="60" width="120" /></a>
 <a href="/"><span class="logo-accent"><br>Inspector<br /></span></a></h1>
                 <nav>
 
@@ -74,7 +79,7 @@
       {% if recent %}
         <div class="span2">
           {% block sidebar %}
-          <h5><i class="icon-time"></i> Recent viewed</h5>
+            <h5><i class="icon-time" style="margin-left: 40px"></i><strong> Recent viewed</strong></h5>
           <ul id="recent">
             {% for bin in recent %}
             <li>

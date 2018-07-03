@@ -24,11 +24,14 @@ def merchantid(size=20):
 class Bin(object):
     max_requests = config.MAX_REQUESTS
 
-    def __init__(self, private=False):
+    def __init__(self, private=False, response_msg='ok\n', response_code=200, response_delay=0):
         self.created = time.time()
         self.private = private
         self.color = random_color()
         self.name = merchantid()
+        self.response_msg = response_msg
+        self.response_code = response_code
+        self.response_delay = response_delay
         self.favicon_uri = solid16x16gif_datauri(*self.color)
         self.requests = []
         self.secret_key = os.urandom(24) if self.private else None
@@ -39,7 +42,10 @@ class Bin(object):
     def to_dict(self):
         return dict(
             private=self.private, 
-            color=self.color, 
+            color=self.color,
+            response_msg=self.response_msg,
+            response_code=self.response_code,
+            response_delay=self.response_delay,
             name=self.name,
             request_count=self.request_count)
 

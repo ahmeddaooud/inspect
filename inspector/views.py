@@ -78,6 +78,19 @@ def config():
     else:
         return home()
 
+@app.endpoint('views.bin_config')
+def bin_config():
+    name = request.form['name']
+    try:
+        bin = db.lookup_bin(name)
+    except KeyError:
+        return "Not found\n", 404
+    bin.response_code = int(float(request.form['response_code']))
+    bin.response_msg = request.form['response_msg']
+    bin.response_delay = float(request.form['response_delay'])
+    return render_template('bin.html',
+                           bin=bin,
+                           base_url=request.scheme + '://' + request.host)
 
 @app.endpoint('views.bin')
 def bin(name):
@@ -106,7 +119,8 @@ def bin(name):
     else:
         db.create_request(bin, request)
         # handel config here
-        resp = make_response("ok\n")
+        time.sleep(bin.response_delay)
+        resp = make_response(bin.response_msg, bin.response_code)
         resp.headers['Sponsored-By'] = "https://www.payfort.com"
         return resp
 

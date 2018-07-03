@@ -5,10 +5,90 @@
 {% block sidebar %}{% endblock %}
 {% block binurl %}
 
-
+<form id="deleteBin" action="/api/v1/deletebin" method="POST">
+  	<input type="hidden" name="name" value="{{bin.name}}" >
+</form>
 {% if session['logged_in'] %}
 
-  <button type="submit" class="btn btn-danger" title="Destroy this inspector" form="deleteBin" onclick="if (confirm('Are you sure you want to destroy this inspector?')){}else{event.stopPropagation(); event.preventDefault();};"><i class="icon-trash"></i></button>
+<button type="submit" class="btn btn-danger" title="Destroy this inspector" form="deleteBin" onclick="if (confirm('Are you sure you want to destroy this inspector?')){}else{event.stopPropagation(); event.preventDefault();};"><i class="icon-trash"></i></button>
+
+
+<button type="button" class="btn btn-info" data-toggle="modal" data-target="#configModal" title="Edit response for this inspector"><i class="icon-edit"></i></button>
+<!-- Modal -->
+<div id="configModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Inspector Configurations</h4>
+      </div>
+      <div class="modal-body">
+
+        <form id="inspector_config" action="/_inspector_config" method="POST">
+
+
+          <input type="hidden" name="name" value="{{bin.name}}" >
+
+             <label class="login-field-icon fui-user" for="response_delay">Response delay</label>
+   <select name="response_delay">
+    <option value="0">0 Second</option>
+    <option value="1">1 Second</option>
+    <option value="3">3 Seconds</option>
+    <option value="5">5 Seconds</option>
+    <option value="10">10 Seconds</option>
+    <option value="20">20 Seconds</option>
+    <option value="30">30 Seconds</option>
+    <option value="60">1 Minute</option>
+    <option value="120">2 Minutes</option>
+     <option value="300">5 Minutes</option>
+     <option value="600">10 Minutes</option>
+  </select><br/>
+
+
+              <label class="login-field-icon fui-user" for="response_code">Response Code</label>
+   <select name="response_code">
+    <option value="100">100 - Continue</option>
+     <option value="200">200 - OK</option>
+     <option value="201">201 - Created</option>
+     <option value="202">202 - Accepted</option>
+     <option value="203">203 - Non-Authoritative Information</option>
+     <option value="204">204 - No Content</option>
+     <option value="205">205 - Reset Content</option>
+     <option value="206">206 - Partial Content</option>
+     <option value="207">207 - Multi-Status</option>
+     <option value="208">208 - Already Reported</option>
+     <option value="226">226 - IM Used</option>
+     <option value="400">400 - Bad Request</option>
+     <option value="401">401 - Unauthorized</option>
+     <option value="404">404 - Not Found</option>
+     <option value="420">420 - Method Failure</option>
+     <option value="444">444 - No Response</option>
+     <option value="520">520 - Unknown Error</option>
+
+  </select><br/>
+
+
+        <label class="login-field-icon fui-user" for="response_msg">Response message</label>
+		<input class="input-xlarge" type="text" name="response_msg" autofocus><br/>
+
+
+          </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="submit" form="inspector_config" class="btn btn-success">Apply</button>
+        <button type="button"  data-dismiss="modal" class="btn btn-default">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
 
 {% endif %}
 
@@ -16,9 +96,7 @@
   <input type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()" />
   {% if bin.private %}<i class="icon-lock"></i>{% endif %}
 
-<form id="deleteBin" action="/api/v1/deletebin" method="POST">
-  	<input type="hidden" name="name" value="{{bin.name}}" >
-</form>
+
 
 {% endblock %}
 
