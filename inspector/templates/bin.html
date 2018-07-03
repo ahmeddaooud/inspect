@@ -4,34 +4,25 @@
 
 {% block sidebar %}{% endblock %}
 {% block binurl %}
-<!--<form action="/" method="POST">-->
-  <!--<div align="center">-->
-<!--<p class="button">-->
-                <!--<a class="btn btn-small btn-danger" name="deleteButton" id="deleteButton" onclick="deleteBinNew()" ><i class="icon-remove-sign" ></i> Delete {{bin.name}} inspector </a>-->
-              <!--</p>-->
-<!--&lt;!&ndash;<a href="/delete_bin" id="delete">Delete inspector</a>&ndash;&gt;-->
-<!--</div>-->
-<!--</form>-->
+
+
+{% if session['logged_in'] %}
+
+  <button type="submit" class="btn btn-danger" title="Destroy this inspector" form="deleteBin" onclick="if (confirm('Are you sure you want to destroy this inspector?')){}else{event.stopPropagation(); event.preventDefault();};"><i class="icon-trash"></i></button>
+
+{% endif %}
+
   <a class="btn btn-success" href="/{{bin.name}}?inspect" title="Refresh"><i class="icon-refresh icon-x"></i> </a>
-  <!--<a href="/{{bin.name}}?inspect"><i class="icon-repeat icon-2x" style="color: rgb{{bin.color}}"></i></a>-->
   <input type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()" />
   {% if bin.private %}<i class="icon-lock"></i>{% endif %}
-{% if session['logged_in'] %}
-  <a class="btn btn-danger" href="/" onclick="if (confirm('Are you sure you want to destroy this inspector?')){deleteBin()}else{event.stopPropagation(); event.preventDefault();};" title="Destroy this inspector"><i class="icon-trash"></i> </a>
-{% endif %}
+
+<form id="deleteBin" action="/api/v1/deletebin" method="POST">
+  	<input type="hidden" name="name" value="{{bin.name}}" >
+</form>
+
 {% endblock %}
 
 {% block head %}
-    <script type="text/javascript">
-      function deleteBin() {
-        $.ajax({'url': '/api/v1/deletebin', 'type': 'POST',
-          'data': {'name': $('#deleteButton').attr("id")},
-          'success': function(data) {
-           window.location.href = "/";
-          }
-        });
-      }
-    </script>
 {% endblock %}
 
 {% block content %}

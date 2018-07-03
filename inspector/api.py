@@ -36,22 +36,15 @@ def bins():
 
 @app.endpoint('api.deletebin')
 def deletebin():
-    req = request.referrer
-    req_edit = req.replace(request.host_url, "")
-    if "?inspect" in req_edit:
-        name = req_edit.replace("?inspect", "")
+    name = request.form['name']
     if 'recent' not in session:
         session['recent'] = []
     if name in session['recent']:
         session['recent'].remove(name)
-    db.delete_bin(name)
     session.modified = True
+    db.delete_bin(name)
     views.all_names.remove(name)
     return render_template('home.html', recent=expand_recent_bins())
-
-# @app.endpoint('api.deletebin')
-# def deletebin():
-#     db.delete_bin(bin.name)
 
 @app.endpoint('api.bin')
 def bin(name):
