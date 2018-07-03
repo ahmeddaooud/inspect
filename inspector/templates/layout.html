@@ -14,27 +14,26 @@
 
   </head>
   <body onload="prettyPrint()">
-    <div class="payfort-wrap">
+    <div class="payfort-wrap" style="height: 30px">
         <div class="row-fluid">
 
 <div class="row-fluid">
 
-
 {% if session['logged_in'] %}
    <ul class="nav-menu">
-       <li>You're logged in!</li>
-       <li> <a href="/_admin">Administrator</a> </li>
-       <li> <a href="/_config">Configurations</a></li>
-       <li> <a href="https://www.payfort.com" title="Payfort Testing Tools"><strong> </strong></a>  <a href="mailto:adaoud@payfort.com">Contact us!</a></li>
-       <li> <a href="/_logout">Logout</a></li>
+       <li><strong>You're logged in!</strong></li>
+       <li> <a href="/_admin"><strong>Administrator</strong></a> </li>
+       <li> <a href="/_config"><strong>Configurations</strong></a></li>
+       <li> <a href="https://www.payfort.com" title="Payfort Testing Tools"><strong> </strong></a>  <a href="mailto:adaoud@payfort.com"><strong>Contact us!</strong></a></li>
+       <li> <a href="/_logout"><strong>Logout</strong></a></li>
   </ul>
 
 {% else %}
 <form class="nav-menu-left" action="/login" method="POST">
 
     <ul class="nav-menu">
-        <li> <a href="/_user_login">Login</a></li>
-        <li> <a href="https://www.payfort.com" title="Payfort Testing Tools"><strong> </strong></a>  <a href="mailto:adaoud@payfort.com">Contact us!</a></li>
+        <li> <a href="/_user_login"><strong>Login</strong></a></li>
+        <li> <a href="https://www.payfort.com" title="Payfort Testing Tools"><strong> </strong></a>  <a href="mailto:adaoud@payfort.com"><strong>Contact us!</strong></a></li>
     </ul>
 
 </form>
@@ -47,10 +46,10 @@
     <div class="header-wrap">
         <header class="row-fluid">
             <div class="span12">
-              <h1 class="logo">
-                <a href="/"><img src="/static/img/logo-2x.png" height="80" width="130" /></a>
-                <a href="/"><span class="logo-accent"><br>Inspector<br /></span></a>
-              </h1>
+
+                <h1 class="logo" style="line-height: 20px">
+                <a href="/"><img src="/static/img/logo-2x.png" height="60" width="100" /></a>
+<a href="/"><span class="logo-accent"><br>Inspector<br /></span></a></h1>
                 <nav>
 
                     <ul class="nav-menu">
