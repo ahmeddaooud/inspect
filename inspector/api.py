@@ -6,7 +6,6 @@ from flask import session, make_response, request, render_template, redirect, fl
 from inspector import app, db, views
 from inspector.util import tinyid
 from inspector.views import expand_recent_bins, expand_all_bins
-merchant_name=''
 
 def _response(object, code=200):
     jsonp = request.args.get('jsonp')
@@ -30,7 +29,7 @@ def bins():
     else:
         name = name[0:20]
 
-    if db.bin_exist(merchant_name):
+    if db.bin_exist(name):
         flash("Error")
         raise ("Duplicate name")
     else:
