@@ -4,7 +4,6 @@
 
 {% block sidebar %}{% endblock %}
 {% block binurl %}
-
 <form id="deleteBin" action="/api/v1/deletebin" method="POST">
   	<input type="hidden" name="name" value="{{bin.name}}" >
 </form>
@@ -27,12 +26,11 @@
       <div class="modal-body">
 
         <form id="inspector_config" action="/_inspector_config" method="POST">
-
-
           <input type="hidden" name="name" value="{{bin.name}}" >
 
              <label class="login-field-icon fui-user" for="response_delay">Response delay</label>
-   <select name="response_delay" style="padding-right: 143px;">
+   <select name="response_delay" style="padding-right: 104px;">
+    <option selected="{{ bin.response_delay }}">Current value ( {{ bin.response_delay }} )</option>
     <option value="0">0 Second</option>
     <option value="1">1 Second</option>
     <option value="3">3 Seconds</option>
@@ -46,9 +44,9 @@
      <option value="600">10 Minutes</option>
   </select><br/>
 
-
               <label class="login-field-icon fui-user" for="response_code">Response Code</label>
    <select name="response_code">
+    <option selected="{{ bin.response_code }}">Current value ( {{ bin.response_code }} )</option>
     <option value="100">100 - Continue</option>
      <option value="200">200 - OK</option>
      <option value="201">201 - Created</option>
@@ -66,13 +64,10 @@
      <option value="420">420 - Method Failure</option>
      <option value="444">444 - No Response</option>
      <option value="520">520 - Unknown Error</option>
-
   </select><br/>
 
-
         <label class="login-field-icon fui-user" for="response_msg">Response message</label>
-		<input class="input-xlarge" type="text" name="response_msg" style="padding-right: 43px;" autofocus><br/>
-
+		<input class="input-xlarge" type="text" value="{{ bin.response_msg }}" name="response_msg" style="padding-right: 43px;" autofocus><br/>
 
           </form>
 
@@ -87,22 +82,16 @@
 </div>
 
 
-
-
-
 {% endif %}
 
   <a class="btn btn-success" href="/{{bin.name}}?inspect" title="Refresh"><i class="icon-refresh icon-x"></i> </a>
   <input type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()"  style="padding-top: 4px; padding-bottom: 4px;"/>
   {% if bin.private %}<i class="icon-lock"></i>{% endif %}
 
-
-
 {% endblock %}
 
 {% block head %}
 {% endblock %}
-
 {% block content %}
     {% for request in bin.requests %}
       <div class="message-wrapper" id="message-wrapper-{{request.id}}">
@@ -136,11 +125,9 @@
       <h2 class="text-center">
         <input class="xxlarge input-xxlarge" type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()" style="border-color: rgb{{bin.color}}; border-width: 3px;" /></h2>
       <p class="text-center">{% if bin.private %}This is a private bin. Requests are only viewable from this computer.{% endif %}
-
       <hr>
       <div class="row-fluid">
         <div class="span6 offset3">
-
 
     {% endfor %}
 
@@ -155,7 +142,6 @@
         <!--<p><a href="https://www.payfort.com">Visit PAYFORT</a>.</p>-->
       </div>
 {% endblock %}
-
 
 {% macro message_detail(request) %}
 <div id="request-detail-{{request.id}}" class="request-detail">
@@ -192,7 +178,6 @@
     <h5>RAW BODY</h5>
     <div class="request-body" data-id="{{ request.id }}">
 <pre class="body prettyprint">{%if request.raw%}{{request.raw}}{%else%}<em>None</em>{%endif%}</pre>
-
   </div>
 </div>
 {% endmacro %}
