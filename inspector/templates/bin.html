@@ -29,8 +29,8 @@
           <input type="hidden" name="name" value="{{bin.name}}" >
 
              <label class="login-field-icon fui-user" for="response_delay">Response delay</label>
-   <select name="response_delay" style="padding-right: 104px;">
-    <option selected="{{ bin.response_delay }}">{{ bin.response_delay }}</option>
+   <select class="form-control" id="response_delay" name="response_delay" style="padding-right: 104px;">
+    <option selected="{{ bin.response_delay }}" value="{{ bin.response_delay }}">{{ bin.response_delay }}</option>
     <option value="0">0 Second</option>
     <option value="1">1 Second</option>
     <option value="3">3 Seconds</option>
@@ -45,8 +45,8 @@
   </select><br/>
 
               <label class="login-field-icon fui-user" for="response_code">Response Code</label>
-   <select name="response_code">
-    <option selected="{{ bin.response_code }}">{{ bin.response_code }}</option>
+   <select class="form-control" id="response_code" name="response_code">
+    <option selected="{{ bin.response_code }}" value="{{ bin.response_code }}">{{ bin.response_code }}</option>
     <option value="100">100 - Continue</option>
      <option value="200">200 - OK</option>
      <option value="201">201 - Created</option>
@@ -67,7 +67,7 @@
   </select><br/>
 
         <label class="login-field-icon fui-user" for="response_msg">Response message</label>
-		<input class="input-xlarge" type="text" value="{{ bin.response_msg }}" name="response_msg" id="response_msg" style="padding-right: 43px;" autofocus><br/>
+		<input class="form-control" type="text" value="{{ bin.response_msg }}" name="response_msg" id="response_msg" style="padding-right: 43px;" autofocus><br/>
 
           </form>
 
@@ -85,7 +85,8 @@
 {% endif %}
 
   <a class="btn btn-success" href="/{{bin.name}}?inspect" title="Refresh"><i class="icon-refresh icon-x"></i> </a>
-  <input class="form-control" type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()"/>
+
+  <input class="control" type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()"/>
   {% if bin.private %}<i class="icon-lock"></i>{% endif %}
 
 {% endblock %}
@@ -121,7 +122,7 @@
       </div>
     {% else %}
 
-      <h4 class="text-center">Inspector URL</h4>
+<h2 class="text-center"><strong>Inspector URL</strong></h2>
       <h2 class="text-center">
         <input class="xxlarge input-xxlarge" type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()" style="border-color: rgb{{bin.color}}; border-width: 3px;" /></h2>
       <p class="text-center">{% if bin.private %}This is a private bin. Requests are only viewable from this computer.{% endif %}
@@ -134,7 +135,7 @@
       <hr>
 
       <div class="alert-message block-message info">
-        <h4>Limits</h4>
+          <h4><strong>Limits</strong></h4>
         <p>This {% if bin.private %}<strong>private</strong>{% endif %}
         inspector will keep the last 50 requests made to it and remain available for 48 hours after it was created.
         However, data might be cleared at any time, so <strong>treat inspector as highly ephemeral</strong>.</p>

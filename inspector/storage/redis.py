@@ -67,5 +67,14 @@ class RedisStorage():
             raise KeyError("Bin not found")
 
     def bin_exist(self, name):
-            # to be handeled
+        key = self._key(name)
+        serialized_bin = self.redis.get(key)
+        try:
+            bin = Bin.load(serialized_bin)
+            return True
+        except:
             return False
+
+    def all_bins(self):
+        all = self.redis.keys()
+        return all

@@ -38,10 +38,11 @@ def home():
     try:
         if session['logged_in'] == False:
             return render_template('login.html')
-        else:
-            return render_template('home.html', recent=expand_recent_bins())
-    except Exception:
+    except:
         return render_template('login.html')
+    else:
+        return render_template('home.html', recent=expand_recent_bins())
+
 
 
 
@@ -74,15 +75,21 @@ def count_all_bins():
 
 @app.endpoint('views.admin')
 def admin():
-    if session['logged_in'] == True:
-        return render_template('admin.html', all=expand_all_bins(), count=count_all_bins())
+    try:
+        if session['logged_in'] == True:
+            return render_template('admin.html', all=expand_all_bins(), count=count_all_bins())
+    except:
+        return home()
     else:
         return home()
 
 @app.endpoint('views.config')
 def config():
-    if session['logged_in'] == True:
-        return render_template('config.html')
+    try:
+        if session['logged_in'] == True:
+            return render_template('config.html')
+    except:
+        return home()
     else:
         return home()
 
@@ -95,7 +102,7 @@ def bin_config():
         return "Not found\n", 404
     bin.response_code = int(float(request.form['response_code']))
     bin.response_msg = request.form['response_msg']
-    bin.response_delay = float(request.form['response_delay'])
+    bin.response_delay = int(float(request.form['response_delay']))
     return render_template('bin.html',
                            bin=bin,
                            base_url=request.scheme + '://' + request.host)
@@ -115,7 +122,9 @@ def bin(name):
             bin=bin,
             base_url=request.scheme+'://'+request.host)
     elif 'application/xhtml' in request.headers['Accept']:
-        if request.method == 'POST':
+        # Handel GET return here
+        # if request.method == "POST":
+        if request.method != '':
              update_recent_bins(name)
              update_all_bins(name)
              db.create_request(bin, request)
@@ -151,7 +160,7 @@ def docs(name):
 @app.endpoint('views.login')
 def login():
     try:
-            if request.form['password'] == 'daoud' and request.form['username'] == 'admin@payfort.com':
+            if request.form['password'] == 'daoud' and request.form['username'] == 'adaoud@payfort.com':
                 session['logged_in'] = True
                 return home()
             else:

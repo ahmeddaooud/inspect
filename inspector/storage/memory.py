@@ -60,3 +60,7 @@ class MemoryStorage():
             return True
         except:
             return False
+
+    def all_bins(self):
+        all = self.bins["*"]
+        return all

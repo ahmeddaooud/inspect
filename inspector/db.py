@@ -28,6 +28,9 @@ def lookup_bin(name):
     name=re.split(r"[/.]", name)[0]
     return db.lookup_bin(name)
 
+def all_bins():
+    return db.all_bins()
+
 def bin_exist(name):
     name=re.split(r"[/.]", name)[0]
     return db.bin_exist(name)
