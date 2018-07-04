@@ -33,7 +33,6 @@ def bins():
         flash("Error")
         raise ("Duplicate name")
     else:
-        session['error'] = False
         bin = db.create_bin(private, name)
         if bin.private:
             session[bin.name] = bin.secret_key

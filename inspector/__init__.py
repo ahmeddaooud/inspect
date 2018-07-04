@@ -89,7 +89,7 @@ app.add_url_rule('/_admin', 'views.admin')
 app.add_url_rule('/_config', 'views.config')
 app.add_url_rule('/_inspector_config', 'views.bin_config', methods=['POST'])
 app.add_url_rule('/_user_login', 'views.user_login')
-app.add_url_rule('/_login', 'views.login', methods=['POST'])
+app.add_url_rule('/_login', 'views.login', methods=['GET', 'POST'])
 app.add_url_rule('/_logout', 'views.logout', methods=['GET'])
 
 # app.add_url_rule('/robots.txt', redirect_to=url_for('static', filename='robots.txt'))

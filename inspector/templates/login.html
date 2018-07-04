@@ -3,33 +3,43 @@
 
 {% endblock %}
 {% block content %}
+ <div class="header-wrap">
+        <header class="form-inline row">
+                <h1  align="center">
+                <a><img src="/static/img/logo-2x.png" height="60" width="120" /></a>
+                    <a><span class="logo-accent"><font color="808080"><br>Inspector<br /></font></span></a></h1>
 
+        </header>
+    </div>
 {% if session['logged_in'] %}
 <p>You're logged in already!</p>
 {% else %}
 
-<div class="row-fluid">
+<div class="row">
     <div class="banner-hero">
-<form action="/_login" method="POST">
-	<div class="login">
-		<div class="login-screen">
-			<div class="app-title">
-				<h1>Login</h1>
-			</div>
+        <form action="/_login" method="POST" data-toggle="validator" role="form">
 
-			<div class="login-form">
-				<div class="control-group">
-				<input class="input-xlarge" type="text" placeholder="Username" name="username" style="margin-bottom: 10px;" autofocus>
-				<label class="login-field-icon fui-user" for="login-name"></label>
-				</div>
+<div class="form-group">
+	<div class="form-inline row">
+		<label for="username" class="control-label">Email</label></div>
+	<div class="form-inline row">
+    <input type="email" name="username" class="form-control" id="username" placeholder="Email" data-error="Filled email address is invalid" required autofocus>
+		<div class="help-block with-errors"></div></div>
+  </div>
+  <div>
 
-				<div class="control-group">
-				<input class="input-xlarge" type="password" placeholder="Password" name="password" style="margin-bottom: 10px;">
-				<label class="login-field-icon fui-lock" for="login-pass"></label>
-				</div>
+	<div class="form-group">
+	<div class="form-inline row">
+		<label for="password" class="control-label">Password</label></div>
+    <div class="form-inline row">
+      <div class="form-group">
+        <input type="password" name="password" data-minlength="1" class="form-control" id="password" placeholder="Password" required>
+		  </div></div>
 
+</div>
+<div class="form-inline row">
                 <input type="submit" value="Log in" class="btn btn-success" >
-
+</div>
 
  {% with messages = get_flashed_messages() %}
   {% if messages %}
@@ -44,8 +54,7 @@
 <h4 style="color:white;" class="login-field-icon fui-lock" >_</h4>
   {% endif %}
 {% endwith %}
-			</div>
-		</div>
+
 	</div>
 </form>
 </div>

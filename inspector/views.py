@@ -35,7 +35,15 @@ def expand_recent_bins():
 
 @app.endpoint('views.home')
 def home():
-    return render_template('home.html', recent=expand_recent_bins())
+    try:
+        if session['logged_in'] == False:
+            return render_template('login.html')
+        else:
+            return render_template('home.html', recent=expand_recent_bins())
+    except Exception:
+        return render_template('login.html')
+
+
 
 
 @app.endpoint('views.user_login')
@@ -142,11 +150,14 @@ def docs(name):
 
 @app.endpoint('views.login')
 def login():
-    if request.form['password'] == 'daoud' and request.form['username'] == 'admin':
-        session['logged_in'] = True
-        return home()
-    else:
-        flash('Invalid login credentials!')
+    try:
+            if request.form['password'] == 'daoud' and request.form['username'] == 'admin@payfort.com':
+                session['logged_in'] = True
+                return home()
+            else:
+                flash('Invalid login credentials!')
+                return userlogin()
+    except Exception:
         return userlogin()
 
 
