@@ -1,9 +1,16 @@
+
 {% extends "layout.html" %}
+
 {% block title %}PAYFORT Inspector - {{bin.name}}{% endblock %}
 {% block icon %}<link rel="shortcut icon" href="{{bin.favicon_uri}}" />{% endblock %}
 
 {% block sidebar %}{% endblock %}
+
+
 {% block binurl %}
+
+
+
 <form id="deleteBin" action="/api/v1/deletebin" method="POST">
   	<input type="hidden" name="name" value="{{bin.name}}" >
 </form>
@@ -30,7 +37,7 @@
 
              <label class="login-field-icon fui-user" for="response_delay">Response delay</label>
    <select class="form-control" id="response_delay" name="response_delay" style="padding-right: 104px;">
-    <option selected="{{ bin.response_delay }}" value="{{ bin.response_delay }}">{{ bin.response_delay }}</option>
+    <option selected="{{ bin.response_delay }}" value="{{ bin.response_delay }}">{{ bin.response_delay }} Second(s)</option>
     <option value="0">0 Second</option>
     <option value="1">1 Second</option>
     <option value="3">3 Seconds</option>
@@ -82,18 +89,30 @@
 </div>
 
 
-{% endif %}
+
 
   <a class="btn btn-success" href="/{{bin.name}}?inspect" title="Refresh"><i class="icon-refresh icon-x"></i> </a>
 
   <input class="control" type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()"/>
   {% if bin.private %}<i class="icon-lock"></i>{% endif %}
 
+{% else %}
+<h1 class="logo" style="line-height: 20px">
+<a href="/"><img src="/static/img/logo-2x.png" height="60" width="120" /></a>
+<a href="/"><span class="logo-accent"><br>Inspector<br /></span></a></h1>
+</br>
+ <input class="form-control" type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()"/>
+  {% if bin.private %}<i class="icon-lock"></i>{% endif %}
+
+{% endif %}
+
+
 {% endblock %}
 
 {% block head %}
 {% endblock %}
 {% block content %}
+
     {% for request in bin.requests %}
       <div class="message-wrapper" id="message-wrapper-{{request.id}}">
         <div class="message-list">
@@ -101,7 +120,7 @@
             <div class="span4">
               {{base_url}}<br>
               <span class="method">{{request.method}}</span> 
-              <span class="absolute-path">{{request.path}}</span><span class="querystring">{{request.query_string|to_qs}}</span>
+              <span class="absolute-path">{{request.path}}</span>
             </div>
             <div class="span6 content">
               {% if request.content_type %}<i class="icon-code"></i>{% endif %} {{request.content_type}}<br>
