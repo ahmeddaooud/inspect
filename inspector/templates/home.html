@@ -46,7 +46,7 @@
 <div>
     <div class="form-group">
 	<div class="form-inline row">
-                <input class="form-control" id="name" onkeydown = "if (event.keyCode == 13){document.getElementById('createButton').click();; event.preventDefault();};"  name="name" type="text" placeholder="Optional: Inspector name" onclick="this.select()"  style="margin-bottom: 13px;" autofocus>
+                 <input class="form-control" id="name" onkeydown = "if (event.keyCode == 13){document.getElementById('createButton').click();; event.preventDefault();};"  name="name" type="text" placeholder="Optional: Inspector name" onclick="this.select()"  style="margin-bottom: 13px;" autofocus>
     </div>
     </div>
     {% if session['error'] %}
@@ -98,7 +98,7 @@
             <form class="form-inline">
 
               <h2 class="banner-subheader">
-              <STRONG>Notes: </STRONG><br>
+                  <STRONG><kbd>Notes:</kbd></STRONG><br>
             <li>
              <i> You can leave the Inspector name empty to be auto generated. </i>
                 </li><li>

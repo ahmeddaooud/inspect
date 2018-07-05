@@ -14,12 +14,16 @@
 <form id="deleteBin" action="/api/v1/deletebin" method="POST">
   	<input type="hidden" name="name" value="{{bin.name}}" >
 </form>
+
+
+
+<input class="control" type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()" style="width: 204px; padding-top: 3px; padding-bottom: 3px;" readonly/>
+  {% if bin.private %}<i class="icon-lock"></i>{% endif %}
+
+<a class="btn btn-success" href="/{{bin.name}}?inspect" title="Refresh"><i class="icon-refresh icon-x"></i> </a>
 {% if session['logged_in'] %}
 
-<button type="submit" class="btn btn-danger" title="Destroy this inspector" form="deleteBin" onclick="if (confirm('Are you sure you want to destroy this inspector?')){}else{event.stopPropagation(); event.preventDefault();};"><i class="icon-trash"></i></button>
-
-
-<button type="button" class="btn btn-info" data-toggle="modal" data-target="#configModal" title="Edit response for this inspector"><i class="icon-edit"></i></button>
+<button type="button" class="btn btn-info" data-toggle="modal" data-target="#configModal" title="Edit response for this inspector"><i class="glyphicon glyphicon-cog"></i></button>
 <!-- Modal -->
 <div id="configModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -88,21 +92,13 @@
   </div>
 </div>
 
-
-
-
-  <a class="btn btn-success" href="/{{bin.name}}?inspect" title="Refresh"><i class="icon-refresh icon-x"></i> </a>
-
-  <input class="control" type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()"/>
-  {% if bin.private %}<i class="icon-lock"></i>{% endif %}
-
+<button type="submit" class="btn btn-danger" title="Destroy this inspector" form="deleteBin" onclick="if (confirm('Are you sure you want to destroy this inspector?')){}else{event.stopPropagation(); event.preventDefault();};"><i class="icon-trash"></i></button>
+</br>
 {% else %}
 <h1 class="logo" style="line-height: 20px">
 <a href="/"><img src="/static/img/logo-2x.png" height="60" width="120" /></a>
 <a href="/"><span class="logo-accent"><br>Inspector<br /></span></a></h1>
-</br>
- <input class="form-control" type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()"/>
-  {% if bin.private %}<i class="icon-lock"></i>{% endif %}
+
 
 {% endif %}
 
@@ -141,11 +137,13 @@
       </div>
     {% else %}
 
-<h2 class="text-center"><strong>Inspector URL</strong></h2>
-      <h2 class="text-center">
-        <input class="xxlarge input-xxlarge" type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()" style="border-color: rgb{{bin.color}}; border-width: 3px;" /></h2>
-      <p class="text-center">{% if bin.private %}This is a private bin. Requests are only viewable from this computer.{% endif %}
-      <hr>
+<h1 class="text-center"><strong>Empty inspector!</strong></h1>
+</br>
+      <h4 class="text-center">
+          <p><strong>This inspector is empty, send requests to <kbd class="uri">{{base_url}}/{{bin.name}}</kbd> to be shown.</strong></p></h2>
+          <p class="text-center">{% if bin.private %}<strong>This is a private bin. Requests are only viewable from this browser.</strong>{% endif %}
+      </p>
+      </h4>
       <div class="row-fluid">
         <div class="span6 offset3">
 

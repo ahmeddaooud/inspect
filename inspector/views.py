@@ -122,26 +122,24 @@ def bin(name):
             bin=bin,
             base_url=request.scheme+'://'+request.host)
     elif request.query_string != '':
-        if bin.private and session.get(bin.name) != bin.secret_key:
-            return "Private bin\n", 403
         update_recent_bins(name)
         update_all_bins(name)
         db.create_request(bin, request)
-        resp = make_response("ok\n")
-        resp.headers['Sponsored-By'] = "https://www.payfort.com"
+        if bin.private and session.get(bin.name) != bin.secret_key:
+            return "Private bin\n", 403
         return render_template('bin.html',
             bin=bin,
-            base_url=request.scheme+'://'+request.host)
+            base_url=request.scheme+'://'+request.host), 200
     elif 'application/xhtml' in request.headers['Accept']:
         if request.method == "POST":
              update_recent_bins(name)
              update_all_bins(name)
              db.create_request(bin, request)
-             resp = make_response("ok\n")
-             resp.headers['Sponsored-By'] = "https://www.payfort.com"
+        if bin.private and session.get(bin.name) != bin.secret_key:
+             return "Private bin\n", 403
         return render_template('bin.html',
                                    bin=bin,
-                                   base_url=request.scheme + '://' + request.host)
+                                   base_url=request.scheme + '://' + request.host), 200
     else:
         db.create_request(bin, request)
         # handel config here
