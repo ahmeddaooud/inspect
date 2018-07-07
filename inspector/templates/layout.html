@@ -27,6 +27,7 @@
 {% if session['logged_in'] %}
    <ul class="nav-menu">
        <li><strong>You're logged in!</strong></li>
+       <li> <a href="/"><strong>Home</strong></a> </li>
        <li> <a href="/_admin"><strong>Administrator</strong></a> </li>
        <li> <a href="/_config"><strong>Configurations</strong></a></li>
        <li> <a href="https://www.payfort.com" title="Payfort Testing Tools"><strong> </strong></a>  <a href="mailto:adaoud@payfort.com"><strong>Contact us!</strong></a></li>
@@ -56,7 +57,7 @@
                 <h1 class="logo" style="line-height: 20px">
                 <a href="/"><img src="/static/img/logo-2x.png" height="60" width="120" /></a>
 <a href="/"><span class="logo-accent"><br>Inspector<br /></span></a></h1>
-                    {% endif %}
+{% endif %}
                 <nav>
 
                     <ul class="nav-menu">
@@ -110,7 +111,7 @@
                      <a href="https://www.payfort.com" title="Learn More"><img src="/static/img/payfort.png"></a>
                 </div>
                 <h3 class="footer-slogan">
-                 <br> <font color="white">PAYFORT Inspector is brought to you by PAYFORT Quality Team.<font> <br>
+                 <br> <font color="white">Inspector is brought to you by PAYFORT Quality Team.<font> <br>
                 </h3>
 
                 <ul class="footer-menu">

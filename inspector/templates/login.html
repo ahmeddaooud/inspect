@@ -3,45 +3,44 @@
 
 {% endblock %}
 {% block content %}
- <div class="header-wrap">
-        <header class="form-inline row">
-                <h1  align="center">
+
+{% if session['logged_in'] %}
+
+ <div class="col-sm-6">
+        <header class="">
+                <h1  align="right">
                 <a><img src="/static/img/logo-2x.png" height="60" width="120" /></a>
                     <a><span class="logo-accent"><font color="808080"><br>Inspector<br /></font></span></a></h1>
 
         </header>
     </div>
-{% if session['logged_in'] %}
 <p>You're logged in already!</p>
 {% else %}
 
-<div class="row">
-    <div class="banner-hero">
-        <form action="/_login" method="POST" data-toggle="validator" role="form">
+<div class="login-box">
+    <div class="login-logo">
+        <h1><a><img src="/static/img/logo-2x.png" alt="My Ad Cubes"></a>
+        <a><span class="logo-accent"><font color="808080"><br>Inspector<br /></font></span></a></h1>
+    </div><!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">Sign in to start</p>
+        <form action="/_login" method="post" accept-charset="utf-8">        <div class="form-group has-feedback">
+            <input type="email" name="username" value="" placeholder="Email" class="form-control" id="login" maxlength="80" size="30" autofocus="" required>            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            <span><font color="red"></font></span>
+        </div>
+        <div class="form-group has-feedback">
+            <input type="password" name="password" value="" placeholder="Password" class="form-control" id="password" size="30" required>            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            <span><font color="red"></font></span>
+        </div>
+                <div class="row">
+            <div class="col-xs-8">
 
-<div class="form-group">
-	<div class="form-inline row">
-		<label for="username" class="control-label">Email</label></div>
-	<div class="form-inline row">
-    <input type="email" value="adaoud@payfort.com" name="username" class="form-control" id="username" placeholder="Email" data-error="Filled email address is invalid" required autofocus>
-		<div class="help-block with-errors"></div></div>
-  </div>
-  <div>
-
-	<div class="form-group">
-	<div class="form-inline row">
-		<label for="password" class="control-label">Password</label></div>
-    <div class="form-inline row">
-      <div class="form-group">
-        <input type="password" value="daoud" name="password" data-minlength="1" class="form-control" id="password" placeholder="Password" required>
-		  </div></div>
-
-</div>
-<div class="form-inline row">
-                <input type="submit" value="Log in" class="btn btn-success" >
-</div>
-
- {% with messages = get_flashed_messages() %}
+            </div><!-- /.col -->
+            <div class="col-xs-4">
+                <input type="submit" name="submit" value="Sign In" id="submit" class="btn btn-success btn-block btn-flat">            </div><!-- /.col -->
+        </div>
+        </form>        <a href="/">I forgot my password</a><br>
+                    {% with messages = get_flashed_messages() %}
   {% if messages %}
 
     {% for message in messages %}
@@ -54,11 +53,12 @@
 <h4 style="color:white;" class="login-field-icon fui-lock" >_</h4>
   {% endif %}
 {% endwith %}
+            </div>
+</div>
+
 
 	</div>
-</form>
-</div>
-</div>
+
 {% endif %}
 
 {% endblock %}
