@@ -28,8 +28,11 @@
    <ul class="nav-menu">
        <li><strong>You're logged in as {{ session['user_id'] }}</strong></li>
        <li> <a href="/"><strong>Home</strong></a> </li>
+       {% if session['user_role']=='admin' %}
        <li> <a href="/_admin"><strong>Administrator</strong></a> </li>
        <li> <a href="/_config"><strong>Configurations</strong></a></li>
+       {% endif %}
+
        <li> <a href="https://www.payfort.com" title="Payfort Testing Tools"><strong> </strong></a>  <a href="mailto:adaoud@payfort.com"><strong>Contact us!</strong></a></li>
        <li> <a href="/_logout"><strong>Logout</strong></a></li>
   </ul>
@@ -53,11 +56,11 @@
     <div class="header-wrap">
         <header class="row-fluid">
             <div class="span12">
-{% if session['logged_in'] %}
+
                 <h1 class="logo" style="line-height: 20px">
                 <a href="/"><img src="/static/img/logo-2x.png" height="60" width="120" /></a>
 <a href="/"><span class="logo-accent"><br>Inspector<br /></span></a></h1>
-{% endif %}
+
                 <nav>
 
                     <ul class="nav-menu">

@@ -1,9 +1,13 @@
-import json
 import time
-import urllib
 from flask import session, redirect, request, render_template, make_response, flash
-
+# from sqlalchemy import engine
+from sqlalchemy.orm import sessionmaker
+from tabledef import *
+engine = create_engine('sqlite:///inspector.db', echo=True)
 from inspector import app, db
+from tabledef import User
+import hashlib
+
 all_names = []
 allcount = 0
 
@@ -76,22 +80,22 @@ def count_all_bins():
 @app.endpoint('views.admin')
 def admin():
     try:
-        if session['logged_in'] == True:
+        if session['logged_in'] and session['user_role'] == 'admin':
             return render_template('admin.html', all=expand_all_bins(), count=count_all_bins())
     except:
-        return home()
+        return redirect("/")
     else:
-        return home()
+        return redirect("/")
 
 @app.endpoint('views.config')
 def config():
     try:
-        if session['logged_in'] == True:
+        if session['logged_in'] and session['user_role'] == 'admin':
             return render_template('config.html')
     except:
-        return home()
+        return redirect("/")
     else:
-        return home()
+        return redirect("/")
 
 @app.endpoint('views.bin_config')
 def bin_config():
@@ -167,11 +171,22 @@ def docs(name):
 @app.endpoint('views.login')
 def login():
     try:
-            if request.form['password'] == 'daoud' and request.form['username'] == 'adaoud@payfort.com':
+
+        POST_USERNAME = str(request.form['username'])
+        shaphrase = 'secure%hash&inspect'
+        POST_PASSWORD = hashlib.sha256(shaphrase + str(request.form['password'] + shaphrase)).hexdigest()
+
+        Session = sessionmaker(bind=engine)
+        s = Session()
+        query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
+        result = query.first()
+        if result:
+                # if request.form['password'] == 'daoud' and request.form['username'] == 'adaoud@payfort.com':
                 session['logged_in'] = True
-                session['user_id'] = request.form['username']
+                session['user_id'] = result.username
+                session['user_role'] = result.userpolicy
                 return redirect("/")
-            else:
+        else:
                 flash('Invalid login credentials!')
                 return redirect("/")
     except Exception:
@@ -182,4 +197,6 @@ def login():
 @app.endpoint('views.logout')
 def logout():
         session['logged_in'] = False
+        session['user_id'] = ''
+        session['user_role'] = ''
         return redirect("/")
