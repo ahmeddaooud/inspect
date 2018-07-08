@@ -119,19 +119,21 @@ def bin(name):
     except KeyError:
         return "Not found\n", 404
     if request.query_string == 'inspect' or ('application/xhtml' in request.headers['Accept']):
-        if request.method == "POST" and (request.query_string != 'inspect' or ''):
-            db.create_request(bin, request)
-            resp = make_response(bin.response_msg, bin.response_code)
-            resp.headers['Sponsored-By'] = "https://www.runscope.com"
-            time.sleep(bin.response_delay)
-            return resp
-        if bin.private and session.get(bin.name) != bin.secret_key:
-            return "Private bin\n", 403
-        update_recent_bins(name)
-        update_all_bins(name)
-        return render_template('bin.html',
-                               bin=bin,
-                               base_url=request.scheme + '://' + request.host)
+        try:
+             if request.referal == '' and (request.query_string == ''):
+                 db.create_request(bin, request)
+                 resp = make_response(bin.response_msg, bin.response_code)
+                 resp.headers['Sponsored-By'] = "https://www.runscope.com"
+                 time.sleep(bin.response_delay)
+                 return resp
+        except Exception:
+            if bin.private and session.get(bin.name) != bin.secret_key:
+                return "Private bin\n", 403
+            update_recent_bins(name)
+            update_all_bins(name)
+            return render_template('bin.html',
+                                bin=bin,
+                                base_url=request.scheme + '://' + request.host)
     else:
         db.create_request(bin, request)
         # handel config here
@@ -139,7 +141,6 @@ def bin(name):
         resp.headers['Sponsored-By'] = "https://www.runscope.com"
         time.sleep(bin.response_delay)
         return resp
-
 
 
 @app.endpoint('views.docs')
