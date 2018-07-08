@@ -2,11 +2,11 @@ import time
 from flask import session, redirect, request, render_template, make_response, flash
 # from sqlalchemy import engine
 from sqlalchemy.orm import sessionmaker
-from tabledef import *
-engine = create_engine('sqlite:///inspector.db', echo=True)
+# from tabledef import *
+# engine = create_engine('sqlite:///inspector.db', echo=True)
 from inspector import app, db
-from tabledef import User
-import hashlib
+# from tabledef import User
+# import hashlib
 
 all_names = []
 allcount = 0
@@ -182,7 +182,7 @@ def login():
         # query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
         # result = query.first()
         # if result:
-        if request.form['password'] == 'daoud' and request.form['username'] == 'adaoud@payfort.com':
+        if request.form['password'] == 'admin' and request.form['username'] == 'admin@payfort.com':
                 session['logged_in'] = True
                 session['user_id'] = 'adaoud@payfort.com'
                 session['user_role'] = 'admin'
@@ -197,7 +197,11 @@ def login():
 
 @app.endpoint('views.logout')
 def logout():
+    try:
         session['logged_in'] = False
         session['user_id'] = ''
         session['user_role'] = ''
+        return redirect("/")
+    except Exception:
+        flash('Exception!')
         return redirect("/")
