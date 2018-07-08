@@ -172,19 +172,20 @@ def docs(name):
 def login():
     try:
 
-        POST_USERNAME = str(request.form['username'])
-        shaphrase = 'secure%hash&inspect'
-        POST_PASSWORD = hashlib.sha256(shaphrase + str(request.form['password'] + shaphrase)).hexdigest()
-
-        Session = sessionmaker(bind=engine)
-        s = Session()
-        query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
-        result = query.first()
-        if result:
-                # if request.form['password'] == 'daoud' and request.form['username'] == 'adaoud@payfort.com':
+        # POST_USERNAME = str(request.form['username'])
+        # POST_PASSWORD = str(request.form['password'])
+        # shaphrase = 'secure%hash&inspect'
+        # POST_PASSWORD = hashlib.sha256(shaphrase + str(request.form['password'] + shaphrase)).hexdigest()
+        #
+        # Session = sessionmaker(bind=engine)
+        # s = Session()
+        # query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
+        # result = query.first()
+        # if result:
+        if request.form['password'] == 'daoud' and request.form['username'] == 'adaoud@payfort.com':
                 session['logged_in'] = True
-                session['user_id'] = result.username
-                session['user_role'] = result.userpolicy
+                # session['user_id'] = result.username
+                # session['user_role'] = result.userpolicy
                 return redirect("/")
         else:
                 flash('Invalid login credentials!')
@@ -197,6 +198,6 @@ def login():
 @app.endpoint('views.logout')
 def logout():
         session['logged_in'] = False
-        session['user_id'] = ''
-        session['user_role'] = ''
+        # session['user_id'] = ''
+        # session['user_role'] = ''
         return redirect("/")
