@@ -47,9 +47,9 @@ def home():
 
 
 
-@app.endpoint('views.user_login')
-def userlogin():
-    return render_template('login.html')
+# @app.endpoint('views.user_login')
+# def userlogin():
+#     return render_template('login.html')
 
 
 def update_all_bins(name):
@@ -169,7 +169,7 @@ def login():
     try:
             if request.form['password'] == 'daoud' and request.form['username'] == 'adaoud@payfort.com':
                 session['logged_in'] = True
-                return home()
+                return redirect("/")
             else:
                 flash('Invalid login credentials!')
                 return userlogin()
@@ -181,4 +181,4 @@ def login():
 @app.endpoint('views.logout')
 def logout():
         session['logged_in'] = False
-        return home()
+        return redirect("/")
