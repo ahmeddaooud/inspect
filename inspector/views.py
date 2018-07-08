@@ -122,6 +122,10 @@ def bin(name):
             request.query_string != '' and ('application/xhtml' in request.headers['Accept'])):
         if request.method == "POST":
             db.create_request(bin, request)
+            resp = make_response(bin.response_msg, bin.response_code)
+            resp.headers['Sponsored-By'] = "https://www.runscope.com"
+            time.sleep(bin.response_delay)
+            return resp
         if bin.private and session.get(bin.name) != bin.secret_key:
             return "Private bin\n", 403
         update_recent_bins(name)
