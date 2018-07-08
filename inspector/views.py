@@ -5,11 +5,13 @@ from sqlalchemy.orm import sessionmaker
 # from tabledef import *
 # engine = create_engine('sqlite:///inspector.db', echo=True)
 from inspector import app, db
+
 # from tabledef import User
 # import hashlib
 
 all_names = []
 allcount = 0
+
 
 def update_recent_bins(name):
     if 'recent' not in session:
@@ -20,7 +22,6 @@ def update_recent_bins(name):
     if len(session['recent']) > 20:
         session['recent'] = session['recent'][:20]
     session.modified = True
-
 
 
 def expand_recent_bins():
@@ -48,9 +49,6 @@ def home():
         return render_template('home.html', recent=expand_recent_bins())
 
 
-
-
-
 # @app.endpoint('views.user_login')
 # def userlogin():
 #     return render_template('login.html')
@@ -62,7 +60,7 @@ def update_all_bins(name):
 
 
 def expand_all_bins():
-    all=[]
+    all = []
     for name in all_names:
         try:
             all.append(db.lookup_bin(name))
@@ -87,6 +85,7 @@ def admin():
     else:
         return redirect("/")
 
+
 @app.endpoint('views.config')
 def config():
     try:
@@ -96,6 +95,7 @@ def config():
         return redirect("/")
     else:
         return redirect("/")
+
 
 @app.endpoint('views.bin_config')
 def bin_config():
@@ -111,65 +111,31 @@ def bin_config():
                            bin=bin,
                            base_url=request.scheme + '://' + request.host)
 
+
 @app.endpoint('views.bin')
 def bin(name):
     try:
         bin = db.lookup_bin(name)
     except KeyError:
         return "Not found\n", 404
-    if request.query_string == 'inspect':
+    if request.query_string == 'inspect' or (
+            request.query_string != '' and ('application/xhtml' in request.headers['Accept'])):
+        if request.method == "POST":
+            db.create_request(bin, request)
         if bin.private and session.get(bin.name) != bin.secret_key:
             return "Private bin\n", 403
         update_recent_bins(name)
+        update_all_bins(name)
         return render_template('bin.html',
-            bin=bin,
-            base_url=request.scheme+'://'+request.host)
+                               bin=bin,
+                               base_url=request.scheme + '://' + request.host)
     else:
         db.create_request(bin, request)
-        resp = make_response("ok\n")
+        # handel config here
+        resp = make_response(bin.response_msg, bin.response_code)
         resp.headers['Sponsored-By'] = "https://www.runscope.com"
+        time.sleep(bin.response_delay)
         return resp
-# def bin(name):
-#     try:
-#         bin = db.lookup_bin(name)
-#     except KeyError:
-#         return "Not found\n", 404
-#     if request.query_string == 'inspect':
-#         if bin.private and session.get(bin.name) != bin.secret_key:
-#             return "Private bin\n", 403
-#         update_recent_bins(name)
-#         update_all_bins(name)
-#         return render_template('bin.html',
-#             bin=bin,
-#             base_url=request.scheme+'://'+request.host)
-#     elif request.query_string != '':
-#         update_recent_bins(name)
-#         update_all_bins(name)
-#         db.create_request(bin, request)
-#         if bin.private and session.get(bin.name) != bin.secret_key:
-#             return "Private bin\n", 403
-#         return render_template('bin.html',
-#             bin=bin,
-#             base_url=request.scheme+'://'+request.host), 200
-#     elif 'application/xhtml' in request.headers['Accept']:
-#         if request.method == "POST":
-#              update_recent_bins(name)
-#              update_all_bins(name)
-#              db.create_request(bin, request)
-#         if bin.private and session.get(bin.name) != bin.secret_key:
-#              return "Private bin\n", 403
-#         return render_template('bin.html',
-#                                    bin=bin,
-#                                    base_url=request.scheme + '://' + request.host), 200
-#     else:
-#         db.create_request(bin, request)
-#         # handel config here
-#         time.sleep(bin.response_delay)
-#         resp = make_response(bin.response_msg, bin.response_code)
-#         resp.headers['Sponsored-By'] = "https://www.payfort.com"
-#         return resp
-
-
 
 
 
@@ -178,9 +144,9 @@ def docs(name):
     doc = db.lookup_doc(name)
     if doc:
         return render_template('doc.html',
-                content=doc['content'],
-                title=doc['title'],
-                recent=expand_recent_bins())
+                               content=doc['content'],
+                               title=doc['title'],
+                               recent=expand_recent_bins())
     else:
         return "Not found", 404
 
@@ -200,16 +166,15 @@ def login():
         # result = query.first()
         # if result:
         if request.form['password'] == 'admin' and request.form['username'] == 'admin@payfort.com':
-                session['logged_in'] = True
-                session['user_id'] = 'adaoud@payfort.com'
-                session['user_role'] = 'admin'
-                return redirect("/")
+            session['logged_in'] = True
+            session['user_id'] = 'adaoud@payfort.com'
+            session['user_role'] = 'admin'
+            return redirect("/")
         else:
-                flash('Invalid login credentials!')
-                return redirect("/")
+            flash('Invalid login credentials!')
+            return redirect("/")
     except Exception:
         return redirect("/")
-
 
 
 @app.endpoint('views.logout')
