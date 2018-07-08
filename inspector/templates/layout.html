@@ -26,7 +26,7 @@
 
 {% if session['logged_in'] %}
    <ul class="nav-menu">
-       <li><strong>You're logged in!</strong></li>
+       <li><strong>You're logged in as {{ session['user_id'] }}</strong></li>
        <li> <a href="/"><strong>Home</strong></a> </li>
        <li> <a href="/_admin"><strong>Administrator</strong></a> </li>
        <li> <a href="/_config"><strong>Configurations</strong></a></li>

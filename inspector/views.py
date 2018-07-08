@@ -169,12 +169,13 @@ def login():
     try:
             if request.form['password'] == 'daoud' and request.form['username'] == 'adaoud@payfort.com':
                 session['logged_in'] = True
+                session['user_id'] = request.form['username']
                 return redirect("/")
             else:
                 flash('Invalid login credentials!')
-                return userlogin()
+                return redirect("/")
     except Exception:
-        return userlogin()
+        return redirect("/")
 
 
 
