@@ -184,8 +184,8 @@ def login():
         # if result:
         if request.form['password'] == 'daoud' and request.form['username'] == 'adaoud@payfort.com':
                 session['logged_in'] = True
-                # session['user_id'] = result.username
-                # session['user_role'] = result.userpolicy
+                session['user_id'] = 'adaoud@payfort.com'
+                session['user_role'] = 'admin'
                 return redirect("/")
         else:
                 flash('Invalid login credentials!')
@@ -198,6 +198,6 @@ def login():
 @app.endpoint('views.logout')
 def logout():
         session['logged_in'] = False
-        # session['user_id'] = ''
-        # session['user_role'] = ''
+        session['user_id'] = ''
+        session['user_role'] = ''
         return redirect("/")
