@@ -1,13 +1,13 @@
 import time
 from flask import session, redirect, request, render_template, make_response, flash
-# from sqlalchemy import engine
-from sqlalchemy.orm import sessionmaker
-# from tabledef import *
-# engine = create_engine('sqlite:///inspector.db', echo=True)
+from sqlalchemy import engine
+
+from tabledef import *
+engine = create_engine('sqlite:///inspector.db', echo=True)
 from inspector import app, db
 
-# from tabledef import User
-# import hashlib
+from tabledef import User
+import hashlib
 
 all_names = []
 allcount = 0
@@ -179,20 +179,18 @@ def docs(name):
 def login():
     try:
 
-        # POST_USERNAME = str(request.form['username'])
-        # POST_PASSWORD = str(request.form['password'])
-        # shaphrase = 'secure%hash&inspect'
-        # POST_PASSWORD = hashlib.sha256(shaphrase + str(request.form['password'] + shaphrase)).hexdigest()
-        #
-        # Session = sessionmaker(bind=engine)
-        # s = Session()
-        # query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
-        # result = query.first()
-        # if result:
-        if request.form['password'] == 'admin' and request.form['username'] == 'admin@payfort.com':
+        POST_USERNAME = str(request.form['username'])
+        sha_phrase = 'secure%hash&inspect'
+        POST_PASSWORD = hashlib.sha256(sha_phrase + str(request.form['password'] + sha_phrase)).hexdigest()
+        from sqlalchemy.orm import sessionmaker
+        Sessionmaker = sessionmaker(bind=engine)
+        s = Sessionmaker()
+        query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
+        result = query.first()
+        if result:
             session['logged_in'] = True
-            session['user_id'] = 'adaoud@payfort.com'
-            session['user_role'] = 'admin'
+            session['user_id'] = result.username
+            session['user_role'] = result.userpolicy
             return redirect("/")
         else:
             flash('Invalid login credentials!')
@@ -209,5 +207,5 @@ def logout():
         session['user_role'] = ''
         return redirect("/")
     except Exception:
-        flash('Exception!')
+        session.clear()
         return redirect("/")
