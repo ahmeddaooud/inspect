@@ -122,6 +122,7 @@ def bin(name):
         if bin.private and session.get(bin.name) != bin.secret_key:
             return "Private bin\n", 403
         update_recent_bins(name)
+        update_all_bins(name)
         return render_template('bin.html',
             bin=bin,
             base_url=request.scheme+'://'+request.host)

@@ -1,5 +1,5 @@
 import os, urlparse
-DEBUG = False
+DEBUG = True
 REALM = os.environ.get('REALM', 'local')
 
 ROOT_URL = "http://localhost:4000"
@@ -29,7 +29,7 @@ REDIS_PREFIX = ""
 BUGSNAG_KEY = ""
 
 if REALM == 'prod':
-    DEBUG = False
+    DEBUG = True
     ROOT_URL = "https://payfort-inspector.herokuapp.com"
 
     FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", FLASK_SESSION_SECRET_KEY)
