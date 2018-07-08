@@ -118,9 +118,8 @@ def bin(name):
         bin = db.lookup_bin(name)
     except KeyError:
         return "Not found\n", 404
-    if request.query_string == 'inspect' or (
-            request.query_string != '' and ('application/xhtml' in request.headers['Accept'])):
-        if request.method == "POST":
+    if request.query_string == 'inspect' or ('application/xhtml' in request.headers['Accept']):
+        if request.method == "GET" and (request.query_string != 'inspect' or ''):
             db.create_request(bin, request)
             resp = make_response(bin.response_msg, bin.response_code)
             resp.headers['Sponsored-By'] = "https://www.runscope.com"
