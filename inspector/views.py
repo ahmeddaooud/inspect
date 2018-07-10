@@ -3,7 +3,7 @@ from flask import session, redirect, request, render_template, make_response, fl
 from sqlalchemy import engine
 
 from tabledef import *
-engine = create_engine('sqlite:///inspector.db', echo=True)
+# engine = create_engine('sqlite:///inspector.db', echo=True)
 from inspector import app, db
 
 from tabledef import User
@@ -189,7 +189,8 @@ def login():
         result = query.first()
         if result:
             session['logged_in'] = True
-            session['user_id'] = result.username
+            session['user_name'] = result.username
+            session['user_id'] = result.id
             session['user_role'] = result.userpolicy
             return redirect("/")
         else:
@@ -204,7 +205,9 @@ def logout():
     try:
         session['logged_in'] = False
         session['user_id'] = ''
+        session['user_name'] = ''
         session['user_role'] = ''
+        session.clear()
         return redirect("/")
     except Exception:
         session.clear()

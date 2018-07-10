@@ -1,4 +1,5 @@
 import json
+import yaml
 import operator
 import re
 
@@ -19,15 +20,55 @@ def _response(object, code=200):
     return resp
 
 
+
+def _safe_form_response(object, code=200):
+    jsonp = request.args.get('jsonp')
+    if jsonp:
+        resp = make_response('%s(%s)' % (jsonp, json.dumps(object)), 200)
+        resp.headers['Content-Type'] = 'text/javascript'
+    else:
+        #FORMAT FORM
+        json_format = json.dumps(object, sort_keys=True, indent=4, separators=(',', ': '))
+        json_format = json_format.replace('=', '\": \"')
+        json_format = json_format.replace('&', '\", \"')
+        json_format = json_format.replace('+', ' ')
+        json_format = '{' + json_format + '}'
+        resp = make_response(json_format, code)
+        resp.headers['Content-Type'] = 'application/json'
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
+
+
+
+def _safe_json_response(object, code=200):
+    jsonp = request.args.get('jsonp')
+    if jsonp:
+        resp = make_response('%s(%s)' % (jsonp, json.dumps(object)), 200)
+        resp.headers['Content-Type'] = 'text/javascript'
+    else:
+        #FORMAT JSON
+        json_format = json.dumps(object, sort_keys=True, indent=4, separators=(',', ': '))
+        json_safe_format = yaml.safe_load(json_format)
+        resp = make_response(json_safe_format, code)
+        resp.headers['Content-Type'] = 'application/json'
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
+
 @app.endpoint('api.bins')
 def bins():
     private = request.form.get('private') in ['true', 'on']
-    name = re.sub('[^A-Za-z0-9]+', '', request.form.get('name'))
+    name = request.form.get('name')
+    name = re.sub('[^A-Za-z0-9]+', '', name)
+    user_id = str(session['user_id'])
 
     if name == '':
         name = tinyid()
+        name = user_id + '_' + name
     else:
+        name = user_id + '_' + name
         name = name[0:20]
+
+
 
     if db.bin_exist(name):
         flash("Error")
@@ -71,19 +112,36 @@ def requests(bin):
     return _response([r.to_dict() for r in bin.requests])
 
 
+# @app.endpoint('api.request')
+# def request_(bin, name):
+#     try:
+#         bin = db.lookup_bin(bin)
+#     except KeyError:
+#         return _response({'error': "Inspector not found"}, 404)
+#
+#     for req in bin.requests:
+#         if req.id == name:
+#             return _response(req.to_dict())
+#
+#     return _response({'error': "Request not found"}, 404)
+
+
 @app.endpoint('api.request')
-def request_(bin, name):
+def request_(bin, ref):
     try:
         bin = db.lookup_bin(bin)
     except KeyError:
         return _response({'error': "Inspector not found"}, 404)
 
     for req in bin.requests:
-        if req.id == name:
-            return _response(req.to_dict())
+        if ref in req.body:
+            json_body = req.body
+            return _safe_json_response(json_body)
+        if req.form_data != []:
+            json_raw = req.raw
+            return _safe_form_response(json_raw)
 
     return _response({'error': "Request not found"}, 404)
-
 
 @app.endpoint('api.stats')
 def stats():
