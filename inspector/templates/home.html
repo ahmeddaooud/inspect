@@ -2,7 +2,7 @@
 {% block head %}
     <script type="text/javascript">
       function createBin() {
-        $.ajax({'url': '/api/v1/bins', 'type': 'POST',
+        $.ajax({'url': '/api/bins', 'type': 'POST',
           'data': { 'name': $('#name').val() , 'private': $('#private').prop("checked")},
           'success': function(data) {
             window.location.href = "/"+data['name']+"?inspect";
@@ -12,7 +12,7 @@
     </script>
     <script type="text/javascript">
       function deleteBin() {
-        $.ajax({'url': '/api/v1/deletebin', 'type': 'POST',
+        $.ajax({'url': '/api/deletebin', 'type': 'POST',
           'data': {'name': $('#deleteButton').attr("id")},
           'success': function(data) {
            window.location.href = "/";

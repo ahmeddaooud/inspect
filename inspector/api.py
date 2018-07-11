@@ -32,6 +32,20 @@ def _safe_form_response(object, code=200):
         json_format = json_format.replace('=', '\": \"')
         json_format = json_format.replace('&', '\", \"')
         json_format = json_format.replace('+', ' ')
+        json_format = json_format.replace('%40', '@')
+        json_format = json_format.replace('%22', '\"')
+        json_format = json_format.replace('%20', ' ')
+        json_format = json_format.replace('%2C', ',')
+        json_format = json_format.replace('%2F', '/')
+        json_format = json_format.replace('%28', '(')
+        json_format = json_format.replace('%29', ')')
+        json_format = json_format.replace('%7B', '{')
+        json_format = json_format.replace('%7D', '}')
+        json_format = json_format.replace('%5B', '[')
+        json_format = json_format.replace('%5D', ']')
+        json_format = json_format.replace('%3A', ':')
+        json_format = json_format.replace('\"{', '{')
+        json_format = json_format.replace('}\"', '}')
         json_format = '{' + json_format + '}'
         resp = make_response(json_format, code)
         resp.headers['Content-Type'] = 'application/json'
@@ -59,13 +73,13 @@ def bins():
     private = request.form.get('private') in ['true', 'on']
     name = request.form.get('name')
     name = re.sub('[^A-Za-z0-9]+', '', name)
-    user_id = str(session['user_id'])
+    # user_id = str(session['user_id'])
 
     if name == '':
         name = tinyid()
-        name = user_id + '_' + name
+        # name = user_id + '_' + name
     else:
-        name = user_id + '_' + name
+        # name = user_id + '_' + name
         name = name[0:20]
 
 
