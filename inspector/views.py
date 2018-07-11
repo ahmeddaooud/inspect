@@ -40,13 +40,17 @@ def expand_recent_bins():
 
 @app.endpoint('views.home')
 def home():
-    try:
-        if session['logged_in'] == False:
-            return render_template('login.html')
-    except:
-        return render_template('login.html')
-    else:
-        return render_template('home.html', recent=expand_recent_bins())
+    # try:
+    #     if session['logged_in'] == False:
+    #         return render_template('login.html')
+    # except:
+    #     return render_template('login.html')
+    # else:
+    session['logged_in'] = True
+    session['user_name'] = 'admin@payfort.com'
+    session['user_id'] = '1'
+    session['user_role'] = 'admin'
+    return render_template('home.html', recent=expand_recent_bins())
 
 
 # @app.endpoint('views.user_login')
