@@ -164,10 +164,10 @@ def request_(bin, ref):
         if ref in req.body:
             json_body = req.body
             return _safe_json_response(json_body)
-        elif req.form_data != []:
+        elif ref in req.form_data:
             json_raw = req.raw
             return _safe_form_response(json_raw)
-        elif req.query_string != [] or '':
+        elif ref in req.query_string:
             json_query = req.query_string
             return _safe_query_response(json_query)
 
