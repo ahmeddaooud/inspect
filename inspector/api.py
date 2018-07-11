@@ -52,6 +52,19 @@ def _safe_form_response(object, code=200):
         resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
 
+def _safe_query_response(object, code=200):
+    jsonp = request.args.get('jsonp')
+    if jsonp:
+        resp = make_response('%s(%s)' % (jsonp, json.dumps(object)), 200)
+        resp.headers['Content-Type'] = 'text/javascript'
+    else:
+        #FORMAT query
+        json_format = json.dumps(object, sort_keys=True)
+        resp = make_response(json_format, code)
+        resp.headers['Content-Type'] = 'application/json'
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+    return resp
+
 
 
 def _safe_json_response(object, code=200):
@@ -151,9 +164,12 @@ def request_(bin, ref):
         if ref in req.body:
             json_body = req.body
             return _safe_json_response(json_body)
-        if req.form_data != []:
+        elif req.form_data != []:
             json_raw = req.raw
             return _safe_form_response(json_raw)
+        elif req.query_string != [] or '':
+            json_query = req.query_string
+            return _safe_query_response(json_query)
 
     return _response({'error': "Request not found"}, 404)
 
