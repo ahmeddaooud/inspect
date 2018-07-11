@@ -16,3 +16,4 @@ gunicorn
 bugsnag
 blinker
 Flask-SqlAlchemy
+pyyaml
