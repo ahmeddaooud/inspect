@@ -164,14 +164,24 @@ def request_(bin, ref):
         if ref in req.body:
             json_body = req.body
             return _safe_json_response(json_body)
-        # elif ref in req.form_data:
-        #     json_raw = req.raw
-        #     return _safe_form_response(json_raw)
-        if ref in req.query_string:
+        if ref in req.form_data:
+            json_raw = req.raw
+            return _safe_form_response(json_raw)
+        if search(req.query_string, ref):
             json_query = req.query_string
             return _safe_query_response(json_query)
 
     return _response({'error': "Request not found"}, 404)
+
+
+
+def search(values, searchFor):
+    for k in values:
+        for v in values[k]:
+            if searchFor in v:
+                return True
+    return False
+
 
 @app.endpoint('api.stats')
 def stats():
