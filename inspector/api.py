@@ -60,8 +60,7 @@ def _safe_query_response(object, code=200):
     else:
         #FORMAT query
         json_format = json.dumps(object, sort_keys=True)
-        json_safe_format = yaml.safe_load(json_format)
-        resp = make_response(json_safe_format, code)
+        resp = make_response(json_format, code)
         resp.headers['Content-Type'] = 'application/json'
         resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
@@ -165,13 +164,13 @@ def request_(bin, ref):
         if ref in req.body:
             json_body = req.body
             return _safe_json_response(json_body)
-        elif ref in req.form_data:
-            json_raw = req.raw
-            return _safe_form_response(json_raw)
+        elif req.form_data != [] and 'application/x-www-form-urlencoded' in req.content_type:
+            if ref in req.raw:
+                json_raw = req.raw
+                return _safe_form_response(json_raw)
         else:
             for k in req.query_string:
-                for v in req.query_string[k]:
-                    if ref in v:
+                if ref in req.query_string[k]:
                         json_query = req.query_string
                         return _safe_query_response(json_query)
 
