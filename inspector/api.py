@@ -60,7 +60,8 @@ def _safe_query_response(object, code=200):
     else:
         #FORMAT query
         json_format = json.dumps(object, sort_keys=True)
-        resp = make_response(json_format, code)
+        json_safe_format = yaml.safe_load(json_format)
+        resp = make_response(json_safe_format, code)
         resp.headers['Content-Type'] = 'application/json'
         resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
