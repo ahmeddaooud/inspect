@@ -178,12 +178,6 @@ def request_(bin, ref):
     return _response({'error': "Request not found"}, 404)
 
 
-def search(values, searchFor):
-    for k in req.query_string:
-        for v in req.query_string[k]:
-            if ref in v:
-                return True
-    return False
 
 
 @app.endpoint('api.stats')
