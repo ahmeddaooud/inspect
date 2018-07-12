@@ -4,7 +4,9 @@ from cStringIO import StringIO
 
 from flask import Flask
 from flask_cors import CORS
-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 class WSGIRawBody(object):
     def __init__(self, application):
