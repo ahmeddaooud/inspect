@@ -59,7 +59,7 @@ def _safe_query_response(object, code=200):
         resp.headers['Content-Type'] = 'text/javascript'
     else:
         #FORMAT query
-        json_format = json.dumps(object, sort_keys=True)
+        json_format = json.dumps(object)
         resp = make_response(json_format, code)
         resp.headers['Content-Type'] = 'application/json'
         resp.headers['Access-Control-Allow-Origin'] = '*'
