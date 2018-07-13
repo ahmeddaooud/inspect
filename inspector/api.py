@@ -1,4 +1,6 @@
 import json
+import urllib2
+
 import yaml
 import operator
 import re
@@ -30,20 +32,22 @@ def _safe_form_response(object, code=200):
         #FORMAT FORM
         json_format = json.dumps(object, sort_keys=True, indent=4, separators=(',', ': '))
         json_format = json_format.replace('=', '\": \"')
+        # json_format = json_format.unicodestring.encode("ascii")
         json_format = json_format.replace('&', '\", \"')
         json_format = json_format.replace('+', ' ')
-        json_format = json_format.replace('%40', '@')
-        json_format = json_format.replace('%22', '\"')
-        json_format = json_format.replace('%20', ' ')
-        json_format = json_format.replace('%2C', ',')
-        json_format = json_format.replace('%2F', '/')
-        json_format = json_format.replace('%28', '(')
-        json_format = json_format.replace('%29', ')')
-        json_format = json_format.replace('%7B', '{')
-        json_format = json_format.replace('%7D', '}')
-        json_format = json_format.replace('%5B', '[')
-        json_format = json_format.replace('%5D', ']')
-        json_format = json_format.replace('%3A', ':')
+        json_format = urllib2.unquote(json_format)
+        # json_format = json_format.replace('%40', '@')
+        # json_format = json_format.replace('%22', '\"')
+        # json_format = json_format.replace('%20', ' ')
+        # json_format = json_format.replace('%2C', ',')
+        # json_format = json_format.replace('%2F', '/')
+        # json_format = json_format.replace('%28', '(')
+        # json_format = json_format.replace('%29', ')')
+        # json_format = json_format.replace('%7B', '{')
+        # json_format = json_format.replace('%7D', '}')
+        # json_format = json_format.replace('%5B', '[')
+        # json_format = json_format.replace('%5D', ']')
+        # json_format = json_format.replace('%3A', ':')
         json_format = json_format.replace('\"{', '{')
         json_format = json_format.replace('}\"', '}')
         json_format = '{' + json_format + '}'
@@ -138,19 +142,6 @@ def requests(bin):
 
     return _response([r.to_dict() for r in bin.requests])
 
-
-# @app.endpoint('api.request')
-# def request_(bin, name):
-#     try:
-#         bin = db.lookup_bin(bin)
-#     except KeyError:
-#         return _response({'error': "Inspector not found"}, 404)
-#
-#     for req in bin.requests:
-#         if req.id == name:
-#             return _response(req.to_dict())
-#
-#     return _response({'error': "Request not found"}, 404)
 
 
 @app.endpoint('api.request')
