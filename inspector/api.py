@@ -33,7 +33,7 @@ def _safe_form_response(object, code=200):
         json_format = json.dumps(object, sort_keys=True, indent=4, separators=(',', ': '))
         json_format = json_format.replace('=', '\": \"')
         json_format = json_format.replace('&', '\", \"')
-        # json_format = json_format.replace('+', ' ')
+        json_format = json_format.replace('+', ' ')
         json_format = urllib2.unquote(json_format)
         json_format = json_format.replace('\"{', '{')
         json_format = json_format.replace('}\"', '}')
