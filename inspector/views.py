@@ -118,22 +118,7 @@ def bin_config():
 
 @app.endpoint('views.bin')
 def bin(name):
-    if name == "AutoNotification" and not db.bin_exist(name):
-        db.create_bin(False, name)
-        update_recent_bins(name)
-        update_all_bins(name)
-    if name == "AutoRedirectUrl" and not db.bin_exist(name):
-        db.create_bin(False, name)
-        update_recent_bins(name)
-        update_all_bins(name)
-    if name == "AutoTransactionUrl" and not db.bin_exist(name):
-        db.create_bin(False, name)
-        update_recent_bins(name)
-        update_all_bins(name)
-    if name == "ahmdaoud" and not db.bin_exist(name):
-        db.create_bin(False, name)
-        update_recent_bins(name)
-        update_all_bins(name)
+    handle_automation_names(name)
     try:
         bin = db.lookup_bin(name)
     except KeyError:
@@ -153,6 +138,25 @@ def bin(name):
         resp.headers['Provided-By'] = "https://www.payfort.com"
         time.sleep(bin.response_delay)
         return resp
+
+
+def handle_automation_names(name):
+    if name == "AutoNotification" and not db.bin_exist(name):
+        db.create_bin(False, name)
+        update_recent_bins(name)
+        update_all_bins(name)
+    if name == "AutoRedirectUrl" and not db.bin_exist(name):
+        db.create_bin(False, name)
+        update_recent_bins(name)
+        update_all_bins(name)
+    if name == "AutoTransactionUrl" and not db.bin_exist(name):
+        db.create_bin(False, name)
+        update_recent_bins(name)
+        update_all_bins(name)
+    if name == "ahmdaoud" and not db.bin_exist(name):
+        db.create_bin(False, name)
+        update_recent_bins(name)
+        update_all_bins(name)
 
 
 # def bin(name):
