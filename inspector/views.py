@@ -118,6 +118,12 @@ def bin_config():
 
 @app.endpoint('views.bin')
 def bin(name):
+    if name == "AutoNotification" and not db.bin_exist(name):
+        db.create_bin(False, name)
+    if name == "AutoRedirectUrl" and not db.bin_exist(name):
+        db.create_bin(False, name)
+    if name == "AutoTransactionUrl" and not db.bin_exist(name):
+        db.create_bin(False, name)
     try:
         bin = db.lookup_bin(name)
     except KeyError:
