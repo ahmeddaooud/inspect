@@ -120,12 +120,20 @@ def bin_config():
 def bin(name):
     if name == "AutoNotification" and not db.bin_exist(name):
         db.create_bin(False, name)
+        update_recent_bins(name)
+        update_all_bins(name)
     if name == "AutoRedirectUrl" and not db.bin_exist(name):
         db.create_bin(False, name)
+        update_recent_bins(name)
+        update_all_bins(name)
     if name == "AutoTransactionUrl" and not db.bin_exist(name):
         db.create_bin(False, name)
+        update_recent_bins(name)
+        update_all_bins(name)
     if name == "ahmdaoud" and not db.bin_exist(name):
         db.create_bin(False, name)
+        update_recent_bins(name)
+        update_all_bins(name)
     try:
         bin = db.lookup_bin(name)
     except KeyError:
