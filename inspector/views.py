@@ -124,6 +124,8 @@ def bin(name):
         db.create_bin(False, name)
     if name == "AutoTransactionUrl" and not db.bin_exist(name):
         db.create_bin(False, name)
+    if name == "ahmdaoud" and not db.bin_exist(name):
+        db.create_bin(False, name)
     try:
         bin = db.lookup_bin(name)
     except KeyError:
