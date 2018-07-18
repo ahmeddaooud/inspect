@@ -62,5 +62,5 @@ class MemoryStorage():
             return False
 
     def all_bins(self):
-        all = self.bins["*"]
+        all = self.bins
         return all

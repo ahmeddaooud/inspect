@@ -108,7 +108,6 @@ def deletebin():
         session['recent'].remove(name)
     session.modified = True
     db.delete_bin(name)
-    views.all_names.remove(name)
     return render_template('home.html', recent=expand_recent_bins())
 
 @app.endpoint('api.bin')
