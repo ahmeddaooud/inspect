@@ -9,7 +9,7 @@ from inspector import app, db
 from tabledef import User
 import hashlib
 
-all_names = db.all_bins()
+all_names = []
 allcount = 0
 
 
@@ -69,7 +69,7 @@ def expand_all_bins():
         try:
             all.append(db.lookup_bin(name))
         except KeyError:
-            all = db.all_bins()
+            all = all_names.remove(name)
 
     return all
 
