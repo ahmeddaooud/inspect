@@ -9,8 +9,8 @@ from inspector import app, db
 from tabledef import User
 import hashlib
 
-all_names = []
-allcount = 0
+# all_names = []
+# allcount = 0
 
 
 def update_recent_bins(name):
@@ -58,24 +58,18 @@ def home():
 #     return render_template('login.html')
 
 
-def update_all_bins(name):
-    if name not in all_names:
-        all_names.insert(0, name)
+# def update_all_bins(name):
+    # if name not in all_names:
+    #     all_names.insert(0, name)
 
 
 def expand_all_bins():
-    all = []
-    for name in all_names:
-        try:
-            all.append(db.lookup_bin(name))
-        except KeyError:
-            all = all_names.remove(name)
-
+    all = db.get_bins()
     return all
 
 
 def count_all_bins():
-    count = len(all_names)
+    count = db.count_bins()
     return count
 
 
@@ -127,7 +121,7 @@ def bin(name):
         if bin.private and session.get(bin.name) != bin.secret_key:
             return "Private bin\n", 403
         update_recent_bins(name)
-        update_all_bins(name)
+        # update_all_bins(name)
         return render_template('bin.html',
             bin=bin,
             base_url=request.scheme+'://'+request.host)
@@ -141,22 +135,11 @@ def bin(name):
 
 
 def handle_automation_names(name):
-    if name == "AutoNotification" and not db.bin_exist(name):
+    auto_create = ['AutoNotification', 'AutoRedirectUrl', 'AutoTransactionUrl', 'ahmdaoud']
+    if name in auto_create and not db.bin_exist(name):
         db.create_bin(False, name)
         update_recent_bins(name)
-        update_all_bins(name)
-    if name == "AutoRedirectUrl" and not db.bin_exist(name):
-        db.create_bin(False, name)
-        update_recent_bins(name)
-        update_all_bins(name)
-    if name == "AutoTransactionUrl" and not db.bin_exist(name):
-        db.create_bin(False, name)
-        update_recent_bins(name)
-        update_all_bins(name)
-    if name == "ahmdaoud" and not db.bin_exist(name):
-        db.create_bin(False, name)
-        update_recent_bins(name)
-        update_all_bins(name)
+        # update_all_bins(name)
 
 
 # def bin(name):

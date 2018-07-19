@@ -47,7 +47,16 @@ class RedisStorage():
         return len(keys)
 
     def get_bins(self):
-        return sorted(self.bins)
+        bins = []
+        keys = self.redis.keys("{}_*".format(self.prefix))
+        for key in keys:
+            serialized_bin = self.redis.get(key)
+            try:
+                bin = Bin.load(serialized_bin)
+                bins.append(bin)
+            except TypeError:
+                self.redis.delete(key) # clear bad data
+        return sorted(bins)
 
     def count_requests(self):
         return int(self.redis.get(self._request_count_key()) or 0)
@@ -70,11 +79,8 @@ class RedisStorage():
         key = self._key(name)
         serialized_bin = self.redis.get(key)
         try:
-            bin = Bin.load(serialized_bin)
+            Bin.load(serialized_bin)
             return True
         except:
             return False
 
-    def all_bins(self):
-        all = self.redis.keys()
-        return all

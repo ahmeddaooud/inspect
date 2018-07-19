@@ -83,9 +83,8 @@ app.add_url_rule('/api/v1/<bin>/requests', 'api.requests', methods=['GET'])
 app.add_url_rule('/api/v1/<bin>/<ref>', 'api.request', methods=['GET'])
 
 app.add_url_rule('/api/stats', 'api.stats')
-app.add_url_rule('/api/inspectors', 'api.inspectors')
+# app.add_url_rule('/api/inspectors', 'api.inspectors')
 
-# app.add_url_rule('/bin', 'api.bins')
 
 app.add_url_rule('/_admin', 'views.admin')
 app.add_url_rule('/_config', 'views.config')
