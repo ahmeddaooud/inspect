@@ -3,8 +3,6 @@ import json
 import time
 import datetime
 import os
-import re
-
 import msgpack
 
 from .util import random_color
@@ -17,17 +15,21 @@ from inspector import config
 class Bin(object):
     max_requests = config.MAX_REQUESTS
 
-    def __init__(self, private=False, name=None, response_msg='ok\n', response_code=200, response_delay=0):
+    def __init__(self, private=False, name=None, response_msg='ok\n', response_code=200, response_delay=0,
+                 requests=[], color=random_color(), secret_key=None):
         self.created = time.time()
         self.private = private
-        self.color = random_color()
+        self.color = color
         self.name = name
         self.response_msg = response_msg
         self.response_code = response_code
         self.response_delay = response_delay
         self.favicon_uri = solid16x16gif_datauri(*self.color)
-        self.requests = []
-        self.secret_key = os.urandom(24) if self.private else None
+        self.requests = requests
+        if secret_key is None:
+            self.secret_key = os.urandom(24) if self.private else None
+        else:
+            self.secret_key = secret_key
 
     def json(self):
         return json.dumps(self.to_dict())
@@ -58,6 +60,18 @@ class Bin(object):
     @property
     def request_count(self):
         return len(self.requests)
+    #
+    # def response_msg(self):
+    #     return self.response_msg
+    #
+    # def response_code(self):
+    #     return self.response_code
+    #
+    # def response_delay(self):
+    #     return self.response_delay
+    # def update_resp_config(self, response_msg, response_code, response_delay):
+    #     self.response_msg.pop(1)
+
 
     def add(self, request):
         self.requests.insert(0, Request(request))

@@ -9,9 +9,6 @@ from inspector import app, db
 from tabledef import User
 import hashlib
 
-# all_names = []
-# allcount = 0
-
 
 def update_recent_bins(name):
     if 'recent' not in session:
@@ -58,10 +55,6 @@ def home():
 #     return render_template('login.html')
 
 
-# def update_all_bins(name):
-    # if name not in all_names:
-    #     all_names.insert(0, name)
-
 
 def expand_all_bins():
     all = db.get_bins()
@@ -78,10 +71,11 @@ def admin():
     try:
         if session['logged_in'] and session['user_role'] == 'admin':
             return render_template('admin.html', all=expand_all_bins(), count=count_all_bins())
-    except:
+        else:
+            return redirect("/")
+    except Exception:
         return redirect("/")
-    else:
-        return redirect("/")
+
 
 
 @app.endpoint('views.config')
@@ -89,9 +83,9 @@ def config():
     try:
         if session['logged_in'] and session['user_role'] == 'admin':
             return render_template('config.html')
-    except:
-        return redirect("/")
-    else:
+        else:
+            return redirect("/")
+    except Exception:
         return redirect("/")
 
 
@@ -99,14 +93,25 @@ def config():
 def bin_config():
     name = request.form['name']
     try:
-        bin = db.lookup_bin(name)
+        db.lookup_bin(name)
     except KeyError:
         return "Not found\n", 404
-    bin.response_code = int(float(request.form['response_code']))
-    bin.response_msg = request.form['response_msg']
-    bin.response_delay = int(float(request.form['response_delay']))
+    org_bin = db.get_bin(name)
+    org_private = org_bin.private
+    org_requests = org_bin.requests
+    org_color = org_bin.color
+    org_secret_key = org_bin.secret_key
+    updated_bin = db.update_bin(org_private,
+                                name,
+                                request.form['response_msg'],
+                                int(float(request.form['response_code'])),
+                                int(float(request.form['response_delay'])),
+                                org_requests,
+                                org_color,
+                                org_secret_key)
+
     return render_template('bin.html',
-                           bin=bin,
+                           bin=updated_bin,
                            base_url=request.scheme + '://' + request.host)
 
 
@@ -139,35 +144,7 @@ def handle_automation_names(name):
     if name in auto_create and not db.bin_exist(name):
         db.create_bin(False, name)
         update_recent_bins(name)
-        # update_all_bins(name)
 
-
-# def bin(name):
-#     try:
-#         bin = db.lookup_bin(name)
-#     except KeyError:
-#         return "Not found\n", 404
-#     if request.query_string == 'inspect' or ('application/xhtml' in request.headers['Accept']):
-#             if request.query_string == '' and request.content_length > 1:
-#                  db.create_request(bin, request)
-#                  resp = make_response(bin.response_msg, bin.response_code)
-#                  resp.headers['Sponsored-By'] = "https://www.runscope.com"
-#                  time.sleep(bin.response_delay)
-#                  return resp
-#             if bin.private and session.get(bin.name) != bin.secret_key:
-#                 return "Private bin\n", 403
-#             update_recent_bins(name)
-#             update_all_bins(name)
-#             return render_template('bin.html',
-#                                 bin=bin,
-#                                 base_url=request.scheme + '://' + request.host)
-#     else:
-#         db.create_request(bin, request)
-#         # handel config here
-#         resp = make_response(bin.response_msg, bin.response_code)
-#         resp.headers['Sponsored-By'] = "https://www.runscope.com"
-#         time.sleep(bin.response_delay)
-#         return resp
 
 
 @app.endpoint('views.docs')

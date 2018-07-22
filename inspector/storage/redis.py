@@ -22,11 +22,18 @@ class RedisStorage():
     def _request_count_key(self):
         return '{}-requests'.format(self.prefix)
 
-    def create_bin(self, private=False, name=None):
+    def create_bin(self, private=False, name=None, ):
         bin = Bin(private, name)
         key = self._key(bin.name)
         self.redis.set(key, bin.dump())
         self.redis.expireat(key, int(bin.created+self.bin_ttl))
+        return bin
+
+    def update_bin(self, private=False, name=None, response_msg='ok\n', response_code=200, response_delay=0, requests=[], color=None, secret_key=None):
+        bin = Bin(private, name, response_msg, response_code, response_delay, requests, color, secret_key)
+        key = self._key(bin.name)
+        self.redis.set(key, bin.dump())
+        self.redis.expireat(key, int(bin.created + self.bin_ttl))
         return bin
 
     def delete_bin(self, name):
@@ -41,6 +48,7 @@ class RedisStorage():
 
         self.redis.setnx(self._request_count_key(), 0)
         self.redis.incr(self._request_count_key())
+
 
     def count_bins(self):
         keys = self.redis.keys("{}_*".format(self.prefix))
@@ -57,6 +65,15 @@ class RedisStorage():
             except TypeError:
                 self.redis.delete(key) # clear bad data
         return sorted(bins)
+
+    def get_bin(self, name):
+        key = self._key(name)
+        serialized_bin = self.redis.get(key)
+        try:
+            bin = Bin.load(serialized_bin)
+            return bin
+        except TypeError:
+            raise Exception('Bin Not Found')
 
     def count_requests(self):
         return int(self.redis.get(self._request_count_key()) or 0)
@@ -81,6 +98,6 @@ class RedisStorage():
         try:
             Bin.load(serialized_bin)
             return True
-        except:
+        except TypeError:
             return False
 

@@ -5,10 +5,10 @@ import yaml
 import operator
 import re
 
-from flask import session, make_response, request, render_template, redirect, flash
-from inspector import app, db, views
+from flask import session, make_response, request, render_template, flash
+from inspector import app, db
 from inspector.util import tinyid
-from inspector.views import expand_recent_bins, expand_all_bins
+from inspector.views import expand_recent_bins
 
 def _response(object, code=200):
     jsonp = request.args.get('jsonp')
@@ -78,13 +78,10 @@ def bins():
     private = request.form.get('private') in ['true', 'on']
     name = request.form.get('name')
     name = re.sub('[^A-Za-z0-9]+', '', name)
-    # user_id = str(session['user_id'])
 
     if name == '':
         name = tinyid()
-        # name = user_id + '_' + name
     else:
-        # name = user_id + '_' + name
         name = name[0:20]
 
 

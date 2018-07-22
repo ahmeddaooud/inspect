@@ -15,32 +15,48 @@ except ImportError, e:
 
 db = klass(bin_ttl)
 
+
 def create_bin(private=False, name=None):
     return db.create_bin(private, name)
+
 
 def delete_bin(name):
     return db.delete_bin(name)
 
+
+def get_bin(name):
+    return db.get_bin(name)
+
+
+def update_bin(private=False, name=None, response_msg='ok\n', response_code=200, response_delay=0, requests=[], color=None, secret_key=None):
+    return db.update_bin(private, name, response_msg, response_code, response_delay, requests, color, secret_key)
+
+
 def create_request(bin, request):
     return db.create_request(bin, request)
 
+
 def lookup_bin(name):
-    name=re.split(r"[/.]", name)[0]
+    name = re.split(r"[/.]", name)[0]
     return db.lookup_bin(name)
 
+
 def bin_exist(name):
-    name=re.split(r"[/.]", name)[0]
+    name = re.split(r"[/.]", name)[0]
     return db.bin_exist(name)
+
 
 def count_bins():
     return db.count_bins()
 
+
 def get_bins():
     return db.get_bins()
+
 
 def count_requests():
     return db.count_requests()
 
+
 def avg_req_size():
     return db.avg_req_size()
-
