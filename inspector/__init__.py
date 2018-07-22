@@ -78,7 +78,7 @@ app.add_url_rule('/<path:name>', 'views.bin', methods=['GET', 'POST', 'DELETE', 
 app.add_url_rule('/docs/<name>', 'views.docs')
 # app.add_url_rule('/api/bins', 'api.bins', methods=['POST'])
 app.add_url_rule('/api/bins/<name>', 'api.bin', methods=['GET'])
-app.add_url_rule('/api/deletebin', 'api.deletebin', methods=['GET', 'POST'])
+app.add_url_rule('/api/delete_inspector', 'api.deletebin', methods=['GET', 'POST'])
 app.add_url_rule('/api/v1/<bin>/requests', 'api.requests', methods=['GET'])
 app.add_url_rule('/api/v1/<bin>/<ref>', 'api.request', methods=['GET'])
 
@@ -87,7 +87,7 @@ app.add_url_rule('/api/stats', 'api.stats')
 
 
 app.add_url_rule('/_admin', 'views.admin')
-app.add_url_rule('/_create_bin', 'views.create_bin', methods=['POST'])
+app.add_url_rule('/_create_inspector', 'views.create_bin', methods=['POST'])
 app.add_url_rule('/_config', 'views.config')
 app.add_url_rule('/_inspector_config', 'views.bin_config', methods=['POST'])
 # app.add_url_rule('/_user_login', 'views.user_login')

@@ -11,7 +11,7 @@
 
 
 
-<form id="deleteBin" action="/api/deletebin" method="POST">
+<form id="delete_inspector" action="/api/delete_inspector" method="POST">
   	<input type="hidden" name="name" value="{{bin.name}}" >
 </form>
 
@@ -92,7 +92,7 @@
   </div>
 </div>
 
-<button type="submit" class="btn btn-danger" title="Destroy this inspector" form="deleteBin" onclick="if (confirm('Are you sure you want to destroy this inspector?')){}else{event.stopPropagation(); event.preventDefault();};"><i class="icon-trash"></i></button>
+<button type="submit" class="btn btn-danger" title="Destroy this inspector" form="delete_inspector" onclick="if (confirm('Are you sure you want to destroy this inspector?')){}else{event.stopPropagation(); event.preventDefault();};"><i class="icon-trash"></i></button>
 </br>
 {% else %}
 

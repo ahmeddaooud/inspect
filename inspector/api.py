@@ -104,7 +104,8 @@ def deletebin():
         session['recent'].remove(name)
     session.modified = True
     db.delete_bin(name)
-    return render_template('home.html', recent=expand_recent_bins())
+    render_template('home.html', recent=expand_recent_bins())
+    return redirect("/")
 
 @app.endpoint('api.bin')
 def bin(name):
