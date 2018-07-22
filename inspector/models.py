@@ -16,10 +16,13 @@ class Bin(object):
     max_requests = config.MAX_REQUESTS
 
     def __init__(self, private=False, name=None, response_msg='ok\n', response_code=200, response_delay=0,
-                 requests=[], color=random_color(), secret_key=None):
+                 requests=[], color=None, secret_key=None):
         self.created = time.time()
         self.private = private
-        self.color = color
+        if color is None:
+            self.color = random_color()
+        else:
+            self.color = color
         self.name = name
         self.response_msg = response_msg
         self.response_code = response_code
