@@ -9,12 +9,14 @@ from ..models import Bin
 
 from inspector import config
 
+
 class RedisStorage():
     prefix = config.REDIS_PREFIX
 
     def __init__(self, bin_ttl):
         self.bin_ttl = bin_ttl
-        self.redis = redis.StrictRedis(host=config.REDIS_HOST, port=config.REDIS_PORT, db=config.REDIS_DB, password=config.REDIS_PASSWORD)
+        self.redis = redis.StrictRedis(host=config.REDIS_HOST, port=config.REDIS_PORT, db=config.REDIS_DB,
+                                       password=config.REDIS_PASSWORD)
 
     def _key(self, name):
         return '{}_{}'.format(self.prefix, name)
@@ -26,10 +28,11 @@ class RedisStorage():
         bin = Bin(private, name)
         key = self._key(bin.name)
         self.redis.set(key, bin.dump())
-        self.redis.expireat(key, int(bin.created+self.bin_ttl))
+        self.redis.expireat(key, int(bin.created + self.bin_ttl))
         return bin
 
-    def update_bin(self, private=False, name=None, response_msg='ok\n', response_code=200, response_delay=0, requests=[], color=None, secret_key=None):
+    def update_bin(self, private=False, name=None, response_msg='ok\n', response_code=200, response_delay=0,
+                   requests=[], color=None, secret_key=None):
         bin = Bin(private, name, response_msg, response_code, response_delay, requests, color, secret_key)
         key = self._key(bin.name)
         self.redis.set(key, bin.dump())
@@ -37,18 +40,17 @@ class RedisStorage():
         return bin
 
     def delete_bin(self, name):
-           key = self._key(name)
-           self.redis.delete(key)
+        key = self._key(name)
+        self.redis.delete(key)
 
     def create_request(self, bin, request):
         bin.add(request)
         key = self._key(bin.name)
         self.redis.set(key, bin.dump())
-        self.redis.expireat(key, int(bin.created+self.bin_ttl))
+        self.redis.expireat(key, int(bin.created + self.bin_ttl))
 
         self.redis.setnx(self._request_count_key(), 0)
         self.redis.incr(self._request_count_key())
-
 
     def count_bins(self):
         keys = self.redis.keys("{}_*".format(self.prefix))
@@ -63,7 +65,7 @@ class RedisStorage():
                 bin = Bin.load(serialized_bin)
                 bins.append(bin)
             except TypeError:
-                self.redis.delete(key) # clear bad data
+                self.redis.delete(key)  # clear bad data
         return sorted(bins)
 
     def get_bin(self, name):
@@ -89,7 +91,7 @@ class RedisStorage():
             bin = Bin.load(serialized_bin)
             return bin
         except TypeError:
-            self.redis.delete(key) # clear bad data
+            self.redis.delete(key)  # clear bad data
             raise KeyError("Bin not found")
 
     def bin_exist(self, name):
@@ -100,4 +102,3 @@ class RedisStorage():
             return True
         except TypeError:
             return False
-

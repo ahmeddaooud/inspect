@@ -28,7 +28,8 @@ def get_bin(name):
     return db.get_bin(name)
 
 
-def update_bin(private=False, name=None, response_msg='ok\n', response_code=200, response_delay=0, requests=[], color=None, secret_key=None):
+def update_bin(private=False, name=None, response_msg='ok\n', response_code=200, response_delay=0, requests=[],
+               color=None, secret_key=None):
     return db.update_bin(private, name, response_msg, response_code, response_delay, requests, color, secret_key)
 
 

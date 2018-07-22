@@ -5,7 +5,8 @@ import yaml
 import operator
 import re
 
-from flask import session, make_response, request, render_template, flash
+from flask import session, make_response, request, redirect, render_template, flash
+
 from inspector import app, db
 from inspector.util import tinyid
 from inspector.views import expand_recent_bins
@@ -73,27 +74,25 @@ def _safe_json_response(object, code=200):
         resp.headers['Access-Control-Allow-Origin'] = '*'
     return resp
 
-@app.endpoint('api.bins')
-def bins():
-    private = request.form.get('private') in ['true', 'on']
-    name = request.form.get('name')
-    name = re.sub('[^A-Za-z0-9]+', '', name)
-
-    if name == '':
-        name = tinyid()
-    else:
-        name = name[0:20]
-
-
-
-    if db.bin_exist(name):
-        flash("Error")
-        raise ("Duplicate name")
-    else:
-        bin = db.create_bin(private, name)
-        if bin.private:
-            session[bin.name] = bin.secret_key
-        return _response(bin.to_dict())
+# @app.endpoint('api.bins')
+# def bins():
+#     private = request.form.get('private') in ['true', 'on']
+#     name = request.form.get('name')
+#     name = re.sub('[^A-Za-z0-9]+', '', name)
+#
+#     if name == '':
+#         name = tinyid()
+#     else:
+#         name = name[0:20]
+#
+#     if db.bin_exist(name):
+#         flash('Duplicate inspector name!')
+#         return redirect("/")
+#     else:
+#         bin = db.create_bin(private, name)
+#         if bin.private:
+#             session[bin.name] = bin.secret_key
+#         return _response(bin.to_dict())
 
 
 @app.endpoint('api.deletebin')

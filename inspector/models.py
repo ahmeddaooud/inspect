@@ -63,6 +63,7 @@ class Bin(object):
     @property
     def request_count(self):
         return len(self.requests)
+
     #
     # def response_msg(self):
     #     return self.response_msg
@@ -74,7 +75,6 @@ class Bin(object):
     #     return self.response_delay
     # def update_resp_config(self, response_msg, response_code, response_delay):
     #     self.response_msg.pop(1)
-
 
     def add(self, request):
         self.requests.insert(0, Request(request))
@@ -178,4 +178,3 @@ class Request(object):
     #         else:
     #             fields.append((k,v))
     #     return iter(sorted(fields) + sorted(files))
-

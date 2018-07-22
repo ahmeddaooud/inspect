@@ -1,124 +1,85 @@
 {% extends "layout.html" %}
 {% block head %}
-    <script type="text/javascript">
-      function createBin() {
-        $.ajax({'url': '/api/bins', 'type': 'POST',
-          'data': { 'name': $('#name').val() , 'private': $('#private').prop("checked")},
-          'success': function(data) {
-            window.location.href = "/"+data['name']+"?inspect";
-          }
-        });
-      }
-    </script>
-    <script type="text/javascript">
-      function deleteBin() {
-        $.ajax({'url': '/api/deletebin', 'type': 'POST',
-          'data': {'name': $('#deleteButton').attr("id")},
-          'success': function(data) {
-           window.location.href = "/";
-          }
-        });
-      }
-    </script>
 {% endblock %}
 {% block content %}
 
-    <div class="row-fluid">
-        <div class="banner-hero">
-            <h2 class="banner-header"><span class="accent-bg"><strong>Start New Inspection</strong></strong></span></h2>
+<div class="row-fluid">
+    <div class="banner-hero">
+        <h2 class="banner-header"><span class="accent-bg"><strong>Start New Inspection</strong></strong></span></h2>
 
 
-    <!--<p class=error><strong>Error:</strong> {{ error }}-->
+        <form action="/_create_bin" method="post" accept-charset="utf-8">
 
-            <form name="createbin" method="POST">
-
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-
-    {% for message in messages %}
-
-<h1 style="color:red;" class="login-field-icon fui-lock" >{{ message }} </h1>
-
-    {% endfor %}
-
-  {% endif %}
-{% endwith %}
-<div>
-    <div class="form-group">
-	<div class="form-inline row">
-                 <input class="form-control" id="name" onkeydown = "if (event.keyCode == 13){document.getElementById('createButton').click();; event.preventDefault();};"  name="name" type="text" placeholder="Optional: Inspector name" autocorrect="off" autocapitalize="off" spellcheck="false" onclick="this.select()"  style="margin-bottom: 13px;" autofocus>
-    </div>
-    </div>
-    {% if session['error'] %}
-          <ul id="error">
-
-            <li>
-                Duplicate inspector name
-            </li>
-
-          </ul>
-        {% endif %}
-    <b></b>
-</div>
-                <div class="form-group">
-	<div class="form-inline row">
-                <p class="button">
-                <a class="btn btn-lg btn-success" id="createButton" onclick="createBin()"><i class="icon-plus-sign" ></i> Create an Inspector </a>
-              </p>
-    </div>
-                </div>
-
-
-                <!--</div>-->
-<!--<p class="banner-button">-->
-                <!--<a class="btn btn-large btn-danger" id="deleteButton" onclick="deleteBin()" ><i class="icon-minus-sign" ></i> Delete This Inspector </a>-->
-              <!--</p>-->
-
-
-            </form>
-
-            <div class="form-group">
-	<div class="form-inline row">
-
-              <p class="banner-option">
-                <label class="checkbox" title="Private inspectors can only be viewed by you using a browser cookie">
-                  <input id="private" type="checkbox" /> &nbsp;Private <small>(only viewable from this browser)</small>
-                </label>
-              </p>
-            </form>
-            <h3 class="banner-subheader">
-              PAYFORT Inspector gives you a URL that allows you to easily test webhooks and other types of HTTP requests.<br>
-              Use PAYFORT Inspector to see what your HTTP client is sending or to inspect and debug notifications.</h3>
-
-
-                       </form>
-
-    </div>
+            <div class="form-inline row">
+                <input class="form-control" id="name"
+                       onkeydown="if (event.keyCode == 13){document.getElementById('createButton').click();; event.preventDefault();};"
+                       name="name" type="text" placeholder="Optional: Inspector name" autocorrect="off"
+                       autocapitalize="off" spellcheck="false" onclick="this.select()" style="margin-bottom: 13px;"
+                       autofocus>
             </div>
-            <form class="form-inline">
+            <div class="banner-option">
+                <label class="checkbox" title="Private inspectors can only be viewed by you using a browser cookie">
+                    <input id="private" name="private" type="checkbox"/> &nbsp;Private
+                    <small>(only viewable from this browser)</small>
+                </label>
+            </div>
 
-              <h2 class="banner-subheader">
-                  <STRONG>Notes:</STRONG><br>
-            <li>
-             <i> You can leave the Inspector name empty to be auto generated. </i>
-                </li><li>
-              <i>
-              Inspector name will be shorten to have 20 alphanumeric characters maximum. </i>
-                  </li><li>
-              <i>
-              Inspector name cannot be duplicated.</i>
-                  </li><li>
-             <i>
-              You can use Inspector url as a return_url to contain returned parameters.</i>
-            </li><li>
-                  <i>
-              Response message, code and delay can be configured individually per inspector.</i>
-            </li><li>
-             <i>
-              Inspector is under development, so don't be shy to report an issue.</i>
-            </li>
-              </h2>
-            </form>
+
+            <div class="form-inline row">
+                <input type="submit" name="submit" value="Create an inspector" id="submit"
+                       class="btn btn-lg btn-success">
+            </div>
+
+        </form>
+        <div class="form-inline row">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <h4 style="color:red;" class="login-field-icon fui-lock">{{ message }} </h4>
+            {% endfor %}
+            {% else %}
+            <h4 style="color:white;" class="login-field-icon fui-lock">_</h4>
+            {% endif %}
+            {% endwith %}
+
         </div>
+
+
+        <h3 class="banner-subheader">
+            PAYFORT Inspector gives you a URL that allows you to easily test webhooks and other types of HTTP
+            requests.<br>
+            Use PAYFORT Inspector to see what your HTTP client is sending or to inspect and debug notifications.</h3>
+
+
+        <form class="form-inline">
+
+            <h2 class="banner-subheader">
+                <STRONG>Notes:</STRONG><br>
+                <li>
+                    <i> You can leave the Inspector name empty to be auto generated. </i>
+                </li>
+                <li>
+                    <i>
+                        Inspector name will be shorten to have 20 alphanumeric characters maximum. </i>
+                </li>
+                <li>
+                    <i>
+                        Inspector name cannot be duplicated.</i>
+                </li>
+                <li>
+                    <i>
+                        You can use Inspector url as a return_url to contain returned parameters.</i>
+                </li>
+                <li>
+                    <i>
+                        Response message, code and delay can be configured individually per inspector.</i>
+                </li>
+                <li>
+                    <i>
+                        Inspector is under development, so don't be shy to report an issue.</i>
+                </li>
+            </h2>
+        </form>
     </div>
+</div>
 {% endblock %}

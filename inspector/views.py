@@ -1,7 +1,10 @@
+import re
 import time
 from flask import session, redirect, request, render_template, make_response, flash
 from sqlalchemy import engine
 
+# from inspector.api import _response
+from inspector.util import tinyid
 from tabledef import *
 # engine = create_engine('sqlite:///inspector.db', echo=True)
 from inspector import app, db
@@ -55,7 +58,6 @@ def home():
 #     return render_template('login.html')
 
 
-
 def expand_all_bins():
     all = db.get_bins()
     return all
@@ -75,7 +77,6 @@ def admin():
             return redirect("/")
     except Exception:
         return redirect("/")
-
 
 
 @app.endpoint('views.config')
@@ -128,8 +129,8 @@ def bin(name):
         update_recent_bins(name)
         # update_all_bins(name)
         return render_template('bin.html',
-            bin=bin,
-            base_url=request.scheme+'://'+request.host)
+                               bin=bin,
+                               base_url=request.scheme + '://' + request.host)
     else:
         db.create_request(bin, request)
         # handel config here
@@ -144,7 +145,6 @@ def handle_automation_names(name):
     if name in auto_create and not db.bin_exist(name):
         db.create_bin(False, name)
         update_recent_bins(name)
-
 
 
 @app.endpoint('views.docs')
@@ -201,3 +201,24 @@ def logout():
     except Exception:
         session.clear()
         return redirect("/")
+
+
+@app.endpoint('views.create_bin')
+def create_bin():
+    private = request.form.get('private') in ['true', 'on']
+    name = str(request.form['name'])
+    name = re.sub('[^A-Za-z0-9]+', '', name)
+
+    if name == '':
+        name = tinyid()
+    else:
+        name = name[0:20]
+
+    if db.bin_exist(name):
+        flash('\"' + name + '\" ' + 'name is already used, try another one!')
+        return redirect("/")
+    else:
+        bin = db.create_bin(private, name)
+        if bin.private:
+            session[bin.name] = bin.secret_key
+        return redirect('/' + name + '?inspect')

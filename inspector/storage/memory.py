@@ -5,6 +5,7 @@ from ..models import Bin
 
 from inspector import config
 
+
 class MemoryStorage():
     cleanup_interval = config.CLEANUP_INTERVAL
 
@@ -32,13 +33,14 @@ class MemoryStorage():
         self.bins[bin.name] = bin
         return self.bins[bin.name]
 
-    def update_bin(self, private=False, name=None, response_msg='ok\n', response_code=200, response_delay=0, requests=[], color=None, secret_key=None):
+    def update_bin(self, private=False, name=None, response_msg='ok\n', response_code=200, response_delay=0,
+                   requests=[], color=None, secret_key=None):
         bin = Bin(private, name, response_msg, response_code, response_delay, requests, color, secret_key)
         self.bins[bin.name] = bin
         return self.bins[bin.name]
 
     def delete_bin(self, name):
-           self.bins.pop(name)
+        self.bins.pop(name)
 
     def create_request(self, bin, request):
         bin.add(request)
@@ -52,6 +54,7 @@ class MemoryStorage():
 
     def get_bin(self, name):
         return self.bins[name]
+
     def count_requests(self):
         return self.request_count
 
