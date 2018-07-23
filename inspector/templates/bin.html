@@ -10,11 +10,9 @@
 {% block binurl %}
 
 
-
 <form id="delete_inspector" action="/api/delete_inspector" method="POST">
   	<input type="hidden" name="name" value="{{bin.name}}" >
 </form>
-
 
 
 <input class="control" type="text" value="{{base_url}}/{{bin.name}}" onclick="this.select()" style="width: 204px; padding-top: 3px; padding-bottom: 3px;" readonly/>
@@ -39,21 +37,10 @@
         <form id="inspector_config" action="/_inspector_config" method="POST">
           <input type="hidden" name="name" value="{{bin.name}}" >
 
-             <label class="login-field-icon fui-user" for="response_delay">Response delay</label>
-   <select class="form-control" id="response_delay" name="response_delay" style="padding-right: 104px;">
-    <option selected="{{ bin.response_delay }}" value="{{ bin.response_delay }}">{{ bin.response_delay }} Second(s)</option>
-    <option value="0">0 Second</option>
-    <option value="1">1 Second</option>
-    <option value="3">3 Seconds</option>
-    <option value="5">5 Seconds</option>
-    <option value="10">10 Seconds</option>
-    <option value="20">20 Seconds</option>
-    <option value="30">30 Seconds</option>
-    <option value="60">1 Minute</option>
-    <option value="120">2 Minutes</option>
-     <option value="300">5 Minutes</option>
-     <option value="600">10 Minutes</option>
-  </select><br/>
+             <label class="login-field-icon fui-user" for="response_delay">Response delay (seconds)</label>
+            <input type="number" name="response_delay" value="{{ bin.response_delay }}" placeholder="Delay in seconds" class="form-control" id="response_delay"
+                       min="0" max="999999999999" size="10" autofocus="" autocomplete="off" autocorrect="off" spellcheck="false" required><br/>
+
 
               <label class="login-field-icon fui-user" for="response_code">Response Code</label>
    <select class="form-control" id="response_code" name="response_code">
@@ -91,8 +78,9 @@
 
   </div>
 </div>
-
+{% if session['user_role']=='admin' %}
 <button type="submit" class="btn btn-danger" title="Destroy this inspector" form="delete_inspector" onclick="if (confirm('Are you sure you want to destroy this inspector?')){}else{event.stopPropagation(); event.preventDefault();};"><i class="icon-trash"></i></button>
+{% endif %}
 </br>
 {% else %}
 

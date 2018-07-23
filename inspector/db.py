@@ -20,6 +20,14 @@ def create_bin(private=False, name=None):
     return db.create_bin(private, name)
 
 
+def update_config(ttl=1000, count=50, prefix='PAYFORT'):
+    return db.update_config(ttl, count, prefix)
+
+
+def get_config():
+    return db.get_config()
+
+
 def delete_bin(name):
     return db.delete_bin(name)
 

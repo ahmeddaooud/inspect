@@ -3,10 +3,9 @@ import time
 from flask import session, redirect, request, render_template, make_response, flash
 from sqlalchemy import engine
 
-# from inspector.api import _response
 from inspector.util import tinyid
 from tabledef import *
-# engine = create_engine('sqlite:///inspector.db', echo=True)
+engine = create_engine('sqlite:///inspector.db', echo=True)
 from inspector import app, db
 
 from tabledef import User
@@ -25,7 +24,6 @@ def update_recent_bins(name):
 
 
 def expand_recent_bins():
-    # time.sleep(.2)
     if 'recent' not in session:
         session['recent'] = []
     recent = []
@@ -40,22 +38,18 @@ def expand_recent_bins():
 
 @app.endpoint('views.home')
 def home():
-    # try:
-    #     if session['logged_in'] == False:
-    #         return render_template('login.html')
-    # except:
-    #     return render_template('login.html')
-    # else:
-    session['logged_in'] = True
-    session['user_name'] = 'admin@payfort.com'
-    session['user_id'] = '1'
-    session['user_role'] = 'admin'
-    return render_template('home.html', recent=expand_recent_bins())
+    try:
+        if session['logged_in'] == False:
+            return render_template('login.html')
+    except:
+        return render_template('login.html')
+    else:
+        return render_template('home.html', recent=expand_recent_bins())
 
 
-# @app.endpoint('views.user_login')
-# def userlogin():
-#     return render_template('login.html')
+@app.endpoint('views.user_login')
+def userlogin():
+    return render_template('login.html')
 
 
 def expand_all_bins():
@@ -83,7 +77,31 @@ def admin():
 def config():
     try:
         if session['logged_in'] and session['user_role'] == 'admin':
-            return render_template('config.html')
+            config_list = db.get_config()
+            ttl = config_list[0]
+            req_count = config_list[1]
+            prefix = config_list[2]
+            return render_template('config.html', ttl=ttl, req_count=req_count, prefix=prefix)
+        else:
+            return redirect("/")
+    except Exception:
+        return redirect("/")
+
+
+@app.endpoint('views.save_config')
+def update_config():
+    redis_prefix = str(request.form['prefix'])
+    max_ttl = request.form['max_ttl']
+    max_req_count = request.form['max_req_count']
+    db.update_config(max_ttl, max_req_count, redis_prefix)
+    flash('Config saved successfully, Still you need to activate new values')
+    return redirect("/")
+
+@app.endpoint('views.user_management')
+def user_management():
+    try:
+        if session['logged_in'] and session['user_role'] == 'admin':
+            return render_template('user_management.html')
         else:
             return redirect("/")
     except Exception:
@@ -168,32 +186,26 @@ def docs(name):
 
 @app.endpoint('views.login')
 def login():
-    session['logged_in'] = True
-    session['user_name'] = 'admin@payfort.com'
-    session['user_id'] = '1'
-    session['user_role'] = 'admin'
-    return redirect("/")
-    # try:
-    #
-    #     POST_USERNAME = str(request.form['username'])
-    #     sha_phrase = 'secure%hash&inspect'
-    #     POST_PASSWORD = hashlib.sha256(sha_phrase + str(request.form['password'] + sha_phrase)).hexdigest()
-    #     from sqlalchemy.orm import sessionmaker
-    #     Sessionmaker = sessionmaker(bind=engine)
-    #     s = Sessionmaker()
-    #     query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
-    #     result = query.first()
-    #     if result:
-    #         session['logged_in'] = True
-    #         session['user_name'] = result.username
-    #         session['user_id'] = result.id
-    #         session['user_role'] = result.userpolicy
-    #         return redirect("/")
-    #     else:
-    #         flash('Invalid login credentials!')
-    #         return redirect("/")
-    # except Exception:
-    #     return redirect("/")
+    try:
+        POST_USERNAME = str(request.form['username'])
+        sha_phrase = 'secure%hash&inspect'
+        POST_PASSWORD = hashlib.sha256(sha_phrase + str(request.form['password'] + sha_phrase)).hexdigest()
+        from sqlalchemy.orm import sessionmaker
+        Sessionmaker = sessionmaker(bind=engine)
+        s = Sessionmaker()
+        query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
+        result = query.first()
+        if result:
+            session['logged_in'] = True
+            session['user_name'] = result.username
+            session['user_id'] = result.id
+            session['user_role'] = result.userpolicy
+            return redirect("/")
+        else:
+            flash('Invalid login credentials!')
+            return redirect("/")
+    except Exception:
+        return redirect("/")
 
 
 @app.endpoint('views.logout')

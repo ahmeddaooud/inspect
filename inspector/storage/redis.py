@@ -24,6 +24,9 @@ class RedisStorage():
     def _request_count_key(self):
         return '{}-requests'.format(self.prefix)
 
+    def _configurations(self):
+        return '{}-configurations'.format(self.prefix)
+
     def create_bin(self, private=False, name=None, ):
         bin = Bin(private, name)
         key = self._key(bin.name)
@@ -51,6 +54,18 @@ class RedisStorage():
 
         self.redis.setnx(self._request_count_key(), 0)
         self.redis.incr(self._request_count_key())
+
+    def update_config(self, ttl, count, prefix):
+        try:
+            self.redis.set(self._configurations(), ttl+', '+count+', '+prefix)
+        except TypeError:
+            self.redis.set(self._configurations(), '604800, 50, PAYFORT')
+
+    def get_config(self):
+        config = self._configurations()
+        serialized_config = self.redis.get(config)
+        config_list = serialized_config.split(', ')
+        return config_list
 
     def count_bins(self):
         keys = self.redis.keys("{}_*".format(self.prefix))

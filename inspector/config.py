@@ -1,6 +1,6 @@
 import os, urlparse
 DEBUG = True
-REALM = os.environ.get('REALM', 'local')
+REALM = os.environ.get('REALM', 'prod')
 
 ROOT_URL = "http://localhost:4000"
 
@@ -11,6 +11,7 @@ CORS_ORIGINS = "*"
 
 FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", "N1CKImLnBqLpexOZpkisfDKFJDKFadsfs8a3r324YB7B73AglRmrHMDQ9RhXz35")
 SESSION_COOKIE_SAMESITE = "Strict"
+
 BIN_TTL = 168*3600
 STORAGE_BACKEND = "inspector.storage.memory.MemoryStorage"
 MAX_RAW_SIZE = int(os.environ.get('MAX_RAW_SIZE', 1024*10))
@@ -29,7 +30,7 @@ REDIS_PREFIX = ""
 BUGSNAG_KEY = ""
 
 if REALM == 'prod':
-    DEBUG = False
+    DEBUG = True
     ROOT_URL = "https://payfort-inspector.herokuapp.com"
 
     FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", FLASK_SESSION_SECRET_KEY)
@@ -37,7 +38,7 @@ if REALM == 'prod':
     STORAGE_BACKEND = "inspector.storage.redis.RedisStorage"
 
     REDIS_URL = os.environ.get("REDIS_URL")
-    url_parts = urlparse.urlparse(REDIS_URL)
+    url_parts = urlparse.urlparse("redis://h:pe3f8420a71d8e169380bd1e30a1fbc64959df616d5311a33853b1642545dba89@ec2-54-175-222-130.compute-1.amazonaws.com:27519")
     REDIS_HOST = url_parts.hostname
     REDIS_PORT = url_parts.port
     REDIS_PASSWORD = url_parts.password
