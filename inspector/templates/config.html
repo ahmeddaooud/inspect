@@ -3,10 +3,55 @@
 
 {% endblock %}
 {% block content %}
+
+
 <div class="row-fluid">
     <div class="banner-hero">
-        <h1><strong>Under Development</strong></h1>
+
+    <div class="login-box-body">
+        <h2><p class="login-box-msg"><STRONG>Inspector Configurations</STRONG></p></h2>
+        <form action="/_save_config" method="post" accept-charset="utf-8">
+            <div class="form-group has-feedback">
+                <label class="login-field-icon fui-user" for="max_ttl">TTL in millisecond(Redis remaining time to live)</label>
+                <input type="number" name="max_ttl" value="{{ ttl }}" placeholder="" class="form-control" id="max_ttl"
+                       min="1" max="999999999999" size="10" autofocus="" autocomplete="off" autocorrect="off" autocapitalize="off"
+                       spellcheck="false" required disabled style="text-align: center">
+                <span><font color="red"></font></span>
+            </div>
+            <div class="form-group has-feedback">
+                <label class="login-field-icon fui-user" for="max_req_count">Maximum requests count per inspector</label>
+                <input type="number" name="max_req_count" value="{{ req_count }}" placeholder="" class="form-control" id="max_req_count"
+                       min="1" max="9999" size="10" autocomplete="off" autocorrect="off" spellcheck="false" required disabled style="text-align: center">
+                <span><font color="red"></font></span>
+            </div>
+            <div class="form-group has-feedback">
+                <label class="login-field-icon fui-user" for="prefix">Redis data store prefix</label>
+                <input type="text" name="prefix" value="{{ prefix }}" placeholder="" class="form-control" id="prefix"
+                       maxlength="20" size="10" autocomplete="off" autocorrect="off" spellcheck="false"  required disabled style="text-align: center">
+                <span><font color="red"></font></span>
+            </div>
+                    {% if not session['user_role']=='admin' %}
+                    <input type="submit" name="submit" value="Save" id="submit"
+                           disabled
+                           class="btn btn-success btn-block btn-flat">
+            {% endif %}
+        </form>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <h4 style="color:red;" class="login-field-icon fui-lock">{{ message }} </h4>
+        {% endfor %}
+        {% else %}
+        <h4 style="color:white;" class="login-field-icon fui-lock">_</h4>
+        {% endif %}
+        {% endwith %}
     </div>
 </div>
+
+
+</div>
+
+
 
 {% endblock %}
