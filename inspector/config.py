@@ -1,6 +1,6 @@
 import os, urlparse
 DEBUG = True
-REALM = os.environ.get('REALM', 'prod')
+REALM = os.environ.get('REALM', 'local')
 
 ROOT_URL = "http://localhost:4000"
 
@@ -30,7 +30,7 @@ REDIS_PREFIX = ""
 BUGSNAG_KEY = ""
 
 if REALM == 'prod':
-    DEBUG = True
+    DEBUG = False
     ROOT_URL = "https://payfort-inspector.herokuapp.com"
 
     FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", FLASK_SESSION_SECRET_KEY)
@@ -38,7 +38,7 @@ if REALM == 'prod':
     STORAGE_BACKEND = "inspector.storage.redis.RedisStorage"
 
     REDIS_URL = os.environ.get("REDIS_URL")
-    url_parts = urlparse.urlparse("redis://h:pe3f8420a71d8e169380bd1e30a1fbc64959df616d5311a33853b1642545dba89@ec2-54-175-222-130.compute-1.amazonaws.com:27519")
+    url_parts = urlparse.urlparse(REDIS_URL)
     REDIS_HOST = url_parts.hostname
     REDIS_PORT = url_parts.port
     REDIS_PASSWORD = url_parts.password
