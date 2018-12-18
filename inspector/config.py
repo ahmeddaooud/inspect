@@ -31,7 +31,7 @@ BUGSNAG_KEY = ""
 
 if REALM == 'prod':
     DEBUG = False
-    ROOT_URL = "https://payfort-inspector.herokuapp.com"
+    ROOT_URL = "https://inspect-payfort.herokuapp.com"
 
     FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", FLASK_SESSION_SECRET_KEY)
     SESSION_COOKIE_SAMESITE = "Strict"
