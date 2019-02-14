@@ -12,15 +12,15 @@
         <h2><p class="login-box-msg"><STRONG>Inspector Configurations</STRONG></p></h2>
         <form action="/_save_config" method="post" accept-charset="utf-8">
             <div class="form-group has-feedback">
-                <label class="login-field-icon fui-user" for="max_ttl">TTL in seconds(Redis remaining time to live)</label>
-                <input type="number" name="max_ttl" value="{{ ttl }}" placeholder="" class="form-control" id="max_ttl"
+                <label class="login-field-icon fui-user" for="max_ttl">TTL in hours(Redis remaining time to live)</label>
+                <input type="number" name="max_ttl" value="336" placeholder="" class="form-control" id="max_ttl"
                        min="1" max="999999999999" size="10" autofocus="" autocomplete="off" autocorrect="off" autocapitalize="off"
                        spellcheck="false" required disabled style="text-align: center">
                 <span><font color="red"></font></span>
             </div>
             <div class="form-group has-feedback">
                 <label class="login-field-icon fui-user" for="max_req_count">Maximum requests count per inspector</label>
-                <input type="number" name="max_req_count" value="{{ req_count }}" placeholder="" class="form-control" id="max_req_count"
+                <input type="number" name="max_req_count" value="200" placeholder="" class="form-control" id="max_req_count"
                        min="1" max="9999" size="10" autocomplete="off" autocorrect="off" spellcheck="false" required disabled style="text-align: center">
                 <span><font color="red"></font></span>
             </div>
