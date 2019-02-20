@@ -148,7 +148,7 @@ def bin(name):
         return render_template('bin.html',
                                bin=bin,
                                base_url=request.scheme + '://' + request.host)
-    elif request.query_string == 'redirect':
+    elif request.query_string.startswith('redirect'):
         db.create_request(bin, request)
         if bin.private and session.get(bin.name) != bin.secret_key:
             return "Private inspector\n", 403
