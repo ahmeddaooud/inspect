@@ -71,16 +71,16 @@ app.jinja_env.filters['approximate_time'] = approximate_time
 app.jinja_env.filters['exact_time'] = exact_time
 app.jinja_env.filters['short_date'] = short_date
 
-app.add_url_rule('/', 'views.home', methods=['GET', 'POST'])
+app.add_url_rule('/', 'views.home')
 
 app.add_url_rule('/<path:name>', 'views.bin', methods=['GET', 'POST', 'DELETE', 'PUT', 'OPTIONS', 'HEAD', 'PATCH', 'TRACE'])
 
-app.add_url_rule('/docs/<name>', 'views.docs', methods=['GET', 'POST'])
-app.add_url_rule('/api/bins', 'api.bins', methods=['GET', 'POST'])
-app.add_url_rule('/api/bins/<name>', 'api.bin', methods=['GET', 'POST'])
+app.add_url_rule('/docs/<name>', 'views.docs')
+# app.add_url_rule('/api/bins', 'api.bins', methods=['POST'])
+app.add_url_rule('/api/bins/<name>', 'api.bin', methods=['GET'])
 app.add_url_rule('/api/delete_inspector', 'api.deletebin', methods=['GET', 'POST'])
-app.add_url_rule('/api/v1/<bin>/requests', 'api.requests', methods=['GET', 'POST'])
-app.add_url_rule('/api/v1/<bin>/<ref>', 'api.request', methods=['GET', 'POST'])
+app.add_url_rule('/api/v1/<bin>/requests', 'api.requests', methods=['GET'])
+app.add_url_rule('/api/v1/<bin>/<ref>', 'api.request', methods=['GET'])
 
 app.add_url_rule('/api/stats', 'api.stats')
 # app.add_url_rule('/api/inspectors', 'api.inspectors')
