@@ -37,7 +37,7 @@ if REALM == 'prod':
     SESSION_COOKIE_SAMESITE = "Strict"
     STORAGE_BACKEND = "inspector.storage.redis.RedisStorage"
 
-    REDIS_URL = os.environ.get("REDIS_URL")
+    REDIS_URL = os.environ.get("REDISCLOUD_URL")
     url_parts = urlparse.urlparse(REDIS_URL)
     REDIS_HOST = url_parts.hostname
     REDIS_PORT = url_parts.port
