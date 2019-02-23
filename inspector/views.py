@@ -77,10 +77,14 @@ def admin():
 def config():
     try:
         if session['logged_in'] and session['user_role'] == 'admin':
-            config_list = db.get_config()
-            ttl = config_list[0]
-            req_count = config_list[1]
-            prefix = config_list[2]
+#             config_list = db.get_config()
+#             ttl = config_list[0]
+#             req_count = config_list[1]
+#             prefix = config_list[2]
+            config_list = ''
+            ttl = ''
+            req_count = ''
+            prefix = 'PAYFORT'
             return render_template('config.html', ttl=ttl, req_count=req_count, prefix=prefix)
         else:
             return redirect("/")
