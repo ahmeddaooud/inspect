@@ -146,14 +146,16 @@ def bin(name):
     except KeyError:
         return "Not found\n", 404
     if request.query_string == 'inspect':
-
+        if bin.private and session.get(bin.name) != bin.secret_key :
+            return "Private inspector\n", 403
         update_recent_bins(name)
         return render_template('bin.html',
                                bin=bin,
                                base_url=request.scheme + '://' + request.host)
     elif request.query_string.startswith('redirect'):
         db.create_request(bin, request)
-
+        if bin.private and session.get(bin.name) != bin.secret_key:
+            return "Private inspector\n", 403
         update_recent_bins(name)
         return render_template('bin.html',
                                bin=bin,
