@@ -170,7 +170,7 @@ def bin(name):
 
 
 def handle_automation_names(name):
-    auto_create = ['AutoNotification', 'AutoRedirectUrl', 'AutoTransactionUrl', 'ahmdaoud']
+    auto_create = ['AutoNotification', 'AutoRedirectUrl', 'AutoTransactionUrl', 'ahmdaoud', 'AutoReturnSimulator']
     if name in auto_create and not db.bin_exist(name):
         db.create_bin(False, name)
         update_recent_bins(name)
