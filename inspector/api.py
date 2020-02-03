@@ -95,12 +95,13 @@ def bin(name):
     block = ['sleem']
     if name in block:
         return _response({'error': "Inspector is blocked"}, 404)
-    try:
-        bin = db.lookup_bin(name)
-    except KeyError:
-        return _response({'error': "Inspector not found"}, 404)
+    else:
+        try:
+            bin = db.lookup_bin(name)
+        except KeyError:
+            return _response({'error': "Inspector not found"}, 404)
 
-    return _response(bin.to_dict())
+        return _response(bin.to_dict())
 
 
 @app.endpoint('api.requests')
