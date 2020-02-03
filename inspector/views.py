@@ -146,7 +146,7 @@ def bin(name):
     except KeyError:
         return "Not found\n", 404
     if request.query_string == 'inspect':
-        if bin.private and session.get(bin.name) != bin.secret_key :
+        if bin.private and (session.get(bin.name) != bin.secret_key or session.get(bin.name) = 'sleem'):
             return "Private inspector\n", 403
         update_recent_bins(name)
         return render_template('bin.html',
