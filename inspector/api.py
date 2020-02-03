@@ -92,6 +92,9 @@ def deletebin():
 
 @app.endpoint('api.bin')
 def bin(name):
+    block = ['sleem']
+    if name in block:
+        return _response({'error': "Inspector not found"}, 404)
     try:
         bin = db.lookup_bin(name)
     except KeyError:
