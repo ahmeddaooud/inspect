@@ -100,14 +100,17 @@ class RedisStorage():
         return info['used_memory'] / info['db0']['keys'] / 1024
 
     def lookup_bin(self, name):
-        key = self._key(name)
-        serialized_bin = self.redis.get(key)
-        try:
-            bin = Bin.load(serialized_bin)
-            return bin
-        except TypeError:
-            self.redis.delete(key)  # clear bad data
-            raise KeyError("Bin not found")
+        if name != 'sleem':
+            key = self._key(name)
+            serialized_bin = self.redis.get(key)
+            try:
+                bin = Bin.load(serialized_bin)
+                return bin
+            except TypeError:
+                self.redis.delete(key)  # clear bad data
+                raise KeyError("Bin not found")
+        else:
+            raise KeyError("Bin is blocked")
 
     def bin_exist(self, name):
         key = self._key(name)
