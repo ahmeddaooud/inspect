@@ -1,10 +1,12 @@
-import config
 import os
+import sys
 from cStringIO import StringIO
 
 from flask import Flask
 from flask_cors import CORS
-import sys
+
+import config
+
 reload(sys)
 sys.setdefaultencoding('utf8')
 
@@ -42,8 +44,7 @@ app = Flask(__name__)
 if os.environ.get('ENABLE_CORS', config.ENABLE_CORS):
     cors = CORS(app, resources={r"*": {"origins": os.environ.get('CORS_ORIGINS', config.CORS_ORIGINS)}})
 
-from werkzeug.contrib.fixers import ProxyFix
-app.wsgi_app = WSGIRawBody(ProxyFix(app.wsgi_app))
+app.wsgi_app = WSGIRawBody(app.wsgi_app)
 
 app.debug = config.DEBUG
 app.secret_key = config.FLASK_SESSION_SECRET_KEY
@@ -94,6 +95,7 @@ app.add_url_rule('/_inspector_config', 'views.bin_config', methods=['POST'])
 app.add_url_rule('/_user_login', 'views.user_login')
 app.add_url_rule('/_user_management', 'views.user_management')
 app.add_url_rule('/_login', 'views.login', methods=['GET', 'POST'])
+app.add_url_rule('/_create_user', 'views.create_user', methods=['GET', 'POST'])
 app.add_url_rule('/_logout', 'views.logout', methods=['GET'])
 
 # app.add_url_rule('/robots.txt', redirect_to=url_for('static', filename='robots.txt'))

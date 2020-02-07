@@ -1,13 +1,9 @@
 from __future__ import absolute_import
 
-import time
-import cPickle as pickle
-
 import redis
 
-from ..models import Bin
-
 from inspector import config
+from ..models import Bin
 
 
 class RedisStorage():
@@ -100,17 +96,14 @@ class RedisStorage():
         return info['used_memory'] / info['db0']['keys'] / 1024
 
     def lookup_bin(self, name):
-        if name != 'sleem':
-            key = self._key(name)
-            serialized_bin = self.redis.get(key)
-            try:
-                bin = Bin.load(serialized_bin)
-                return bin
-            except TypeError:
-                self.redis.delete(key)  # clear bad data
-                raise KeyError("Bin not found")
-        else:
-            raise KeyError("Bin is blocked")
+        key = self._key(name)
+        serialized_bin = self.redis.get(key)
+        try:
+            bin = Bin.load(serialized_bin)
+            return bin
+        except TypeError:
+            self.redis.delete(key)  # clear bad data
+            raise KeyError("Bin not found")
 
     def bin_exist(self, name):
         key = self._key(name)

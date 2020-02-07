@@ -1,15 +1,15 @@
 import copy
-import json
-import time
 import datetime
+import json
 import os
+import time
+
 import msgpack
 
-from .util import random_color
-from .util import tinyid
-from .util import solid16x16gif_datauri
-
 from inspector import config
+from .util import random_color
+from .util import solid16x16gif_datauri
+from .util import tinyid
 
 
 class Bin(object):
@@ -63,18 +63,6 @@ class Bin(object):
     @property
     def request_count(self):
         return len(self.requests)
-
-    #
-    # def response_msg(self):
-    #     return self.response_msg
-    #
-    # def response_code(self):
-    #     return self.response_code
-    #
-    # def response_delay(self):
-    #     return self.response_delay
-    # def update_resp_config(self, response_msg, response_code, response_delay):
-    #     self.response_msg.pop(1)
 
     def add(self, request):
         self.requests.insert(0, Request(request))
@@ -149,32 +137,3 @@ class Request(object):
             r.__dict__ = msgpack.loads(data, encoding="ISO-8859-1")
 
         return r
-
-    # def __iter__(self):
-    #     out = []
-    #     if self.form_data:
-    #         if hasattr(self.form_data, 'items'):
-    #             items = self.form_data.items()
-    #         else:
-    #             items = self.form_data
-    #         for k,v in items:
-    #             try:
-    #                 outval = json.dumps(json.loads(v), sort_keys=True, indent=2)
-    #             except (ValueError, TypeError):
-    #                 outval = v
-    #             out.append((k, outval))
-    #     else:
-    #         try:
-    #             out = (('body', json.dumps(json.loads(self.body), sort_keys=True, indent=2)),)
-    #         except (ValueError, TypeError):
-    #             out = (('body', self.body),)
-
-    #     # Sort by field/file then by field name
-    #     files = list()
-    #     fields = list()
-    #     for (k,v) in out:
-    #         if type(v) is dict:
-    #             files.append((k,v))
-    #         else:
-    #             fields.append((k,v))
-    #     return iter(sorted(fields) + sorted(files))

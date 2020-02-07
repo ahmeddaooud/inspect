@@ -1,10 +1,13 @@
 import re
 import time
+from datetime import datetime
+
 from flask import session, redirect, request, render_template, make_response, flash
 from sqlalchemy import engine
 
 from inspector.util import tinyid
 from tabledef import *
+
 engine = create_engine('sqlite:///inspector.db', echo=True)
 from inspector import app, db
 
@@ -77,10 +80,10 @@ def admin():
 def config():
     try:
         if session['logged_in'] and session['user_role'] == 'admin':
-#             config_list = db.get_config()
-#             ttl = config_list[0]
-#             req_count = config_list[1]
-#             prefix = config_list[2]
+            #             config_list = db.get_config()
+            #             ttl = config_list[0]
+            #             req_count = config_list[1]
+            #             prefix = config_list[2]
             config_list = ''
             ttl = ''
             req_count = ''
@@ -100,16 +103,6 @@ def update_config():
     db.update_config(max_ttl, max_req_count, redis_prefix)
     flash('Config saved successfully, Still you need to activate new values')
     return redirect("/")
-
-@app.endpoint('views.user_management')
-def user_management():
-    try:
-        if session['logged_in'] and session['user_role'] == 'admin':
-            return render_template('user_management.html')
-        else:
-            return redirect("/")
-    except Exception:
-        return redirect("/")
 
 
 @app.endpoint('views.bin_config')
@@ -194,22 +187,59 @@ def login():
         POST_USERNAME = str(request.form['username'])
         sha_phrase = 'secure%hash&inspect'
         POST_PASSWORD = hashlib.sha256(sha_phrase + str(request.form['password'] + sha_phrase)).hexdigest()
-        from sqlalchemy.orm import sessionmaker
         Sessionmaker = sessionmaker(bind=engine)
         s = Sessionmaker()
-        query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
+        query = s.query(User).filter(User.username == POST_USERNAME, User.password == POST_PASSWORD,
+                                     User.active.is_(True))
         result = query.first()
         if result:
             session['logged_in'] = True
-            session['user_name'] = result.username
+            session['user_name'] = result.name
             session['user_id'] = result.id
-            session['user_role'] = result.userpolicy
+            session['user_role'] = result.user_policy
             return redirect("/")
         else:
             flash('Invalid login credentials!')
             return redirect("/")
     except Exception:
         return redirect("/")
+
+
+@app.endpoint('views.user_management')
+def user_management():
+    try:
+        if session['logged_in'] and session['user_role'] == 'admin':
+            Sessionmaker = sessionmaker(bind=engine)
+            s = Sessionmaker()
+            allusers = s.query(User)
+            results = allusers
+            return render_template('user_management.html', users=results)
+        else:
+            return redirect("/")
+    except Exception:
+        return redirect("/")
+
+
+@app.endpoint('views.create_user')
+def create_user():
+    try:
+        POST_NAME = str(request.form['name'])
+        POST_USERNAME = str(request.form['username'])
+        POST_USERROLE = str(request.form['user_role'])
+        sha_phrase = 'secure%hash&inspect'
+        POST_PASSWORD = hashlib.sha256(sha_phrase + str(request.form['password'] + sha_phrase)).hexdigest()
+        CREATION_DATE = datetime.now().date()
+        user = User(POST_NAME, POST_USERNAME, POST_PASSWORD, POST_USERROLE, CREATION_DATE, True)
+        from sqlalchemy.orm import sessionmaker
+        Sessionmaker = sessionmaker(bind=engine)
+        sessionmaker = Sessionmaker()
+        sessionmaker.add(user)
+        sessionmaker.commit()
+        flash('User {0} created successfully with {1} role'.format(POST_USERNAME, POST_USERROLE))
+        return redirect("/_user_management")
+    except Exception:
+        flash('User {0} already exist, try again!'.format(POST_USERNAME))
+        return redirect("/_user_management")
 
 
 @app.endpoint('views.logout')
