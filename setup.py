@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-import os
 from setuptools import setup, find_packages
 
 setup(
     name='inspector',
-    version='2.0.0',
+    version='3.0.0',
     author='PAYFORT',
     author_email='adaoud@payfort.com',
     description='PAYFORT HTTP request collector and inspector',
