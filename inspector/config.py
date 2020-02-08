@@ -44,7 +44,7 @@ if REALM == 'prod':
     REDIS_PASSWORD = url_parts.password
     REDIS_DB = url_parts.fragment
 
-    DATABASE_URL = os.environ.get("DATABASE_URL")
+    DATABASE_URL = "sqlite:///inspector.db"
 
     BUGSNAG_KEY = os.environ.get("BUGSNAG_KEY", BUGSNAG_KEY)
 
