@@ -187,6 +187,7 @@ def login():
         POST_USERNAME = str(request.form['username'])
         sha_phrase = 'secure%hash&inspect'
         POST_PASSWORD = hashlib.sha256(sha_phrase + str(request.form['password'] + sha_phrase)).hexdigest()
+        from sqlalchemy.orm import sessionmaker
         Sessionmaker = sessionmaker(bind=engine)
         s = Sessionmaker()
         query = s.query(User).filter(User.username == POST_USERNAME, User.password == POST_PASSWORD,
@@ -209,6 +210,7 @@ def login():
 def user_management():
     try:
         if session['logged_in'] and session['user_role'] == 'admin':
+            from sqlalchemy.orm import sessionmaker
             Sessionmaker = sessionmaker(bind=engine)
             s = Sessionmaker()
             allusers = s.query(User)
