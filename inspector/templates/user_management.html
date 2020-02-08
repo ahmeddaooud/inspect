@@ -3,7 +3,6 @@
 
 {% endblock %}
 {% block content %}
-
 <div>
 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#configModal" title="Add new user"><i class="glyphicon glyphicon-user"></i></button>
 <!-- Modal -->
@@ -86,6 +85,7 @@
     <th>User Policy</th>
     <th>Creation Date</th>
     <th>Active</th>
+    <th>Action</th>
   </tr>
 {% for user in users %}
   <tr>
@@ -94,6 +94,12 @@
     <td>{{ user.user_policy }}</td>
     <td>{{ user.creation_date }}</td>
     <td>{{ user.active }}</td>
+    <td>
+<form id="delete_user{{ user.username }}" action="/_delete_user" method="POST" accept-charset="utf-8">
+  	<input type="hidden" name="username" id="username" value="{{ user.username }}">
+</form>
+<button type="submit" class="btn btn-danger" title="Delete this user" form="delete_user{{ user.username }}" onclick="if (confirm('Are you sure you want to delete {{ user.username }} user?')){}else{event.stopPropagation(); event.preventDefault();};"><i class="icon-trash"></i></button>
+    </td>
   </tr>
 
      {% else %}
@@ -110,5 +116,15 @@
 
 </div>
 
+    {% block script %}
+    <script>
+    $('#password, #confirm_password').on('keyup', function () {
+  if ($('#password').val() == $('#confirm_password').val()) {
+    $('#message').html('Matching').css('color', 'green');
+  } else
+    $('#message').html('Not Matching').css('color', 'red');
+});
+</script>
+    {% endblock %}
 
 {% endblock %}

@@ -243,6 +243,10 @@ def create_user():
         POST_USERROLE = str(request.form['user_role'])
         sha_phrase = 'secure%hash&inspect'
         POST_PASSWORD = hashlib.sha256(sha_phrase + str(request.form['password'] + sha_phrase)).hexdigest()
+        POST_PASSWORD_CONFIRM = hashlib.sha256(sha_phrase + str(request.form['confirm_password'] + sha_phrase)).hexdigest()
+        if POST_PASSWORD != POST_PASSWORD_CONFIRM:
+            flash('Passwords aren\'t match!')
+            return redirect("/_user_management")
         CREATION_DATE = datetime.now().date()
         user = User(POST_NAME, POST_USERNAME, POST_PASSWORD, POST_USERROLE, CREATION_DATE, True)
         from sqlalchemy.orm import sessionmaker
@@ -254,6 +258,27 @@ def create_user():
         return redirect("/_user_management")
     except Exception:
         flash('User {0} already exist, try again!'.format(POST_USERNAME))
+        return redirect("/_user_management")
+
+
+@app.endpoint('views.delete_user')
+def delete_user():
+    try:
+        userid = request.form['username']
+        if userid == 'admin@payfort.com':
+            flash('User {0} cannot be deleted'.format(userid))
+            return redirect("/_user_management")
+        from sqlalchemy.orm import sessionmaker
+        Sessionmaker = sessionmaker(bind=engine)
+        s = Sessionmaker()
+        deleted_objects = User.__table__.delete().where(User.username == userid)
+        s.execute(deleted_objects)
+        s.commit()
+
+        flash('User {0} deleted successfully'.format(userid))
+        return redirect("/_user_management")
+    except Exception:
+        flash('User {0} still exist, try again!'.format(userid))
         return redirect("/_user_management")
 
 
