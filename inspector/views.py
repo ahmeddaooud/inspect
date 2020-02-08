@@ -68,7 +68,7 @@ def count_all_bins():
 @app.endpoint('views.admin')
 def admin():
     try:
-        if session['logged_in'] and session['user_role'] == 'admin':
+        if session['logged_in'] and (session['user_role'] == 'admin' or session['user_role'] == 'super_user'):
             return render_template('admin.html', all=expand_all_bins(), count=count_all_bins())
         else:
             return redirect("/")
