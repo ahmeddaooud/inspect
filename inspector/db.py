@@ -1,5 +1,3 @@
-import feedparser
-import time
 import re
 from inspector import config
 

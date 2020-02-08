@@ -66,11 +66,11 @@ def count_all_bins():
     return count
 
 
-@app.endpoint('views.admin')
-def admin():
+@app.endpoint('views.all_inspectors')
+def all_inspectors():
     try:
         if session['logged_in'] and (session['user_role'] == 'admin' or session['user_role'] == 'super_user'):
-            return render_template('admin.html', all=expand_all_bins(), count=count_all_bins())
+            return render_template('all_inspectors.html', all=expand_all_bins(), count=count_all_bins())
         else:
             return redirect("/")
     except Exception:
@@ -222,7 +222,7 @@ def login():
 @app.endpoint('views.user_management')
 def user_management():
     try:
-        if session['logged_in'] and session['user_role'] == 'admin':
+        if session['logged_in'] and (session['user_role'] == 'admin' or session['user_role'] == 'super_user'):
             from sqlalchemy.orm import sessionmaker
             Sessionmaker = sessionmaker(bind=engine)
             s = Sessionmaker()
@@ -237,6 +237,8 @@ def user_management():
 
 @app.endpoint('views.create_user')
 def create_user():
+    if not (session['logged_in'] and (session['user_role'] == 'admin' or session['user_role'] == 'super_user')):
+        return redirect("/")
     try:
         POST_NAME = str(request.form['name'])
         POST_USERNAME = str(request.form['username'])
@@ -263,6 +265,8 @@ def create_user():
 
 @app.endpoint('views.delete_user')
 def delete_user():
+    if not (session['logged_in'] and (session['user_role'] == 'admin' or session['user_role'] == 'super_user')):
+        return redirect("/")
     try:
         userid = request.form['username']
         if userid == 'admin@payfort.com':
