@@ -14,6 +14,7 @@ from inspector import app, db
 from tabledef import User
 import hashlib
 
+blocked_bin_names = []
 
 def update_recent_bins(name):
     if 'recent' not in session:
@@ -133,10 +134,13 @@ def bin_config():
 
 @app.endpoint('views.bin')
 def bin(name):
+    if name in blocked_bin_names:
+        return "Not found\n", 404
     handle_automation_names(name)
     try:
         bin = db.lookup_bin(name)
     except KeyError:
+        add_into_blocked_bin_names(name)
         return "Not found\n", 404
     if request.query_string == 'inspect':
         if (bin.private and session.get(bin.name) != bin.secret_key) and session['user_role'] != 'super_user':
@@ -168,6 +172,15 @@ def handle_automation_names(name):
         db.create_bin(False, name)
         update_recent_bins(name)
 
+
+def add_into_blocked_bin_names(name):
+    if name not in blocked_bin_names:
+        blocked_bin_names.append(name)
+
+
+def remove_from_blocked_bin_names(name):
+    if name in blocked_bin_names:
+        blocked_bin_names.remove(name)
 
 @app.endpoint('views.docs')
 def docs(name):
@@ -274,6 +287,7 @@ def create_bin():
         return redirect("/")
     else:
         bin = db.create_bin(private, name)
+        remove_from_blocked_bin_names(name)
         if bin.private:
             session[bin.name] = bin.secret_key
         return redirect('/' + name + '?inspect')

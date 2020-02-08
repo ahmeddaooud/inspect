@@ -9,7 +9,7 @@ ENABLE_CORS = False
 CORS_ORIGINS = "*"
 
 FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", "N1CKImLnBqLpexOZpkisfDKFJDKFadsfs8a3r324YB7B73AglRmrHMDQ9RhXz35")
-SESSION_COOKIE_SAMESITE = "Strict"
+SESSION_COOKIE_SAMESITE = "None"
 
 BIN_TTL = 2*168*3600
 STORAGE_BACKEND = "inspector.storage.memory.MemoryStorage"
@@ -34,7 +34,7 @@ if REALM == 'prod':
     ROOT_URL = "https://inspect-payfort.herokuapp.com"
 
     FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", FLASK_SESSION_SECRET_KEY)
-    SESSION_COOKIE_SAMESITE = "Strict"
+    SESSION_COOKIE_SAMESITE = "None"
     STORAGE_BACKEND = "inspector.storage.redis.RedisStorage"
 
     REDIS_URL = os.environ.get("REDISCLOUD_URL")

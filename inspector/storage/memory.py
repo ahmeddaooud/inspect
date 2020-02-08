@@ -33,7 +33,7 @@ class MemoryStorage():
         self.bins[bin.name] = bin
         return self.bins[bin.name]
 
-    def update_bin(self, private=False, name=None, response_msg='ok\n', response_code=200, response_delay=0,
+    def update_bin(self, private=False, name=None, response_msg='ok', response_code=200, response_delay=0,
                    requests=[], color=None, secret_key=None):
         bin = Bin(private, name, response_msg, response_code, response_delay, requests, color, secret_key)
         self.bins[bin.name] = bin

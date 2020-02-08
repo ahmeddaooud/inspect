@@ -5,24 +5,21 @@
 {% block content %}
 
 {% if session['logged_in'] %}
-<div class="col-sm-6">
-    <header class="">
-        <h1 align="right">
-            <a><img src="/static/img/logo-2x.png" height="60" width="120"/></a>
-            <a><span class="logo-accent"><font color="808080"><br>Inspector<br/></font></span></a></h1>
-
+<div class="login-box">
+    <header class="login-box-body">
+        <h2>You're already in!<br>Enjoy inspecting</h2>
     </header>
 </div>
-<p>You're logged in already!</p>
+
 {% else %}
 
 <div class="login-box" style="margin-top: 0px;">
     <div class="login-logo">
-        <h1><a><img src="/static/img/logo-2x.png" alt="My Ad Cubes"></a>
-            <a><span class="logo-accent"><font color="808080"><br>Inspector<br/></font></span></a></h1>
+<!--        <h1><a><img src="/static/img/logo-2x.png" alt="My Ad Cubes"></a>-->
+<!--            <a><span class="logo-accent"><font color="808080"><br>Inspector<br/></font></span></a></h1>-->
     </div><!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">Sign in to start</p>
+        <h1 class="login-box-msg">Sign in to start</h1>
         <form action="/_login" method="post" accept-charset="utf-8">
             <div class="form-group has-feedback">
                 <input type="email" name="username" placeholder="Email" class="form-control" id="login"
@@ -36,16 +33,14 @@
                     class="glyphicon glyphicon-lock form-control-feedback"></span>
                 <span><font color="red"></font></span>
             </div>
-            <div class="row">
-                <div class="col-xs-8">
-
-                </div><!-- /.col -->
-                <div class="col-xs-4">
+            <div class="form-group">
                     <input type="submit" name="submit" value="Sign In" id="submit"
-                           class="btn btn-success btn-block btn-flat"></div><!-- /.col -->
+                           class="btn btn-success btn-block btn-flat">
             </div>
-        </form>
+        <div class="form-group">
         <a href="/">I forgot my password</a><br>
+        </div>
+            </form>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for message in messages %}

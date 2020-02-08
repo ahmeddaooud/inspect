@@ -30,7 +30,7 @@ class RedisStorage():
         self.redis.expireat(key, int(bin.created + self.bin_ttl))
         return bin
 
-    def update_bin(self, private=False, name=None, response_msg='ok\n', response_code=200, response_delay=0,
+    def update_bin(self, private=False, name=None, response_msg='ok', response_code=200, response_delay=0,
                    requests=[], color=None, secret_key=None):
         bin = Bin(private, name, response_msg, response_code, response_delay, requests, color, secret_key)
         key = self._key(bin.name)

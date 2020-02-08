@@ -15,7 +15,7 @@ from .util import tinyid
 class Bin(object):
     max_requests = config.MAX_REQUESTS
 
-    def __init__(self, private=False, name=None, response_msg='ok\n', response_code=200, response_delay=0,
+    def __init__(self, private=False, name=None, response_msg='ok', response_code=200, response_delay=0,
                  requests=[], color=None, secret_key=None):
         self.created = time.time()
         self.private = private
@@ -98,10 +98,6 @@ class Request(object):
 
             self.raw = input.environ.get('raw')
             self.content_length = len(self.raw)
-
-            # for header in self.ignore_headers:
-            #     self.raw = re.sub(r'{}: [^\n]+\n'.format(header),
-            #                         '', self.raw, flags=re.IGNORECASE)
             if self.raw and len(self.raw) > self.max_raw_size:
                 self.raw = self.raw[0:self.max_raw_size]
 
@@ -133,7 +129,7 @@ class Request(object):
         r = Request()
         try:
             r.__dict__ = msgpack.loads(data, encoding="utf-8")
-        except (UnicodeDecodeError):
+        except UnicodeDecodeError:
             r.__dict__ = msgpack.loads(data, encoding="ISO-8859-1")
 
         return r
