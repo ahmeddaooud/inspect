@@ -1,6 +1,6 @@
 # from tabledef import *
 #
-# engine = create_engine('sqlite:///inspector.db', echo=True)
+# engine = create_engine(config.DATABASE_URL, echo=True)
 #
 # # create a Session
 # Session = sessionmaker(bind=engine)

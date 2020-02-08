@@ -3,7 +3,6 @@ DEBUG = True
 REALM = os.environ.get('REALM', 'local')
 
 ROOT_URL = "http://localhost:4000"
-
 PORT_NUMBER = 4000
 
 ENABLE_CORS = False
@@ -24,8 +23,9 @@ REDIS_HOST = "localhost"
 REDIS_PORT = 6379
 REDIS_PASSWORD = None
 REDIS_DB = 9
-
 REDIS_PREFIX = ""
+
+DATABASE_URL = "sqlite:///inspector.db"
 
 BUGSNAG_KEY = ""
 
@@ -43,6 +43,8 @@ if REALM == 'prod':
     REDIS_PORT = url_parts.port
     REDIS_PASSWORD = url_parts.password
     REDIS_DB = url_parts.fragment
+
+    DATABASE_URL = os.environ.get("DATABASE_URL")
 
     BUGSNAG_KEY = os.environ.get("BUGSNAG_KEY", BUGSNAG_KEY)
 

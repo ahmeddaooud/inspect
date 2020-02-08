@@ -8,7 +8,7 @@ from sqlalchemy import engine
 from inspector.util import tinyid
 from tabledef import *
 
-engine = create_engine('sqlite:///inspector.db', echo=True)
+engine = create_engine(config.DATABASE_URL, echo=True)
 from inspector import app, db
 
 from tabledef import User
