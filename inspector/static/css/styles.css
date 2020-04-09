@@ -554,17 +554,21 @@ header {
   color: #999999;
 }
 .message-list.new {
+  border-radius: 4px;
   background-color: #fffcf9;
   border-bottom-color: #fee9cc;
 }
 .message-list {
+  border-radius: 4px;
   background-color: #2939;
   padding: 10px;
 }
 .message-list .method {
+  border-radius: 4px;
   font-weight: bold;
 }
 .message-list .content i {
+  border-radius: 4px;
   color: #555555;
 }
 .message-list .times .icon-time,
@@ -732,19 +736,4 @@ body {
     margin-bottom: 0;
     font-weight: 400;
     cursor: pointer;
-}
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
 }
