@@ -133,10 +133,6 @@ def test_api(req):
     if req.body != "":
             json_body = req.body
             return _safe_json_response(json_body)
-    elif req.form_data != [] and 'application/x-www-form-urlencoded' in req.content_type:
-        if req.raw != "":
-                json_raw = req.raw
-        return _safe_form_response(json_raw)
     else:
         for k in req.query_string:
             if req.query_string[k] != {}:
