@@ -125,19 +125,22 @@ def request_(bin):
         bin = db.lookup_bin(bin)
     except KeyError:
         return _response({'error': "Inspector not found"}, 404)
+    return _response([convert_to_json(req) for req in bin.requests])
 
-    return _response([test_api(req) for req in bin.requests])
 
-
-def test_api(req):
+def convert_to_json(req):
     if req.body != "":
             json_body = req.body
-            return _safe_json_response(json_body)
+            return _safe_json_response(json_body).json
+    elif req.form_data != [] and 'application/x-www-form-urlencoded' in req.content_type:
+        if req.raw != "":
+            json_raw = req.raw
+            return _safe_form_response(json_raw).json
     else:
         for k in req.query_string:
             if req.query_string[k] != {}:
                 json_query = req.query_string
-                return _safe_query_response(json_query)
+                return _safe_query_response(json_query).json
 
 
 @app.endpoint('api.request')
