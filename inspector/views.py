@@ -1,16 +1,20 @@
 import re
 import time
+from datetime import datetime
+
 from flask import session, redirect, request, render_template, make_response, flash
 from sqlalchemy import engine
 
 from inspector.util import tinyid
 from tabledef import *
-engine = create_engine('sqlite:///inspector.db', echo=True)
+
+engine = create_engine(config.DATABASE_URL, echo=True)
 from inspector import app, db
 
 from tabledef import User
 import hashlib
 
+blocked_bin_names = []
 
 def update_recent_bins(name):
     if 'recent' not in session:
@@ -62,11 +66,11 @@ def count_all_bins():
     return count
 
 
-@app.endpoint('views.admin')
-def admin():
+@app.endpoint('views.all_inspectors')
+def all_inspectors():
     try:
-        if session['logged_in'] and session['user_role'] == 'admin':
-            return render_template('admin.html', all=expand_all_bins(), count=count_all_bins())
+        if session['logged_in'] and (session['user_role'] == 'admin' or session['user_role'] == 'super_user'):
+            return render_template('all_inspectors.html', all=expand_all_bins(), count=count_all_bins())
         else:
             return redirect("/")
     except Exception:
@@ -77,10 +81,10 @@ def admin():
 def config():
     try:
         if session['logged_in'] and session['user_role'] == 'admin':
-#             config_list = db.get_config()
-#             ttl = config_list[0]
-#             req_count = config_list[1]
-#             prefix = config_list[2]
+            #             config_list = db.get_config()
+            #             ttl = config_list[0]
+            #             req_count = config_list[1]
+            #             prefix = config_list[2]
             config_list = ''
             ttl = ''
             req_count = ''
@@ -100,16 +104,6 @@ def update_config():
     db.update_config(max_ttl, max_req_count, redis_prefix)
     flash('Config saved successfully, Still you need to activate new values')
     return redirect("/")
-
-@app.endpoint('views.user_management')
-def user_management():
-    try:
-        if session['logged_in'] and session['user_role'] == 'admin':
-            return render_template('user_management.html')
-        else:
-            return redirect("/")
-    except Exception:
-        return redirect("/")
 
 
 @app.endpoint('views.bin_config')
@@ -140,13 +134,16 @@ def bin_config():
 
 @app.endpoint('views.bin')
 def bin(name):
+    if name in blocked_bin_names:
+        return "Not found\n", 404
     handle_automation_names(name)
     try:
         bin = db.lookup_bin(name)
     except KeyError:
+        add_into_blocked_bin_names(name)
         return "Not found\n", 404
     if request.query_string == 'inspect':
-        if bin.private and session.get(bin.name) != bin.secret_key:
+        if (bin.private and session.get(bin.name) != bin.secret_key) and session['user_role'] != 'super_user':
             return "Private inspector\n", 403
         update_recent_bins(name)
         return render_template('bin.html',
@@ -176,6 +173,15 @@ def handle_automation_names(name):
         update_recent_bins(name)
 
 
+def add_into_blocked_bin_names(name):
+    if name not in blocked_bin_names:
+        blocked_bin_names.append(name)
+
+
+def remove_from_blocked_bin_names(name):
+    if name in blocked_bin_names:
+        blocked_bin_names.remove(name)
+
 @app.endpoint('views.docs')
 def docs(name):
     doc = db.lookup_doc(name)
@@ -197,19 +203,87 @@ def login():
         from sqlalchemy.orm import sessionmaker
         Sessionmaker = sessionmaker(bind=engine)
         s = Sessionmaker()
-        query = s.query(User).filter(User.username.in_([POST_USERNAME]), User.password.in_([POST_PASSWORD]))
+        query = s.query(User).filter(User.username == POST_USERNAME, User.password == POST_PASSWORD,
+                                     User.active.is_(True))
         result = query.first()
         if result:
             session['logged_in'] = True
-            session['user_name'] = result.username
+            session['user_name'] = result.name
             session['user_id'] = result.id
-            session['user_role'] = result.userpolicy
+            session['user_role'] = result.user_policy
             return redirect("/")
         else:
             flash('Invalid login credentials!')
             return redirect("/")
     except Exception:
         return redirect("/")
+
+
+@app.endpoint('views.user_management')
+def user_management():
+    try:
+        if session['logged_in'] and (session['user_role'] == 'admin' or session['user_role'] == 'super_user'):
+            from sqlalchemy.orm import sessionmaker
+            Sessionmaker = sessionmaker(bind=engine)
+            s = Sessionmaker()
+            allusers = s.query(User)
+            results = allusers
+            return render_template('user_management.html', users=results)
+        else:
+            return redirect("/")
+    except Exception:
+        return redirect("/")
+
+
+@app.endpoint('views.create_user')
+def create_user():
+    if not (session['logged_in'] and (session['user_role'] == 'admin' or session['user_role'] == 'super_user')):
+        return redirect("/")
+    try:
+        POST_NAME = str(request.form['name'])
+        POST_USERNAME = str(request.form['username'])
+        POST_USERROLE = str(request.form['user_role'])
+        sha_phrase = 'secure%hash&inspect'
+        POST_PASSWORD = hashlib.sha256(sha_phrase + str(request.form['password'] + sha_phrase)).hexdigest()
+        POST_PASSWORD_CONFIRM = hashlib.sha256(sha_phrase + str(request.form['confirm_password'] + sha_phrase)).hexdigest()
+        if POST_PASSWORD != POST_PASSWORD_CONFIRM:
+            flash('Passwords aren\'t match!')
+            return redirect("/_user_management")
+        CREATION_DATE = datetime.now().date()
+        user = User(POST_NAME, POST_USERNAME, POST_PASSWORD, POST_USERROLE, CREATION_DATE, True)
+        from sqlalchemy.orm import sessionmaker
+        Sessionmaker = sessionmaker(bind=engine)
+        sessionmaker = Sessionmaker()
+        sessionmaker.add(user)
+        sessionmaker.commit()
+        flash('User {0} created successfully with {1} role'.format(POST_USERNAME, POST_USERROLE))
+        return redirect("/_user_management")
+    except Exception:
+        flash('User {0} already exist, try again!'.format(POST_USERNAME))
+        return redirect("/_user_management")
+
+
+@app.endpoint('views.delete_user')
+def delete_user():
+    if not (session['logged_in'] and (session['user_role'] == 'admin' or session['user_role'] == 'super_user')):
+        return redirect("/")
+    try:
+        userid = request.form['username']
+        if userid == 'admin@payfort.com':
+            flash('User {0} cannot be deleted'.format(userid))
+            return redirect("/_user_management")
+        from sqlalchemy.orm import sessionmaker
+        Sessionmaker = sessionmaker(bind=engine)
+        s = Sessionmaker()
+        deleted_objects = User.__table__.delete().where(User.username == userid)
+        s.execute(deleted_objects)
+        s.commit()
+
+        flash('User {0} deleted successfully'.format(userid))
+        return redirect("/_user_management")
+    except Exception:
+        flash('User {0} still exist, try again!'.format(userid))
+        return redirect("/_user_management")
 
 
 @app.endpoint('views.logout')
@@ -242,6 +316,7 @@ def create_bin():
         return redirect("/")
     else:
         bin = db.create_bin(private, name)
+        remove_from_blocked_bin_names(name)
         if bin.private:
             session[bin.name] = bin.secret_key
         return redirect('/' + name + '?inspect')

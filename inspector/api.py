@@ -2,8 +2,6 @@ import json
 import urllib2
 
 import yaml
-import operator
-
 from flask import session, make_response, request, redirect, render_template
 
 from inspector import app, db
@@ -92,9 +90,9 @@ def deletebin():
 
 @app.endpoint('api.bin')
 def bin(name):
-    block = ['sleem']
+    block = ['listOfBlockedNames']
     if name in block:
-        return _response({'error': "Inspector is blocked"}, 404)
+        return _response({'error': "Forbidden inspector due to block"}, 403)
     else:
         try:
             bin = db.lookup_bin(name)

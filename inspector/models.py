@@ -1,21 +1,21 @@
 import copy
-import json
-import time
 import datetime
+import json
 import os
+import time
+
 import msgpack
 
-from .util import random_color
-from .util import tinyid
-from .util import solid16x16gif_datauri
-
 from inspector import config
+from .util import random_color
+from .util import solid16x16gif_datauri
+from .util import tinyid
 
 
 class Bin(object):
     max_requests = config.MAX_REQUESTS
 
-    def __init__(self, private=False, name=None, response_msg='ok\n', response_code=200, response_delay=0,
+    def __init__(self, private=False, name=None, response_msg='ok', response_code=200, response_delay=0,
                  requests=[], color=None, secret_key=None):
         self.created = time.time()
         self.private = private
@@ -64,18 +64,6 @@ class Bin(object):
     def request_count(self):
         return len(self.requests)
 
-    #
-    # def response_msg(self):
-    #     return self.response_msg
-    #
-    # def response_code(self):
-    #     return self.response_code
-    #
-    # def response_delay(self):
-    #     return self.response_delay
-    # def update_resp_config(self, response_msg, response_code, response_delay):
-    #     self.response_msg.pop(1)
-
     def add(self, request):
         self.requests.insert(0, Request(request))
         if len(self.requests) > self.max_requests:
@@ -110,10 +98,6 @@ class Request(object):
 
             self.raw = input.environ.get('raw')
             self.content_length = len(self.raw)
-
-            # for header in self.ignore_headers:
-            #     self.raw = re.sub(r'{}: [^\n]+\n'.format(header),
-            #                         '', self.raw, flags=re.IGNORECASE)
             if self.raw and len(self.raw) > self.max_raw_size:
                 self.raw = self.raw[0:self.max_raw_size]
 
@@ -145,36 +129,7 @@ class Request(object):
         r = Request()
         try:
             r.__dict__ = msgpack.loads(data, encoding="utf-8")
-        except (UnicodeDecodeError):
+        except UnicodeDecodeError:
             r.__dict__ = msgpack.loads(data, encoding="ISO-8859-1")
 
         return r
-
-    # def __iter__(self):
-    #     out = []
-    #     if self.form_data:
-    #         if hasattr(self.form_data, 'items'):
-    #             items = self.form_data.items()
-    #         else:
-    #             items = self.form_data
-    #         for k,v in items:
-    #             try:
-    #                 outval = json.dumps(json.loads(v), sort_keys=True, indent=2)
-    #             except (ValueError, TypeError):
-    #                 outval = v
-    #             out.append((k, outval))
-    #     else:
-    #         try:
-    #             out = (('body', json.dumps(json.loads(self.body), sort_keys=True, indent=2)),)
-    #         except (ValueError, TypeError):
-    #             out = (('body', self.body),)
-
-    #     # Sort by field/file then by field name
-    #     files = list()
-    #     fields = list()
-    #     for (k,v) in out:
-    #         if type(v) is dict:
-    #             files.append((k,v))
-    #         else:
-    #             fields.append((k,v))
-    #     return iter(sorted(fields) + sorted(files))

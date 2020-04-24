@@ -1,11 +1,11 @@
 from sqlalchemy import *
-from sqlalchemy import create_engine, ForeignKey
-from sqlalchemy import Column, Date, Integer, String
+from sqlalchemy import Column, Integer, String
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import relationship, backref
+from inspector import config
 
-engine = create_engine('sqlite:///inspector.db', echo=True)
+engine = create_engine(config.DATABASE_URL, echo=True)
 Base = declarative_base()
 
 
@@ -14,29 +14,38 @@ class User(Base):
     """"""
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True)
-    username = Column(String)
+    id = Column(Integer)
+    name = Column(String)
+    username = Column(String, primary_key=True)
     password = Column(String)
-    userpolicy = Column(String)
+    user_policy = Column(String)
+    creation_date = Column(String)
+    active = Column(Boolean)
 
     # ----------------------------------------------------------------------
-    def __init__(self, username, password, userpolicy):
+    def __init__(self, name, username, password, user_policy, creation_date, active):
         """"""
+        self.name = name
         self.username = username
         self.password = password
-        self.userpolicy = userpolicy
+        self.user_policy = user_policy
+        self.creation_date = creation_date
+        self.active = active
 
 
 # create tables
 # Base.metadata.create_all(engine)
-
-engine = create_engine('sqlite:///inspector.db', echo=True)
+#
+# engine = create_engine(config.DATABASE_URL, echo=True)
 
 # create a Session
 # Sessionmaker = sessionmaker(bind=engine)
 # sessionmaker = Sessionmaker()
 #
-# user = User("admin@payfort.com", "ccee544c307acebbe2d1a1f3ca6f1b9f6519384c40789c04fdf42cfb0516b510", "admin")
+# user = User("Admin User", "admin@payfort.com", "ccee544c307acebbe2d1a1f3ca6f1b9f6519384c40789c04fdf42cfb0516b510", "admin", "08-02-2020", True)
+# sessionmaker.add(user)
+
+# user = User("adaoud@payfort.com", "ccee544c307acebbe2d1a1f3ca6f1b9f6519384c40789c04fdf42cfb0516b510", "admin", "08-02-2020", False)
 # sessionmaker.add(user)
 #
 # user = User("adaoud@payfort.com", "93cd8446013be804e0c9a69741aa13be76ac696f9a274789519d40bf19fe723a", "super_user")

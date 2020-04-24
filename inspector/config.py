@@ -1,16 +1,17 @@
-import os, urlparse
+import os
+import urlparse
+
 DEBUG = True
 REALM = os.environ.get('REALM', 'local')
 
 ROOT_URL = "http://localhost:4000"
-
 PORT_NUMBER = 4000
 
 ENABLE_CORS = False
 CORS_ORIGINS = "*"
 
 FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", "N1CKImLnBqLpexOZpkisfDKFJDKFadsfs8a3r324YB7B73AglRmrHMDQ9RhXz35")
-SESSION_COOKIE_SAMESITE = "Strict"
+SESSION_COOKIE_SAMESITE = "None"
 
 BIN_TTL = 2*168*3600
 STORAGE_BACKEND = "inspector.storage.memory.MemoryStorage"
@@ -24,8 +25,9 @@ REDIS_HOST = "localhost"
 REDIS_PORT = 6379
 REDIS_PASSWORD = None
 REDIS_DB = 9
-
 REDIS_PREFIX = ""
+
+DATABASE_URL = "sqlite:///inspector.db"
 
 BUGSNAG_KEY = ""
 
@@ -34,7 +36,7 @@ if REALM == 'prod':
     ROOT_URL = "https://inspect-payfort.herokuapp.com"
 
     FLASK_SESSION_SECRET_KEY = os.environ.get("SESSION_SECRET_KEY", FLASK_SESSION_SECRET_KEY)
-    SESSION_COOKIE_SAMESITE = "Strict"
+    SESSION_COOKIE_SAMESITE = "None"
     STORAGE_BACKEND = "inspector.storage.redis.RedisStorage"
 
     REDIS_URL = os.environ.get("REDISCLOUD_URL")
@@ -43,6 +45,8 @@ if REALM == 'prod':
     REDIS_PORT = url_parts.port
     REDIS_PASSWORD = url_parts.password
     REDIS_DB = url_parts.fragment
+
+    DATABASE_URL = "sqlite:///inspector.db"
 
     BUGSNAG_KEY = os.environ.get("BUGSNAG_KEY", BUGSNAG_KEY)
 

@@ -1,9 +1,7 @@
 import datetime
 from dateutil.parser import parse
-import hashlib
-import os
 import time
-import urllib
+
 
 def approximate_time(ts):
     if not isinstance(ts, (int, long, float, complex)):
@@ -44,11 +42,11 @@ def friendly_size(bytes):
 def status_class(status_code):
     status_code = str(status_code or "0")
     lookup = {
-        "0" : "",
-        "2" : "ok",
-        "3" : "info",
-        "4" : "warning",
-        "5" : "error"
+        "0": "",
+        "2": "ok",
+        "3": "info",
+        "4": "warning",
+        "5": "error"
     }
 
     return lookup.get(status_code[0], "")
@@ -92,7 +90,7 @@ def time_class(secs):
         return "error"
 
     if ms > 1000:
-        return "warning" 
+        return "warning"
 
     return ""
 
@@ -112,7 +110,7 @@ def to_qs(params_dict):
             qs = qs + u"{}={}".format(k, v)
     return qs
 
-    
+
 def short_date(input):
     dt = None
     if isinstance(input, (str, unicode)):
