@@ -104,6 +104,15 @@ class Request(object):
     def json(self):
         return json.dumps(self.to_dict())
     
+    def to_json(self):
+        return dict(
+            method=self.method,
+            query_string=self.query_string,
+            form_data=self.form_data,
+            body=self.body,
+            content_type=self.content_type,
+        )
+        
     def to_dict(self):
         return dict(
             id=self.id,
