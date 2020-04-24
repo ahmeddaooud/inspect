@@ -112,6 +112,30 @@ def requests(bin):
     return _response([r.to_dict() for r in bin.requests])
 
 
+@app.endpoint('api.alljson')
+def request_(bin):
+    try:
+        bin = db.lookup_bin(bin)
+    except KeyError:
+        return _response({'error': "Inspector not found"}, 404)
+
+    for req in bin.requests:
+        if req.body != "":
+            json_body = req.body
+            return _safe_json_response(json_body)
+        elif req.form_data != [] and 'application/x-www-form-urlencoded' in req.content_type:
+            if req.raw != "":
+                json_raw = req.raw
+                return _safe_form_response(json_raw)
+        else:
+            for k in req.query_string:
+                if req.query_string[k] != {}:
+                    json_query = req.query_string
+                    return _safe_query_response(json_query)
+
+    return _response({'error': "Request not found"}, 404)
+
+
 @app.endpoint('api.request')
 def request_(bin, ref):
     try:
