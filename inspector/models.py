@@ -102,7 +102,7 @@ class Request(object):
                 self.raw = self.raw[0:self.max_raw_size]
 
     def json(self):
-        return json.dumps(self.to_dict())
+        return json.dumps(self.to_json())
     
     def to_json(self):
         return dict(
