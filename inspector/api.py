@@ -119,22 +119,29 @@ def request_(bin):
     except KeyError:
         return _response({'error': "Inspector not found"}, 404)
 
-    return _response([r.test_api() for r in bin.requests])
+@app.endpoint('api.alljson')
+def request_(bin):
+    try:
+        bin = db.lookup_bin(bin)
+    except KeyError:
+        return _response({'error': "Inspector not found"}, 404)
+
+    return _response([test_api(req) for req in bin.requests])
 
 
-def test_api():
+def test_api(req):
     if req.body != "":
             json_body = req.body
             return _safe_json_response(json_body)
-        elif req.form_data != [] and 'application/x-www-form-urlencoded' in req.content_type:
-            if req.raw != "":
+    elif req.form_data != [] and 'application/x-www-form-urlencoded' in req.content_type:
+        if req.raw != "":
                 json_raw = req.raw
-                return _safe_form_response(json_raw)
-        else:
-            for k in req.query_string:
-                if req.query_string[k] != {}:
-                    json_query = req.query_string
-                    return _safe_query_response(json_query)
+        return _safe_form_response(json_raw)
+    else:
+        for k in req.query_string:
+            if req.query_string[k] != {}:
+                json_query = req.query_string
+        return _safe_query_response(json_query)
 
 
 @app.endpoint('api.request')
