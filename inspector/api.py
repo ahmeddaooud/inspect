@@ -126,7 +126,7 @@ def request_(bin):
     except KeyError:
         return _response({'error': "Inspector not found"}, 404)
 
-    return _response([test_api(req.json()) for req in bin.requests])
+    return _response([test_api(req) for req in bin.requests])
 
 
 def test_api(req):
