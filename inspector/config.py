@@ -16,7 +16,7 @@ SESSION_COOKIE_SAMESITE = "None"
 BIN_TTL = 2*168*3600
 STORAGE_BACKEND = "inspector.storage.memory.MemoryStorage"
 MAX_RAW_SIZE = int(os.environ.get('MAX_RAW_SIZE', 1024*10))
-IGNORE_HEADERS = ["X-Via", "Via", "X-Varnish", "X-Heroku-Dynos-In-Use", "X-Heroku-Queue-Depth", "X-Request-Start", "X-Forwarded-Port", "X-Request-Id", "X-Forwarded-Proto", "X-Forwarded-For", "Content-Length", "Accept-Encoding", "Connection", "Accept", "Cache-Control", "Postman-Token", "User-Agent", "Accept-Language", "Upgrade-Insecure-Requests", "Cookie", "Host"]
+IGNORE_HEADERS = ["X-Via", "Via", "X-Varnish", "X-Heroku-Dynos-In-Use", "X-Heroku-Queue-Depth"]
 MAX_REQUESTS = 500
 CLEANUP_INTERVAL = 12*3600
 
@@ -50,7 +50,4 @@ if REALM == 'prod':
 
     BUGSNAG_KEY = os.environ.get("BUGSNAG_KEY", BUGSNAG_KEY)
 
-    IGNORE_HEADERS = ["X-Via", "Via", "X-Varnish", "X-Heroku-Dynos-In-Use", "X-Heroku-Queue-Depth", "X-Request-Start",
-                      "X-Forwarded-Port", "X-Request-Id", "X-Forwarded-Proto", "X-Forwarded-For", "Content-Length",
-                      "Accept-Encoding", "Connection", "Accept", "Cache-Control", "Postman-Token", "User-Agent",
-                      "Accept-Language", "Upgrade-Insecure-Requests", "Cookie", "Host"]
+    IGNORE_HEADERS = ["X-Heroku-Dynos-In-Use", "X-Heroku-Queue-Depth"]
