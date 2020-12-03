@@ -97,7 +97,7 @@ def bin(name):
         try:
             bin = db.lookup_bin(name)
         except KeyError:
-            return _response({'error': "Inspector not found"}, 404)
+            return _response({'error': "Inspector not found"}, 206)
 
         return _response(bin.to_dict())
 
@@ -107,7 +107,7 @@ def requests(bin):
     try:
         bin = db.lookup_bin(bin)
     except KeyError:
-        return _response({'error': "Inspector not found"}, 404)
+        return _response({'error': "Inspector not found"}, 206)
 
     return _response([r.to_dict() for r in bin.requests])
 
@@ -117,14 +117,14 @@ def request_(bin):
     try:
         bin = db.lookup_bin(bin)
     except KeyError:
-        return _response({'error': "Inspector not found"}, 404)
+        return _response({'error': "Inspector not found"}, 206)
 
 @app.endpoint('api.alljson')
 def request_(bin):
     try:
         bin = db.lookup_bin(bin)
     except KeyError:
-        return _response({'error': "Inspector not found"}, 404)
+        return _response({'error': "Inspector not found"}, 206)
     return _response([convert_to_json(req) for req in bin.requests])
 
 
@@ -148,7 +148,7 @@ def request_(bin, ref):
     try:
         bin = db.lookup_bin(bin)
     except KeyError:
-        return _response({'error': "Inspector not found"}, 404)
+        return _response({'error': "Inspector not found"}, 206)
 
     for req in bin.requests:
         if ref in req.body:
@@ -164,7 +164,7 @@ def request_(bin, ref):
                     json_query = req.query_string
                     return _safe_query_response(json_query)
 
-    return _response({'error': "Request not found"}, 404)
+    return _response({'error': "Request not found"}, 206)
 
 
 @app.endpoint('api.stats')
