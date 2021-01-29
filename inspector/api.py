@@ -90,9 +90,9 @@ def deletebin():
 
 @app.endpoint('api.bin')
 def bin(name):
-    block = ['listOfBlockedNames']
+    block = ['AutoTransactionUrl']
     if name in block:
-        return _response({'error': "Forbidden inspector due to block"}, 403)
+        return _response({'error': "Forbidden inspector due to block"}, 200)
     else:
         return _response({'msg': "done"}, 200)
 
