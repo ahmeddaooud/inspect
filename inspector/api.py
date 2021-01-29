@@ -91,7 +91,8 @@ def deletebin():
 
 @app.endpoint('api.bin')
 def bin(name):
-    return _response({'error': "Inspector not blocked"}, 200)
+        return _response({'error': "Inspector not blocked"}, 200)
+    return _response(bin.to_dict())
 
 
 @app.endpoint('api.requests')
