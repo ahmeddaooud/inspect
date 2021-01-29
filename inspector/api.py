@@ -94,12 +94,7 @@ def bin(name):
     if name in block:
         return _response({'error': "Forbidden inspector due to block"}, 403)
     else:
-        try:
-            bin = db.lookup_bin(name)
-        except KeyError:
-            return _response({'error': "Inspector not found"}, 206)
-
-        return _response(bin.to_dict())
+        return _response({'msg': "done"}, 200)
 
 
 @app.endpoint('api.requests')
@@ -107,8 +102,7 @@ def requests(bin):
     try:
         bin = db.lookup_bin(bin)
     except KeyError:
-        return _response({'error': "Inspector not found"}, 206)
-
+        return _response({'msg': "done"}, 200)
     return _response([r.to_dict() for r in bin.requests])
 
 
