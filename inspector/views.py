@@ -58,7 +58,7 @@ def userlogin():
 
 def expand_all_bins():
     all = db.get_bins()
-    return sorted(all)
+    return all
 
 
 def count_all_bins():
