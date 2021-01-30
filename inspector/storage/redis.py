@@ -77,7 +77,7 @@ class RedisStorage():
                 bins.append(bin)
             except TypeError:
                 self.redis.delete(key)  # clear bad data
-        return sorted(bins)
+        return bins
 
     def get_bin(self, name):
         key = self._key(name)
