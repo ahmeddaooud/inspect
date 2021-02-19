@@ -18,3 +18,4 @@ bugsnag
 blinker
 Flask-SqlAlchemy
 pyyaml
+python-mysqldb
