@@ -34,7 +34,7 @@ class User(Base):
 
 
 #  create tables
- Base.metadata.create_all(engine)
+#  Base.metadata.create_all(engine)
 
  engine = create_engine(config.DATABASE_URL, echo=True)
 
