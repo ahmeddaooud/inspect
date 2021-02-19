@@ -33,17 +33,17 @@ class User(Base):
         self.active = active
 
 
-# create tables
-# Base.metadata.create_all(engine)
-#
-# engine = create_engine(config.DATABASE_URL, echo=True)
+ create tables
+ Base.metadata.create_all(engine)
 
-# create a Session
-# Sessionmaker = sessionmaker(bind=engine)
-# sessionmaker = Sessionmaker()
-#
-# user = User("Admin User", "admin@payfort.com", "ccee544c307acebbe2d1a1f3ca6f1b9f6519384c40789c04fdf42cfb0516b510", "admin", "08-02-2020", True)
-# sessionmaker.add(user)
+ engine = create_engine(config.DATABASE_URL, echo=True)
+
+ create a Session
+ Sessionmaker = sessionmaker(bind=engine)
+ sessionmaker = Sessionmaker()
+
+ user = User("Admin User", "admin@payfort.com", "ccee544c307acebbe2d1a1f3ca6f1b9f6519384c40789c04fdf42cfb0516b510", "admin", "08-02-2020", True)
+ sessionmaker.add(user)
 
 # user = User("adaoud@payfort.com", "ccee544c307acebbe2d1a1f3ca6f1b9f6519384c40789c04fdf42cfb0516b510", "admin", "08-02-2020", False)
 # sessionmaker.add(user)
@@ -57,4 +57,4 @@ class User(Base):
 # # commit the record the database
 # sessionmaker.commit()
 #
-# sessionmaker.commit()
+ sessionmaker.commit()
