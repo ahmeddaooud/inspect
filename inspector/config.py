@@ -46,7 +46,8 @@ if REALM == 'prod':
     REDIS_PASSWORD = url_parts.password
     REDIS_DB = url_parts.fragment
 
-    DATABASE_URL = "sqlite:///inspector.db"
+    #DATABASE_URL = "sqlite:///inspector.db"
+    DATABASE_URL = "postgres://lbcmbtfddyyrjr:164eae9ab93b87a85392ed1f486fd38540a270bf822d4e4a4fe0c90e246700a1@ec2-54-247-125-38.eu-west-1.compute.amazonaws.com:5432/d6f8ta1i2j5p22"
 
     BUGSNAG_KEY = os.environ.get("BUGSNAG_KEY", BUGSNAG_KEY)
 
