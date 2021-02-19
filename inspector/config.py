@@ -47,7 +47,7 @@ if REALM == 'prod':
     REDIS_DB = url_parts.fragment
 
 #     DATABASE_URL = "sqlite:///inspector.db"
-    DATABASE_URL = "mysql://obng2piq7zuprsa5:icshcyhiqvctkje3@fojvtycq53b2f2kx.chr7pe7iynqr.eu-west-1.rds.amazonaws.com:3306/qcwbp1tvcky5cpf1"
+    DATABASE_URL = "mysql+pymysql://obng2piq7zuprsa5:icshcyhiqvctkje3@fojvtycq53b2f2kx.chr7pe7iynqr.eu-west-1.rds.amazonaws.com:3306/qcwbp1tvcky5cpf1"
 
     BUGSNAG_KEY = os.environ.get("BUGSNAG_KEY", BUGSNAG_KEY)
 
