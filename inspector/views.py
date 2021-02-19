@@ -269,9 +269,9 @@ def delete_user():
         return redirect("/")
     try:
         userid = request.form['username']
-        if userid == 'admin@payfort.com':
-            flash('User {0} cannot be deleted'.format(userid))
-            return redirect("/_user_management")
+        #if userid == 'admin@payfort.com':
+            #flash('User {0} cannot be deleted'.format(userid))
+            #return redirect("/_user_management")
         from sqlalchemy.orm import sessionmaker
         Sessionmaker = sessionmaker(bind=engine)
         s = Sessionmaker()
