@@ -33,12 +33,12 @@ class User(Base):
         self.active = active
 
 
- create tables
+#  create tables
  Base.metadata.create_all(engine)
 
  engine = create_engine(config.DATABASE_URL, echo=True)
 
- create a Session
+#  create a Session
  Sessionmaker = sessionmaker(bind=engine)
  sessionmaker = Sessionmaker()
 
