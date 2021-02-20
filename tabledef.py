@@ -34,19 +34,18 @@ class User(Base):
 
 
 # #  create tables
-#         Base.metadata.create_all(engine)
+        Base.metadata.create_all(engine)
 
-#         engine = create_engine(config.DATABASE_URL, echo=True)
+        engine = create_engine(config.DATABASE_URL, echo=True)
 
 # #  create a Session
-#         Sessionmaker = sessionmaker(bind=engine)
-#         sessionmaker = Sessionmaker()
+        Sessionmaker = sessionmaker(bind=engine)
+        sessionmaker = Sessionmaker()
 
-#         user = User("Admin User", "admin@payfort.com", "85abcec2435819f27b76fc72eb9574d49b4d6fe19f70d96ecfbb7ca0efcf7f47", "admin", "08-02-2020", True)
-#         sessionmaker.add(user)
+        user = User("Admin User", "admin@payfort.com", "85abcec2435819f27b76fc72eb9574d49b4d6fe19f70d96ecfbb7ca0efcf7f47", "admin", "08-02-2020", True)
+        sessionmaker.add(user)
 
-
-        user = User("Admin User", "user@payfort.com", "85abcec2435819f27b76fc72eb9574d49b4d6fe19f70d96ecfbb7ca0efcf7f47", "admin", "08-02-2020", True)
+        user = User("test User", "user@payfort.com", "85abcec2435819f27b76fc72eb9574d49b4d6fe19f70d96ecfbb7ca0efcf7f47", "admin", "08-02-2020", True)
         sessionmaker.add(user)
 
 # user = User("adaoud@payfort.com", "ccee544c307acebbe2d1a1f3ca6f1b9f6519384c40789c04fdf42cfb0516b510", "admin", "08-02-2020", False)
