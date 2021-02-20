@@ -44,18 +44,16 @@ def expand_recent_bins():
 def home():
     try:
         if session['logged_in'] == False:
-            return render_template('home.html')
+            return render_template('login.html')
     except:
-        return render_template('home.html')
+        return render_template('login.html')
     else:
         return render_template('home.html', recent=expand_recent_bins())
 
 
 @app.endpoint('views.user_login')
 def userlogin():
-#     return render_template('login.html')
-    return render_template('home.html')
-
+    return render_template('login.html')
 
 def expand_all_bins():
     all = db.get_bins()
@@ -222,23 +220,23 @@ def login():
 @app.endpoint('views.user_management')
 def user_management():
     try:
-#         if session['logged_in'] and (session['user_role'] == 'admin' or session['user_role'] == 'super_user'):
+        if session['logged_in'] and (session['user_role'] == 'admin' or session['user_role'] == 'super_user'):
             from sqlalchemy.orm import sessionmaker
             Sessionmaker = sessionmaker(bind=engine)
             s = Sessionmaker()
             allusers = s.query(User)
             results = allusers
             return render_template('user_management.html', users=results)
-#         else:
-#             return redirect("/")
-    except Exception:
+        else:
             return redirect("/")
+    except Exception:
+        return redirect("/")
 
 
 @app.endpoint('views.create_user')
 def create_user():
-#     if not (session['logged_in'] and (session['user_role'] == 'admin' or session['user_role'] == 'super_user')):
-#         return redirect("/")
+    if not (session['logged_in'] and (session['user_role'] == 'admin' or session['user_role'] == 'super_user')):
+        return redirect("/")
     try:
         POST_NAME = str(request.form['name'])
         POST_USERNAME = str(request.form['username'])
@@ -265,8 +263,8 @@ def create_user():
 
 @app.endpoint('views.delete_user')
 def delete_user():
-#     if not (session['logged_in'] and (session['user_role'] == 'admin' or session['user_role'] == 'super_user')):
-#         return redirect("/")
+    if not (session['logged_in'] and (session['user_role'] == 'admin' or session['user_role'] == 'super_user')):
+        return redirect("/")
     try:
         userid = request.form['username']
         #if userid == 'admin@payfort.com':
