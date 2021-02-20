@@ -43,17 +43,18 @@ def expand_recent_bins():
 @app.endpoint('views.home')
 def home():
     try:
-        if session['logged_in'] == True:
-            return render_template('login.html')
+        if session['logged_in'] == False:
+            return render_template('home.html')
     except:
-        return render_template('login.html')
+        return render_template('home.html')
     else:
         return render_template('home.html', recent=expand_recent_bins())
 
 
 @app.endpoint('views.user_login')
 def userlogin():
-    return render_template('login.html')
+#     return render_template('login.html')
+    return render_template('home.html')
 
 
 def expand_all_bins():
