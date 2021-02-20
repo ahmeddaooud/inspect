@@ -203,10 +203,8 @@ def login():
         from sqlalchemy.orm import sessionmaker
         Sessionmaker = sessionmaker(bind=engine)
         s = Sessionmaker()
-#         query = s.query(User).filter(User.username == POST_USERNAME, User.password == POST_PASSWORD,
-#                                      User.active.is_(True))
-        query = s.query(User).filter(User.username == POST_USERNAME, User.active.is_(True))
-        result = query.first()
+        query = s.query(User).filter(User.username == POST_USERNAME, User.password == POST_PASSWORD,
+                                     User.active.is_(True))
         if result:
             session['logged_in'] = True
             session['user_name'] = result.name
