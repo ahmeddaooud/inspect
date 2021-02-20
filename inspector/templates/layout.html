@@ -24,7 +24,8 @@
 
 <div class="row-fluid">
 
-{% if session['logged_in'] %}
+  
+  
    <ul class="nav-menu">
        <li><strong>You're logged in as {{ session['user_name'] }}</strong></li>
        <li> <a href="/"><strong>Home</strong></a> </li>
@@ -43,16 +44,10 @@
        <li> <a href="/_logout"><strong>Logout</strong></a></li>
   </ul>
 
-{% else %}
-<form class="nav-menu-left" action="/login" method="POST">
 
-    <ul class="nav-menu">
-        <li> <a href="/_user_login"><strong>Login</strong></a></li>
-        <li> <a href="https://www.payfort.com" title="Payfort Testing Tools"><strong> </strong></a>  <a href="mailto:ahmdaoud@amazon.com"><strong>Contact us!</strong></a></li>
-    </ul>
-
-</form>
-{% endif %}
+  
+  
+  
 
 </div>
                 </nav>
