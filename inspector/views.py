@@ -43,7 +43,7 @@ def expand_recent_bins():
 @app.endpoint('views.home')
 def home():
     try:
-        if session['logged_in'] == False:
+        if session['logged_in'] == True:
             return render_template('login.html')
     except:
         return render_template('login.html')
