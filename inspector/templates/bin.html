@@ -17,8 +17,8 @@
   {% if bin.private %}<i class="icon-lock"></i>{% endif %}
 
 <a class="btn btn-success" href="/{{bin.name}}?inspect" title="Refresh"><i class="icon-refresh icon-x"></i> </a>
+{% if session['logged_in'] %}
 
-<!-- {% if session['logged_in'] %} -->
 <button type="button" class="btn btn-info" data-toggle="modal" data-target="#configModal" title="Edit response for this inspector"><i class="glyphicon glyphicon-cog"></i></button>
 <!-- Modal -->
 <div id="configModal" class="modal fade" role="dialog">
@@ -135,7 +135,7 @@
 <!--        </header>-->
 <!--    </div>-->
 <!--{% endif %}-->
-<!--{% endif %}-->
+{% endif %}
 
 {% endblock %}
 
@@ -157,7 +157,7 @@
               <i class="icon-cloud-upload"></i> {{request.content_length|friendly_size}}
             </div>
             <div class="span2" class="timestamp">
-              <span title="{{request.time|exact_time}} GMT">{{request.time|approximate_time}} ago
+              <span title="{{request.time|exact_time}}">{{request.time|approximate_time}} ago
                 <a href="#{{request.id}}"><i class="icon-time"></i></a>
               </span><br>
               From {{request.remote_addr}}
