@@ -112,12 +112,12 @@ def requests(bin):
     return _response([r.to_dict() for r in bin.requests])
 
 
-@app.endpoint('api.alljson')
-def request_(bin):
-    try:
-        bin = db.lookup_bin(bin)
-    except KeyError:
-        return _response({'error': "Inspector not found"}, 206)
+# @app.endpoint('api.alljson')
+# def request_(bin):
+#     try:
+#         bin = db.lookup_bin(bin)
+#     except KeyError:
+#         return _response({'error': "Inspector not found"}, 206)
 
 @app.endpoint('api.alljson')
 def request_(bin):
